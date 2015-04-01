@@ -16,9 +16,8 @@ Trie criar(){
 	return t;
 }
 
-void inserir(char *palavra,Trie raiz){
+Trie inserir(char *palavra,Trie t){
 
-	Trie t=raiz;
 	int length=strlen(palavra);
 	int nivel;
 	int indice;
@@ -37,21 +36,25 @@ void inserir(char *palavra,Trie raiz){
 			/*Não encontramos a letra, logo vamos criar o nodo*/
 			t->filhos[indice]=criar();
 		}
-		t=t->filhos[indice]; /*encontramos a letra*/
-		t->data=nivel; /*atribuimos o nivel em que a palavra termina*/
+		t=t->filhos[indice];  /*encontramos a letra*/
+		t->data=nivel; 		  /*atribuimos o nivel em que a palavra termina*/
+		t->ch=palavra[nivel]; /*atribui o caracter para depois imprimir-mos usando a funcao imprimir*/
 	}
 	t->data=nivel; /*atribuimos o nivel em que a palavra termina*/
+	return t;
 }
 
-void procurarProdutos(char *palavra,Trie raiz){
+int procurarProdutos(char *palavra,Trie raiz){
 	Trie t = raiz;
 	int i;
 	int indice;
 	int length=strlen(palavra);
+	int valor;
 
 	if(length!=6){
-		printf("%s é um codigo de produto inválido\n",palavra);
-		return;
+		/*printf("%s é um codigo de produto inválido\n",palavra);*/
+		valor =0;
+		return valor; /*talvez esteja mal*/
 	}
 	
 	for(i=0;i<length;i++){
@@ -70,21 +73,23 @@ void procurarProdutos(char *palavra,Trie raiz){
 		else 
 			break; /*Como o indice para essa letra ja foi criado paramos o ciclo*/
 	}
-	if(palavra[i]=='\0' && t->data!=-1 ) 	/*Encontramos a palavra, e vamos verificar se a posicao a seguir indica o '\0'*/
-		printf("%s existe \n",palavra);
-	else 
-		printf("%s não existe \n",palavra); /*Não se verificou as condições a cima referidas, logo a palavra não existe*/
+	if(palavra[i]=='\0' && t->data!=-1 ) valor=1;	/*Encontramos a palavra, e vamos verificar se a posicao a seguir indica o '\0'*/
+	else valor=0;						   		    /*Não se verificou as condições a cima referidas, logo a palavra não existe*/
+
+	return valor;
 }
 
-void procurarClientes(char *palavra,Trie raiz){
+int procurarClientes(char *palavra,Trie raiz){
 	Trie t = raiz;
 	int i;
 	int indice;
 	int length=strlen(palavra);
+	int valor;
 	
 	if(length!=5){
-		printf("%s é um codigo de cliente inválido\n",palavra);
-		return;
+		/*printf("%s é um codigo de cliente inválido\n",palavra);*/
+		valor = 0;
+		return valor;
 	}
 
 	for(i=0;i<length;i++){
@@ -103,30 +108,60 @@ void procurarClientes(char *palavra,Trie raiz){
 		else 
 			break; /*Como o indice para essa letra ja foi criado paramos o ciclo*/
 	}
-	if(palavra[i]=='\0' && t->data!=-1 ) 	/*Encontramos a palavra, e vamos verificar se a posicao a seguir indica o '\0'*/
-		printf("%s existe \n",palavra);
-	else 
-		printf("%s não existe \n",palavra); /*Não se verificou as condições a cima referidas, logo a palavra não existe*/
+	if(palavra[i]=='\0' && t->data!=-1) valor=1; 	/*Encontramos a palavra, e vamos verificar se a posicao a seguir indica o '\0'*/
+	else valor=0;
+
+	return valor; 						    		/*Não se verificou as condições a cima referidas, logo a palavra não existe*/
 }
 
 void guardar(FILE *fp,Trie t){
 	char buf[10];
-
-	while(!feof(fp)){
-		fgets(buf,10,fp);
+	int inseridos=0;
+	while(fgets(buf,10,fp)){
 		strtok(buf,"\n");
 		inserir(buf,t);
+		inseridos++;
 	}
+	printf("Inseridos %d códigos\n",inseridos);
 }
 
-void validarCompras(FILE *fp){
- /*fazer um fscanf que leia cada linha e guarda cada variavel do ficheiro compras.txt e verifique se sao validas:
- - quantidade >0
- - preco >0
- - codigo produtos/clientes correto
- - o artigo so pode estar em promocao ou normal
- - ver se no enuncido e preciso validar + alguma coisa
- */
+int validarLinha(char* linha,Trie TrieClientes, Trie TrieProdutos){
+	char produto[10];
+	float preco;
+	int unidades_compradas;
+	char tipo_compra;
+	char cliente[10];
+	int mes;
+
+	sscanf(linha,"%s %f %d %c %s %d",produto,&preco,&unidades_compradas,&tipo_compra,cliente,&mes);
+
+	if(!procurarProdutos(produto,TrieProdutos) || preco<0 || unidades_compradas<0 || (tipo_compra!='N' && tipo_compra!='P') || !procurarClientes(cliente,TrieClientes) || (mes<1 || mes>12)) return 0;
+		
+	return 1;
+}
+
+void validarCompras(FILE *fp,Trie TrieClientes, Trie TrieProdutos){
+	char buf[100];
+	int validos=0,invalidos=0;
+
+	while(fgets(buf,30,fp)){
+		strtok(buf,"\r\n");
+		if(validarLinha(buf,TrieClientes,TrieProdutos)) validos++;
+		else invalidos++;
+	}
+	printf("Compras válidas: %d\n",validos);
+	printf("Compras inválidas: %d\n",invalidos);
+}
+
+void imprimir(Trie t){
+	/*int indice = (int)abs('A'-ch);*/
+	int i=0;
+
+	while(i>=0){
+		printf("%c",t->ch);
+				t=t->filhos[i++];
+	}
+	printf("\n");
 }
 
 int main(){
@@ -135,15 +170,12 @@ int main(){
 
     FILE *fprodutos = fopen("FichProdutos.txt","r");
     FILE *fclientes = fopen("FichClientes.txt","r");
-    FILE *fcompras = fopen("Compras.txt","r");
+    FILE *fcompras  = fopen("Compras.txt","r");
 
     guardar(fprodutos,produtos);
     guardar(fclientes,clientes);
-    
-	procurarProdutos("DS9002",produtos);
-	procurarClientes("DO601",clientes);
-	
-	validarCompras(fcompras);
+	validarCompras(fcompras,clientes,produtos);
+	imprimir(produtos);
 
 	return 0;
 }

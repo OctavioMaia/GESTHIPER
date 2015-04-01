@@ -2,5 +2,6 @@
 
 typedef struct nodo{
 	int data;
-	struct nodo* filhos[TAMANHO]; /*Cada um nos 26 nodos é uma letra do alfabeto*/
+	char ch;
+	struct nodo* filhos[TAMANHO]; /*Cada um nos 26 nodos é uma letra do alfabeto e 10 digitos*/
 }*Trie;
