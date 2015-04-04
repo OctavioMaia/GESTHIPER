@@ -153,57 +153,30 @@ void validarCompras(FILE *fp,Trie TrieClientes, Trie TrieProdutos){
 	printf("Compras inválidas: %d\n",invalidos);
 }
 
-void imprimir(Trie t/*,char ch*/){
-	/*int indice = (int)abs('A'-ch);
-	
-	if((t->filhos[indice]->ch)==ch){
-		printf("debugmaster\n");
-		imprimirAux(t->filhos[indice]);
-	}*/
-	int i=1;
+void imprimir(Trie t,char ch){
+
+	int i=0;
 	Trie temp = t->filhos[i];
 	
 	while(temp!=NULL){
 		printf("%c",temp->ch);
-		i++;
 		temp = t->filhos[i++];	
-		imprimir(temp);
 	}
 	printf("\n");
 }
 
-/*
-void imprimirAux(Trie t){
-	int indice=0;
-
-	if(isdigit(t->filhos[indice]->ch)){
-		printf("debug1\n");
-		printf("%d\n",t->filhos[indice]->ch);
-		imprimirAux(t->filhos[indice++]);
-	}
-	else if(!isdigit(t->filhos[indice]->ch)){
-		printf("debug2\n");
-		printf("%c\n",t->filhos[indice]->ch);
-		imprimirAux(t->filhos[indice]);
-	}
-	else
-		printf("erros\n");
-}
-*/
 int main(){
 	Trie produtos = criar();
-	Trie clientes = criar();
-	Trie teste = criar();
-
+	/*Trie clientes = criar();*/
     FILE *fprodutos = fopen("FichProdutos.txt","r");
-    FILE *fclientes = fopen("FichClientes.txt","r");
-    FILE *fcompras  = fopen("Compras.txt","r");
-   	FILE *fteste = fopen("teste.txt","r");
-    /*guardar(fprodutos,produtos);
-    guardar(fclientes,clientes);
-	validarCompras(fcompras,clientes,produtos);*/
-	guardar(fteste,teste);
-	imprimir(teste);
+    /*FILE *fclientes = fopen("FichClientes.txt","r");*/
+
+    guardar(fprodutos,produtos);
+    imprimir(produtos,'A');
+
+    /*guardar(fclientes,clientes);
+	validarCompras(fcompras,clientes,produtos);
+	*/
 
 	return 0;
 }
