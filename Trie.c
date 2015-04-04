@@ -16,7 +16,7 @@ Trie criar(){
 	return t;
 }
 
-Trie inserir(char *palavra,Trie t){
+int inserir(char *palavra,Trie t){
 
 	int length=strlen(palavra);
 	int nivel;
@@ -41,7 +41,7 @@ Trie inserir(char *palavra,Trie t){
 		t->ch=palavra[nivel]; /*atribui o caracter para depois imprimir-mos usando a funcao imprimir*/
 	}
 	t->data=nivel; /*atribuimos o nivel em que a palavra termina*/
-	return t;
+	return 1;
 }
 
 int procurarProdutos(char *palavra,Trie raiz){
@@ -141,7 +141,7 @@ int validarLinha(char* linha,Trie TrieClientes, Trie TrieProdutos){
 }
 
 void validarCompras(FILE *fp,Trie TrieClientes, Trie TrieProdutos){
-	char buf[100];
+	char buf[30];
 	int validos=0,invalidos=0;
 
 	while(fgets(buf,30,fp)){
@@ -153,29 +153,57 @@ void validarCompras(FILE *fp,Trie TrieClientes, Trie TrieProdutos){
 	printf("Compras inválidas: %d\n",invalidos);
 }
 
-void imprimir(Trie t){
-	/*int indice = (int)abs('A'-ch);*/
-	int i=0;
-
-	while(i>=0){
-		printf("%c",t->ch);
-				t=t->filhos[i++];
+void imprimir(Trie t/*,char ch*/){
+	/*int indice = (int)abs('A'-ch);
+	
+	if((t->filhos[indice]->ch)==ch){
+		printf("debugmaster\n");
+		imprimirAux(t->filhos[indice]);
+	}*/
+	int i=1;
+	Trie temp = t->filhos[i];
+	
+	while(temp!=NULL){
+		printf("%c",temp->ch);
+		i++;
+		temp = t->filhos[i++];	
+		imprimir(temp);
 	}
 	printf("\n");
 }
 
+/*
+void imprimirAux(Trie t){
+	int indice=0;
+
+	if(isdigit(t->filhos[indice]->ch)){
+		printf("debug1\n");
+		printf("%d\n",t->filhos[indice]->ch);
+		imprimirAux(t->filhos[indice++]);
+	}
+	else if(!isdigit(t->filhos[indice]->ch)){
+		printf("debug2\n");
+		printf("%c\n",t->filhos[indice]->ch);
+		imprimirAux(t->filhos[indice]);
+	}
+	else
+		printf("erros\n");
+}
+*/
 int main(){
 	Trie produtos = criar();
 	Trie clientes = criar();
+	Trie teste = criar();
 
     FILE *fprodutos = fopen("FichProdutos.txt","r");
     FILE *fclientes = fopen("FichClientes.txt","r");
     FILE *fcompras  = fopen("Compras.txt","r");
-
-    guardar(fprodutos,produtos);
+   	FILE *fteste = fopen("teste.txt","r");
+    /*guardar(fprodutos,produtos);
     guardar(fclientes,clientes);
-	validarCompras(fcompras,clientes,produtos);
-	imprimir(produtos);
+	validarCompras(fcompras,clientes,produtos);*/
+	guardar(fteste,teste);
+	imprimir(teste);
 
 	return 0;
 }
