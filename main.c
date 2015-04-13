@@ -16,7 +16,7 @@ AVL guardarCodigos(FILE *fp,AVL t){
 }
 
 
-AVL guardarValidar(FILE *fp,AVL Compras, AVL Produtos,AVL Clientes){
+AVL guardarValidar(FILE *fp,AVL Compras, AVL Produtos,AVL Clientes){ /*alterar para usar as novas AVLs*/
 	char buf[40];
 	char *buf2;
 	int inseridos=0;
