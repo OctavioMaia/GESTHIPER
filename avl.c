@@ -125,35 +125,3 @@ int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos){
 	
 	return 1;
 }
-
-int totalFaturado(int mesPedido, char *codigo){
-	char buf[30];
-	char produto[10];
-	float preco;
-	int unidades_compradas;
-	char tipo_compra;
-	char cliente[10];
-	int mes;
-
-	float VendasP=0,VendasN=0;
-	float VendasTotais=VendasP+VendasN;
-	int contaN=0,contaP=0;
-
-	FILE *fp = fopen("Compras.txt","r");
-
-	while(fgets(buf,30,fp)){
-		strtok(buf,"\r\n");
-		sscanf(buf,"%s %f %d %c %s %d",produto,&preco,&unidades_compradas,&tipo_compra,cliente,&mes);	
-
-		if((strcmp(codigo,produto)==0) && tipo_compra=='N' && mes==mesPedido){
-			VendasN+=(preco*unidades_compradas);
-			contaN++;
-		}
-		else if((strcmp(codigo,produto)==0) && tipo_compra=='P' && mes==mesPedido){
-			VendasP+= (preco*unidades_compradas);
-			contaP++;
-		}
-		printf("%d\n",(contaN+contaP));
-	} 
-	return (VendasP+VendasN); 
-}

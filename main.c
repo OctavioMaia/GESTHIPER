@@ -1,3 +1,5 @@
+
+
 #include <stdio.h>
 #include <string.h>
 #include "avl.h"
@@ -24,10 +26,11 @@ AVL guardarValidar(FILE *fp,AVL Compras, AVL Produtos,AVL Clientes){
 
 	while(fgets(buf,40,fp)){
 		buf2=strtok(buf,"\r\n");
-		Compras = inserir(buf2,Compras); 
 		
-		if(validarLinha(buf2,Clientes,Produtos)) 
+		if(validarLinha(buf2,Clientes,Produtos)){ 
+			/*Compras = inserir(buf2,Compras); inserir so apos ter a avl para compras*/
 			validos++;
+		}
 		else 
 			invalidos++;
 
@@ -72,18 +75,15 @@ void displayCodigos(AVL t){
 	char letra;
 	char decisao;
 
-	printf("Deseja procurar códigos? (y/n): ");
-	scanf(" %c", &decisao);
-
-	if(decisao=='y'){
-		printf("Introduza a letra a pesquisar (em maiuscula): ");
-		scanf(" %c",&letra);
-		imprimirLetra(t,letra,&i,&q);
-		printf("\n");
-	}
+	printf("Introduza a letra a pesquisar (em maiuscula): ");
+	scanf(" %c",&letra);
+	imprimirLetra(t,letra,&i,&q);
+	printf("\n");
 }
 
 int main(){
+	char decisao;
+
 	FILE *fprodutos = fopen("FichProdutos.txt","r");
 	FILE *fclientes = fopen("FichClientes.txt","r");
 	FILE *fcompras  = fopen("Compras.txt","r");
@@ -96,6 +96,12 @@ int main(){
 	compras  = guardarValidar(fcompras,compras,produtos,clientes);
 	
 	printf("Tudo guardado e validado!\n");
-	displayCodigos(produtos);
+	/*displayCodigos(produtos);*/
+
+	printf("Deseja procurar códigos? (y/n): ");
+	scanf(" %c", &decisao);
+	if(decisao=='y')
+		displayCodigos(produtos);
+
 	return 0;
 }
