@@ -71,7 +71,7 @@ AVL inserir(char s[], AVL t){
 	if( t == NULL ){
         t = (AVL)malloc(sizeof(struct nodo));
         if( t == NULL ){
-            printf("Não conseguimos alocar memoria! ERRO");
+            /*Não conseguimos alocar memoria! ERRO*/
             exit(1);
         }else{
             strcpy(t->data,s);

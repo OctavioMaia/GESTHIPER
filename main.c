@@ -93,12 +93,10 @@ int main(){
 	compras  = guardarValidar(fcompras,compras,produtos,clientes);
 	
 	printf("Tudo guardado e validado!\n");
-	/*displayCodigos(produtos);*/
 
 	printf("Deseja procurar códigos? (y/n): ");
 	scanf(" %c", &decisao);
-	if(decisao=='y')
-		displayCodigos(produtos);
+	if(decisao=='y') displayCodigos(produtos);
 
 	return 0;
 }
