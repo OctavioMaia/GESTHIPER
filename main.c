@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <string.h>
 #include "avl.h"
@@ -73,7 +71,6 @@ void displayCodigos(AVL t){
 	int i=0;
 	int q=0;
 	char letra;
-	char decisao;
 
 	printf("Introduza a letra a pesquisar (em maiuscula): ");
 	scanf(" %c",&letra);
