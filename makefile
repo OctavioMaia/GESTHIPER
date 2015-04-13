@@ -1,5 +1,5 @@
-FICHEIRO = Trie.c Trie.h
-OUTPUT = Trie
+FICHEIRO = main.c avl.c avl.h
+OUTPUT = avl
 
 build: $(FICHEIRO)
 	gcc -Wall -ansi -pedantic -o2 -o $(OUTPUT) $(FICHEIRO)
