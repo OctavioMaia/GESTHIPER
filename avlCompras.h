@@ -12,6 +12,6 @@ typedef struct nodoCompras{
 
 AVLCompras inserirCompras(char s[], AVLCompras t);
 void imprimirCompras(AVLCompras t);
-float getTotal(AVLCompras avl,char codigo[], int m);
+float getTotal(AVLCompras avl[],char codigo[], int m);
 float getTotalN(AVLCompras avl,char codigo[], int m);
 float getTotalP(AVLCompras avl,char codigo[], int m);
