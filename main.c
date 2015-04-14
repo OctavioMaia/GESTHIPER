@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "avl.h"
+#include "avlCompras.h"
 
 AVL guardarCodigos(FILE *fp,AVL t){
 	char buf[10];
@@ -19,84 +20,56 @@ AVL guardarCodigos(FILE *fp,AVL t){
 AVL guardarValidar(FILE *fp,AVL Compras, AVL Produtos,AVL Clientes){ /*alterar para usar as novas AVLs*/
 	char buf[40];
 	char *buf2;
-	int inseridos=0;
-	int validos=0,invalidos=0;
+	/*int validos=0,invalidos=0;*/
 
 	while(fgets(buf,40,fp)){
 		buf2=strtok(buf,"\r\n");
 		
 		if(validarLinha(buf2,Clientes,Produtos)){ 
-			/*Compras = inserir(buf2,Compras); inserir so apos ter a avl para compras*/
-			validos++;
+			/*Compras = inserir(buf2,Compras); inserir so apos ter a avl para compras
+			validos++;*/
 		}
-		else 
-			invalidos++;
-
-		inseridos++;
+		/*else 
+			invalidos++;*/
 	}
 	return Compras;
 }
 
-void imprimirLetra(AVL t, char s, int *i,int *q){
-	char decisao;
+AVLCompras guardarCodigosCompras(FILE *fp,AVLCompras t,AVL Clientes,AVL Produtos){
+	char buf[40];
+	char *buf2;
+	int inseridos=0;
 
-	if(*q==20){
-		printf("\n-----------------------------");
-		printf("\nDeseja imprimir mais 20 codigos? (y/n) :");
-		scanf(" %c",&decisao);
-		if(decisao=='y'){
-			*q=0;
-			printf("-----------------------------\n");
+	while(fgets(buf,40,fp)){
+		buf2=strtok(buf,"\r\n");
+		if(validarLinha(buf2,Clientes,Produtos)){
+			t = inserirCompras(buf2,t); 
+			inseridos++;
 		}
-		else
-			(*q)++; /*dou o valor 21 pois o programa so funciona para <=20, logo para*/	
 	}
-
-	if(*i==5){ /*5 elementos por coluna*/
-		putchar('\n');
-		*i=0;
-	}
-	if(t){ 
-		imprimirLetra(t->esq,s,i,q);
-		if(t->data[0]==s && *q<20){
-			printf("%s ",t->data);
-			(*q)++;
-			(*i)++;
-		}
-	imprimirLetra(t->dir,s,i,q);
-	}
-}
-
-void displayCodigos(AVL t){
-	int i=0;
-	int q=0;
-	char letra;
-
-	printf("Introduza a letra a pesquisar (em maiuscula): ");
-	scanf(" %c",&letra);
-	imprimirLetra(t,letra,&i,&q);
-	printf("\n");
+	printf("Inserir %d codigos válidos\n",inseridos );
+	return t;
 }
 
 int main(){
-	char decisao;
-
 	FILE *fprodutos = fopen("FichProdutos.txt","r");
 	FILE *fclientes = fopen("FichClientes.txt","r");
 	FILE *fcompras  = fopen("Compras.txt","r");
 	AVL produtos = NULL;
 	AVL clientes = NULL;
-	AVL compras  = NULL;
+	AVLCompras compras  = NULL;
 
 	produtos = guardarCodigos(fprodutos,produtos);
 	clientes = guardarCodigos(fclientes,clientes);
-	compras  = guardarValidar(fcompras,compras,produtos,clientes);
+	compras  = guardarCodigosCompras(fcompras,compras,clientes,produtos);
 	
-	printf("Tudo guardado e validado!\n");
+	imprimirCompras(compras);
+
+	/*printf("Tudo guardado e validado!\n");
 
 	printf("Deseja procurar códigos? (y/n): ");
 	scanf(" %c", &decisao);
 	if(decisao=='y') displayCodigos(produtos);
-
+	*/
 	return 0;
 }
