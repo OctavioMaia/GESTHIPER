@@ -51,6 +51,20 @@ AVLCompras guardarCodigosCompras(FILE *fp,AVLCompras t,AVL Clientes,AVL Produtos
 	return t;
 }
 
+
+void getTotal(AVLCompras t,char codigo[], int m){
+	if(t){
+		getTotal(t->esq,codigo,m);
+		if(t->tipo_compra=='N' && (strcmp(codigo,t->produtos)==0) ){
+			printf("N: %f\n",t->lucro);
+		}
+		if(t->tipo_compra=='P' && (strcmp(codigo,t->produtos)==0) ){
+			printf("P: %f\n",t->lucro);
+		}
+		getTotal(t->dir,codigo,m);
+	}
+}
+
 int main(){
 	FILE *fprodutos = fopen("FichProdutos.txt","r");
 	FILE *fclientes = fopen("FichClientes.txt","r");
@@ -63,7 +77,7 @@ int main(){
 	clientes = guardarCodigos(fclientes,clientes);
 	compras  = guardarCodigosCompras(fcompras,compras,clientes,produtos);
 	
-	imprimirCompras(compras);
+	getTotal(compras,"HF2710",1);
 
 	/*printf("Tudo guardado e validado!\n");
 
