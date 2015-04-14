@@ -118,8 +118,8 @@ void imprimirCompras(AVLCompras t){
 
 	if(temp){
 		imprimirCompras(temp->esq);
-		printf("Cliente: %s\n",temp->clientes);
 		printf("Produto: %s\n",temp->produtos);
+		printf("Cliente: %s\n",temp->clientes);
 		printf("Tipo compra: %c\n",temp->tipo_compra);
 		printf("Mês: %d\n",temp->mes);
 		printf("Lucro: %f\n",temp->lucro);
@@ -127,4 +127,30 @@ void imprimirCompras(AVLCompras t){
 		printf("-----------------\n");
 		imprimirCompras(temp->dir);
 	}
+}
+
+float getTotal(AVLCompras t,char codigo[], int m){
+	return (getTotalP(t,codigo,m)+getTotalN(t,codigo,m));
+}
+
+float getTotalP(AVLCompras avl,char codigo[], int m){
+	AVLCompras t = avl;
+	if(t){
+		if(t->tipo_compra=='P' && (t->mes)==m && (strcmp(codigo,t->produtos)==0)){
+			return t->lucro+getTotalP(t->esq,codigo,m)+getTotalP(t->dir,codigo,m);
+		}
+		return getTotalP(t->esq,codigo,m)+getTotalP(t->dir,codigo,m);
+	}
+	return 0;
+}
+
+float getTotalN(AVLCompras avl,char codigo[], int m){
+	AVLCompras t = avl;
+	if(t){
+		if(t->tipo_compra=='N' && (t->mes)==m && (strcmp(codigo,t->produtos)==0)){
+			return t->lucro+getTotalN(t->esq,codigo,m)+getTotalN(t->dir,codigo,m);
+		}
+		return getTotalN(t->esq,codigo,m)+getTotalN(t->dir,codigo,m);
+	}
+	return 0;
 }

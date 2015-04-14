@@ -35,55 +35,43 @@ AVL guardarValidar(FILE *fp,AVL Compras, AVL Produtos,AVL Clientes){ /*alterar p
 	return Compras;
 }
 
-AVLCompras guardarCodigosCompras(FILE *fp,AVLCompras t,AVL Clientes,AVL Produtos){
+void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos){
 	char buf[40];
 	char *buf2;
 	int inseridos=0;
+	int indice;
 
 	while(fgets(buf,40,fp)){
 		buf2=strtok(buf,"\r\n");
 		if(validarLinha(buf2,Clientes,Produtos)){
-			t = inserirCompras(buf2,t); 
+			indice = buf2[0] - 'A';
+			array[indice] = inserirCompras(buf2,array[indice]); 
 			inseridos++;
 		}
 	}
 	printf("Inserir %d codigos válidos\n",inseridos );
-	return t;
-}
-
-
-void getTotal(AVLCompras t,char codigo[], int m){
-	if(t){
-		getTotal(t->esq,codigo,m);
-		if(t->tipo_compra=='N' && (strcmp(codigo,t->produtos)==0) ){
-			printf("N: %f\n",t->lucro);
-		}
-		if(t->tipo_compra=='P' && (strcmp(codigo,t->produtos)==0) ){
-			printf("P: %f\n",t->lucro);
-		}
-		getTotal(t->dir,codigo,m);
-	}
 }
 
 int main(){
+	AVLCompras array[26]; /*tentar implementar*/
 	FILE *fprodutos = fopen("FichProdutos.txt","r");
 	FILE *fclientes = fopen("FichClientes.txt","r");
 	FILE *fcompras  = fopen("Compras.txt","r");
 	AVL produtos = NULL;
 	AVL clientes = NULL;
-	AVLCompras compras  = NULL;
+	int i=0;
 
 	produtos = guardarCodigos(fprodutos,produtos);
 	clientes = guardarCodigos(fclientes,clientes);
-	compras  = guardarCodigosCompras(fcompras,compras,clientes,produtos);
 	
-	getTotal(compras,"HF2710",1);
+	puts("debug");
+	for(i=0;i<26;i++){
+		array[i]=NULL;
+	}
+	guardarCodigosCompras(fcompras,array,clientes,produtos);
 
-	/*printf("Tudo guardado e validado!\n");
+	imprimirCompras(array[1]);
 
-	printf("Deseja procurar códigos? (y/n): ");
-	scanf(" %c", &decisao);
-	if(decisao=='y') displayCodigos(produtos);
-	*/
+	/*printf("%f\n",getTotal(compras,"UI1819",5));*/
 	return 0;
 }
