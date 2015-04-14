@@ -129,8 +129,9 @@ void imprimirCompras(AVLCompras t){
 	}
 }
 
-float getTotal(AVLCompras t,char codigo[], int m){
-	return (getTotalP(t,codigo,m)+getTotalN(t,codigo,m));
+float getTotal(AVLCompras avl[],char codigo[], int m){
+	int indice = codigo[0] - 'A';
+	return (getTotalP(avl[indice],codigo,m)+getTotalN(avl[indice],codigo,m));
 }
 
 float getTotalP(AVLCompras avl,char codigo[], int m){
