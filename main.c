@@ -71,6 +71,6 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	/*imprimirCompras(array[0]);*/
 
-	printf("%f\n",getTotal(array,"UI1819",5));
+	printf("Lucro: %f\n",getTotal(array,"UI1819",5));
 	return 0;
 }
