@@ -40,6 +40,11 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 	char *buf2;
 	int inseridos=0;
 	int indice;
+	int i;
+
+	for(i=0;i<26;i++){
+		array[i]=NULL;
+	}
 
 	while(fgets(buf,40,fp)){
 		buf2=strtok(buf,"\r\n");
@@ -49,29 +54,23 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 			inseridos++;
 		}
 	}
-	printf("Inserir %d codigos válidos\n",inseridos );
+	printf("Inseridos %d codigos válidos\n",inseridos );
 }
 
 int main(){
-	AVLCompras array[26]; /*tentar implementar*/
+	AVLCompras array[26];
 	FILE *fprodutos = fopen("FichProdutos.txt","r");
 	FILE *fclientes = fopen("FichClientes.txt","r");
 	FILE *fcompras  = fopen("Compras.txt","r");
 	AVL produtos = NULL;
 	AVL clientes = NULL;
-	int i=0;
 
 	produtos = guardarCodigos(fprodutos,produtos);
 	clientes = guardarCodigos(fclientes,clientes);
-	
-	puts("debug");
-	for(i=0;i<26;i++){
-		array[i]=NULL;
-	}
+
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
+	/*imprimirCompras(array[0]);*/
 
-	imprimirCompras(array[1]);
-
-	/*printf("%f\n",getTotal(compras,"UI1819",5));*/
+	printf("%f\n",getTotal(array,"UI1819",5));
 	return 0;
 }
