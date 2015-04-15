@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "avlCompras.h"
 #include "avl.h"
 
@@ -156,7 +157,27 @@ float getTotalN(AVLCompras avl,char codigo[], int m){
 	return 0;
 }
 
-/*query7*/
+/*-----------query6------------*/
+void imprimirClientes(AVL clientes, char s, int *i){
+	AVL t = clientes;
+	if(islower(s))
+		s=toupper(s);
+
+	if(*i==8){ /*8 elementos por coluna*/
+		printf("\n");;
+		*i=0;
+	}
+	if(t){ 
+		imprimirClientes(t->esq,s,i);
+		if(t->data[0]==s){
+			printf("%s ",t->data);
+			(*i)++;
+		}
+	imprimirClientes(t->dir,s,i);
+	}
+}
+
+/*--------------query7-----------*/
 
 float getTot(AVLCompras avl, int m){
 	AVLCompras t = avl;
@@ -191,4 +212,33 @@ int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax){
 	return totalCompras;
 }
 
-/********************/
+/*--------------query 8------ */
+
+char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, int *i) {
+	char *aux = malloc(sizeof(char)*10);
+	char buf[3];
+
+	if (c){
+		procurarComprasClienteAux(c->esq,produto,clientes,i);
+		if (strcmp(produto,c->produtos)==0) {
+			buf[0]=' ';
+			buf[1]=c->tipo_compra;
+			buf[2]='\0';
+			aux = strcat(c->clientes,buf);
+			clientes[(*i)]=aux;
+			(*i)++;
+		}
+		procurarComprasClienteAux(c->dir,produto,clientes,i);
+	}
+	return clientes;
+}
+
+
+char** procurarComprasCliente(AVLCompras c[], char* produto) {
+	int k=0;
+	int indice = produto[0] - 'A';
+
+	char** s = malloc(sizeof(char*)*200000);
+	s=procurarComprasClienteAux(c[indice],produto,s,&k);
+	return s;
+}

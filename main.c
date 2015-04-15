@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 #include "avl.h"
 #include "avlCompras.h"
 
@@ -58,28 +58,7 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 	printf("Inseridos %d codigos válidos\n",inseridos );
 }
 
-/*query6*/
-void imprimirClientes(AVL clientes, char s, int *i){
-	AVL t = clientes;
-	if(islower(s))
-		s=toupper(s);
-
-	if(*i==8){ /*8 elementos por coluna*/
-		printf("\n");;
-		*i=0;
-	}
-	if(t){ 
-		imprimirClientes(t->esq,s,i);
-		if(t->data[0]==s){
-			printf("%s ",t->data);
-			(*i)++;
-		}
-	imprimirClientes(t->dir,s,i);
-	}
-}
-
 int main(){
-	/*int i=0; para query 6*/
 	AVLCompras array[26];
 	FILE *fprodutos = fopen("FichProdutos.txt","r");
 	FILE *fclientes = fopen("FichClientes.txt","r");
@@ -93,12 +72,22 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 
 	/*------------------QUERY 6 ----------------*/
+	/*int i=0*/
 	/*imprimirCompras(array[0]);*/
 	/*imprimirClientes(clientes,'b',&i); */
 	
 	/*------------------QUERY 7 ----------------*/
 	/*printf("Lucro: %f\n",totalLucroIntervalo(array,1,12)); */
 	/*printf("Numero compras: %d\n",totalComprasIntervalo(array,1,12));*/
+
+
+	/*------------QUERY 8-----------
+	int i;
+	char** s= NULL;
+
+	s=procurarComprasCliente(array,"PQ6219");
+	for(i=0;s[i]!=NULL;i++) printf("Cliente/tipo de compra: %s\n",s[i]);
+	*/
 
 	return 0;
 }
