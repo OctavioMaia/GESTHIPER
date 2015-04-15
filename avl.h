@@ -18,3 +18,4 @@ int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos);
 void imprimir(AVL t);
 void displayCodigos(AVL t);
 void imprimirLetra(AVL t, char s, int *i,int *q);
+void imprimirClientes(AVL clientes, char s, int *i);
