@@ -15,3 +15,6 @@ void imprimirCompras(AVLCompras t);
 float getTotal(AVLCompras avl[],char codigo[], int m);
 float getTotalN(AVLCompras avl,char codigo[], int m);
 float getTotalP(AVLCompras avl,char codigo[], int m);
+float getTot(AVLCompras avl, int m);
+float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax);
+int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax);
