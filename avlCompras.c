@@ -155,3 +155,40 @@ float getTotalN(AVLCompras avl,char codigo[], int m){
 	}
 	return 0;
 }
+
+/*query7*/
+
+float getTot(AVLCompras avl, int m){
+	AVLCompras t = avl;
+	if(t){
+		if((t->mes)==m){
+			return t->lucro+getTot(t->esq,m)+getTot(t->dir,m);
+		}
+		return getTot(t->esq,m)+getTot(t->dir,m);
+	}
+	return 0;
+}
+
+float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax){
+	int i,m;
+	float totalLucro=0;
+
+	for(i=0;i<26;i++){
+		for(m=mesMin;m<=mesMax;m++){
+			totalLucro+=getTot(array[i],m);	
+		}
+	}
+	return totalLucro;
+}
+
+int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax){
+	int i;
+	int totalCompras=0;
+
+	for(i=mesMin;i<=mesMax;i++){
+		totalCompras+=tamanho_AVLCompras(array[i]);
+	}
+	return totalCompras;
+}
+
+/********************/
