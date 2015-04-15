@@ -18,3 +18,5 @@ float getTotalP(AVLCompras avl,char codigo[], int m);
 float getTot(AVLCompras avl, int m);
 float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax);
 int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax);
+char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, int *i);
+char** procurarComprasCliente(AVLCompras c[], char* produto);
