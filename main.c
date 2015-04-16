@@ -49,23 +49,25 @@ int naoComprouAux(AVLCompras t, char codigo[], int *i){
 	return *i;
 }
 
-void naoComprou(AVLCompras array[],AVL produtos){
+int naoComprou(AVLCompras array[],AVL produtos,int *i){
 	int indice;
 	char aux[10];
 	int balde=0;
 
 	if(produtos){
-		naoComprou(array,produtos->esq);
+		naoComprou(array,produtos->esq,i);
 		
 		strcpy(aux,produtos->data);
 		indice = aux[0]-'A';
 		if(array[indice])
 			if(naoComprouAux(array[indice],aux,&balde)==0)
-				printf("%s\n",aux);
+				(*i)++;
 
-		naoComprou(array,produtos->dir);
+		naoComprou(array,produtos->dir,i);
 	}
+	return *i;
 }
+/*----------query 5--------*/
 
 /*------------------*/
 
@@ -100,7 +102,9 @@ int main(){
 	*/
 
 	/*---------query 4----------*/
-	naoComprou(array,produtos);
+	int total=0;
+	printf("%d\n",naoComprou(array,produtos,&total));
+
 
 	return 0;
 }
