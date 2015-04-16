@@ -7,12 +7,10 @@
 AVL guardarCodigos(FILE *fp,AVL t){
 	char buf[10];
 	char *buf2;
-	int inseridos=0;
 
 	while(fgets(buf,10,fp)){
 		buf2=strtok(buf,"\r\n");
 		t = inserir(buf2,t); 
-		inseridos++;
 	}
 	return t;
 }
@@ -20,7 +18,6 @@ AVL guardarCodigos(FILE *fp,AVL t){
 void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos){
 	char buf[40];
 	char *buf2;
-	int inseridos=0;
 	int indice;
 	int i;
 
@@ -33,7 +30,7 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 		if(validarLinha(buf2,Clientes,Produtos)){
 			indice = buf2[0] - 'A';
 			array[indice] = inserirCompras(buf2,array[indice]); 
-			inseridos++;
+			/*inseridos++;*/
 		}
 	}
 	/*printf("Inseridos %d codigos válidos\n",inseridos );*/
@@ -52,7 +49,7 @@ int naoComprouAux(AVLCompras t, char codigo[], int *i){
 	return *i;
 }
 
-void naoComprou(AVLCompras array[],AVL produtos, int *conta){
+void naoComprou(AVLCompras array[],AVL produtos){
 	int indice;
 	char aux[10];
 	int balde=0;
@@ -64,7 +61,7 @@ void naoComprou(AVLCompras array[],AVL produtos, int *conta){
 		indice = aux[0]-'A';
 		if(array[indice])
 			if(naoComprouAux(array[indice],aux,&balde)==0)
-				printf("%d\n",*conta++);
+				printf("%s\n",aux);
 
 		naoComprou(array,produtos->dir);
 	}
@@ -103,8 +100,7 @@ int main(){
 	*/
 
 	/*---------query 4----------*/
-		int conta=0;
-	naoComprou(array,produtos,&conta);
+	naoComprou(array,produtos);
 
 	return 0;
 }
