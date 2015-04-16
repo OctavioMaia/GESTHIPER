@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "avlCompras.h"
 #include "avl.h"
+#include "avlCompras.h"
 
 int tamanho_AVLCompras(AVLCompras t){
     if(t)
@@ -241,4 +241,23 @@ char** procurarComprasCliente(AVLCompras c[], char* produto) {
 	char** s = malloc(sizeof(char*)*200000);
 	s=procurarComprasClienteAux(c[indice],produto,s,&k);
 	return s;
+}
+
+/*------------QUERY 4---------*/
+void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
+	int indice;
+
+	if(produtos){
+		naoComprou(array,produtos->esq,i,destino);
+		
+		indice = produtos->data[0]-'A';
+		if(array[indice])
+			if(procurarProdutos(produtos->data,array[indice])==0){
+				destino[(*i)] = malloc(sizeof(char)*6);
+				destino[(*i)] = produtos->data;
+				(*i)++;
+			}
+
+		naoComprou(array,produtos->dir,i,destino);
+	}
 }

@@ -36,39 +36,8 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 	/*printf("Inseridos %d codigos válidos\n",inseridos );*/
 }
 
-/*------------QUERY 4---------*/
-int naoComprouAux(AVLCompras t, char codigo[], int *i){
-	if(t){
-		naoComprouAux(t->esq,codigo,i);
-
-		if(strcmp(t->produtos,codigo)==0) /*encontrei*/
-			(*i)++;
-
-		naoComprouAux(t->dir,codigo,i);
-	}
-	return *i;
-}
-
-int naoComprou(AVLCompras array[],AVL produtos,int *i){
-	int indice;
-	char aux[10];
-	int balde=0;
-
-	if(produtos){
-		naoComprou(array,produtos->esq,i);
-		
-		strcpy(aux,produtos->data);
-		indice = aux[0]-'A';
-		if(array[indice])
-			if(naoComprouAux(array[indice],aux,&balde)==0)
-				(*i)++;
-
-		naoComprou(array,produtos->dir,i);
-	}
-	return *i;
-}
 /*----------query 5--------*/
-
+void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);
 /*------------------*/
 
 int main(){
@@ -102,9 +71,16 @@ int main(){
 	*/
 
 	/*---------query 4----------*/
-	int total=0;
-	printf("%d\n",naoComprou(array,produtos,&total));
+	int i=0;
+	int tamanho=0;
+	char** s = malloc(sizeof(char*)*200000);
+	naoComprou(array,produtos,&i,s);
 
+	for(i=0;s[i];i++){
+		printf(" %s\t",s[i]);
+		tamanho++;
+	}
+	printf("\nNumero de codigos que ninguem comprou: %d\n",tamanho);
 
 	return 0;
 }
