@@ -9,8 +9,9 @@ typedef struct nodoCompras{
 	struct nodoCompras* dir;
 	int altura;
 }*AVLCompras;
-
+ 
 AVLCompras inserirCompras(char s[], AVLCompras t);
+int procurarProdutos(char s[], AVLCompras t);
 void imprimirCompras(AVLCompras t);
 float getTotal(AVLCompras avl[],char codigo[], int m);
 float getTotalN(AVLCompras avl,char codigo[], int m);

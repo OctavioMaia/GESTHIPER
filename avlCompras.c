@@ -16,13 +16,13 @@ int alturaCompras(AVLCompras t){
 	return (t==NULL) ? 0 : t->altura;
 }
 
-int procurarCompras(char s[], AVLCompras t){
+int procurarProdutos(char s[], AVLCompras t){
 	if(t==NULL)
 		return 0;
 	if(strcmp(s,t->produtos)<0) /*string menor, procura na esq*/
-		return procurarCompras(s,t->esq);
+		return procurarProdutos(s,t->esq);
 	else if(strcmp(s,t->produtos)>0) /*string maior procura na dir*/
-		return procurarCompras(s,t->dir);
+		return procurarProdutos(s,t->dir);
 	else	/*encontrou, ou seja strcmp(s,t->produtos)==0*/
 		return 1; 
 }
