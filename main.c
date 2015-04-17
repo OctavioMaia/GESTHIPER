@@ -81,10 +81,12 @@ char** produtosCompradosAux(AVLCompras c, char* cliente, char** lista, int *i) {
 
 char** produtosComprados(AVLCompras c[], char* cliente) {
 	int k=0;
-	int indice = cliente[0] - 'A';
+	int i;
 
 	char** s = malloc(sizeof(char*)*200000);
-	s=produtosCompradosAux(c[indice],cliente,s,&k);
+	for(i=0;i<26;i++)
+		s=produtosCompradosAux(c[i],cliente,s,&k);
+
 	return s;
 }
 
