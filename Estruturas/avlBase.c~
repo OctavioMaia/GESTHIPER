@@ -104,7 +104,7 @@ AVL rodarDirDuplo(AVL t){
 /* inserir
  * Função que insere um nodo numa arvore AVL 
  * garantido o balenceamento da arvore
- */
+*/
 AVL inserir(char s[], AVL t){
 
 	if( t == NULL ){

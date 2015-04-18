@@ -1,12 +1,3 @@
-/* Esta estrutura é para as compras.
- * Cada nó possui o código do cliente,
- * o código do produto, o tipo de compra,
- * o mes da compra, o lucro resultante da 
- * compra (quantidade*lucro), a quantidade
- * da compra, e dois apontadores para os
- * filhos do nó.
- */
-
 typedef struct nodoCompras{
 	char clientes[10];
 	char produtos[10];

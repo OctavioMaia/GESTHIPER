@@ -4,6 +4,12 @@
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
 
+
+/* guardarCodigos
+ * A função vai ler o ficheiro dos códigos dos 
+ * Clientes e dos Produtos armazenando os códigos
+ * numa AVL
+ */
 AVL guardarCodigos(FILE *fp,AVL t){
 	char buf[10];
 	char *buf2;
@@ -15,6 +21,12 @@ AVL guardarCodigos(FILE *fp,AVL t){
 	return t;
 }
 
+/* guardarCodigosCompras
+ * A função vai ler o ficheiro de compras e vai criar 
+ * um array de 26 AVL, cada uma correspondendo a uma
+ * letra do alfabeto, sendo cada compra armazenda na AVL 
+ * correspondente á primeira letra do código do produto.
+ */
 void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos){
 	char buf[40];
 	char *buf2;
@@ -41,6 +53,9 @@ void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);
 
 
 /*----------query 5--------*/
+/* tostring
+ * Esta função converte um inteiro numa string
+ */
 char tostring(char str[], int num){
     int i, resto, tamanho = 0, n=num; /*n=num, copia para usar no calculo do tamanho*/
 
@@ -58,6 +73,12 @@ char tostring(char str[], int num){
     return *str;
 }
 
+/* produtosCompradosAux
+ * Esta função calcula a lista dos produtos comprados
+ * por um cliente passado como parametro. 
+ * Cada elemento da lista contem o código do produto e 
+ * o mes em que foi comprado.
+ */
 char** produtosCompradosAux(AVLCompras c, char* cliente, char** lista, int *i) {
 	char *aux = malloc(sizeof(char)*10);
 	char *mes = malloc(sizeof(char)*3); 	/*guarda o mes e o \0*/
@@ -78,7 +99,11 @@ char** produtosCompradosAux(AVLCompras c, char* cliente, char** lista, int *i) {
 	return lista;
 }
 
-
+/* produtosComprados
+ * Esta função calcula a lista de todos os produtos
+ * comprados mes a mes por um determinado cliente, 
+ * passado como parametro.
+ */
 char** produtosComprados(AVLCompras c[], char* cliente) {
 	int k=0;
 	int i;

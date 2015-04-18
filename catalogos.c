@@ -3,6 +3,14 @@
 #include <string.h>
 #include "Estruturas/avl.h"
 
+/* validarlinha
+ * Esta função verifica se uma linha de compras é valida.
+ * Ou seja, verifica se o código de produto é valido, o número de unidades
+ * compradas é maior que zero, o tipo de compra é 'P' (compra em promoção)
+ * ou 'N' (compra normal), o código do cliente é válido e o mês da compra
+ * é válido.
+ */
+
 int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos){
 	char produto[10];
 	float preco;
@@ -19,7 +27,12 @@ int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos){
 }
 
 /*ALTERAR ESTA CENA PARA NAO TER PRINTFS*/
-
+/* imprimir
+ * Esta função imprime uma AVL.
+ * Ou seja, vai receber como parametro uma AVL com 
+ * os códigos dos produtos ou dos clientes e vai imprimir  
+ * esses códigos para ser serem apresentados ao utilizador.
+ */
 void imprimir(AVL t){
 	AVL temp = t;
 
@@ -30,6 +43,14 @@ void imprimir(AVL t){
 	}
 }
 
+/* imprimirLetra
+ * Esta função vai imprimir os códigos de todos
+ * os produtos iniciados por uma determinada letra
+ * passada como parametro.
+ * Estes códigos irão ser impressos numa tabela, 
+ * com dimensões passadas como parametros da função.
+ * 
+ */
 void imprimirLetra(AVL t, char s, int *i,int *q){
 	char decisao;
 
@@ -60,6 +81,10 @@ void imprimirLetra(AVL t, char s, int *i,int *q){
 	}
 }
 
+/* displayCodigos
+ * Esta função vai imprimir os códigos dos 
+ * produtos iniciados por uma letra.
+ */
 void displayCodigos(AVL t){
 	int i=0;
 	int q=0;

@@ -64,10 +64,6 @@ AVLCompras rodarEsqUmaCompras(AVLCompras t){
     return aux; /*nova raiz*/
 }
 
-/* rodarDirUmaCompras
- * Rotação direita de um nó. Utilizada para
- * manter a arvore balenceada durante a inserção de um nodo.
- */
 AVLCompras rodarDirUmaCompras(AVLCompras t){
 	AVLCompras aux;
 
@@ -80,32 +76,18 @@ AVLCompras rodarDirUmaCompras(AVLCompras t){
     return aux; /*nova raiz*/
 }
 
-/* rodarEsqDuploCompras
- * Uma rotação dupla para a esquerda é uma rotação
- * para direita no filho da direita seguida de uma 
- * rotação para a esquerda no nodo passado como parametro
- */
 AVLCompras rodarEsqDuploCompras(AVLCompras t){
 	t->esq = rodarDirUmaCompras(t->esq);
 
 	return rodarEsqUmaCompras(t);
 }
 
-/* rodarDirDuploCompras
- * Uma rotação dupla para a direita é uma rotação 
- * para a esquerda no filho da esquerda seguida de 
- * uma rotação para a direita no nodo passado como parametro
- */
 AVLCompras rodarDirDuploCompras(AVLCompras t){
 	t->dir = rodarEsqUmaCompras(t->dir);
 
 	return rodarDirUmaCompras(t);
 }
 
-/* inserirCompras
- * Função que insere um nodo numa arvore AVL 
- * garantido o balenceamento da arvore
-*/
 AVLCompras inserirCompras(char s[], AVLCompras t){
 	char produto[10];
 	float preco;
