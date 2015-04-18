@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "avl.h"
-#include "avlCompras.h"
+#include "Estruturas/avl.h"
+#include "Estruturas/avlCompras.h"
 
 AVL guardarCodigos(FILE *fp,AVL t){
 	char buf[10];
@@ -94,9 +94,9 @@ char** produtosComprados(AVLCompras c[], char* cliente) {
 
 int main(){
 	AVLCompras array[26];
-	FILE *fprodutos = fopen("FichProdutos.txt","r");
-	FILE *fclientes = fopen("FichClientes.txt","r");
-	FILE *fcompras  = fopen("Compras.txt","r");
+	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
+	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
+	FILE *fcompras  = fopen("Ficheiros/Compras.txt","r");
 	AVL produtos = NULL;
 	AVL clientes = NULL;
 
@@ -141,7 +141,7 @@ int main(){
 	int i;
 	char** s= NULL;
 
-	s=produtosComprados(array,"CQ626");
+	s=produtosComprados(array,"FO767");
 
 	for(i=0;s[i]!=NULL;i++) 
 		printf("produto/mes: %s\n",s[i]);

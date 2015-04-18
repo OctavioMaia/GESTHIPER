@@ -1,4 +1,4 @@
-FICHEIRO = main.c avl.c avl.h avlCompras.c avlCompras.h
+FICHEIRO = main.c Estruturas/avlBase.c Estruturas/avlComprasBase.c Estruturas/avl.h Estruturas/avlCompras.h catalogos.c contabilidade.c
 OUTPUT = avl
 
 build: $(FICHEIRO)

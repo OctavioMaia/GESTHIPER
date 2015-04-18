@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "avl.h"
+
+int tamanho_AVL(AVL t){
+    if(t)
+    	return 1 + (tamanho_AVL(t->esq)+tamanho_AVL(t->dir)); 
+    else
+        return 0;
+}
+
+int altura(AVL t){
+	return (t==NULL) ? 0 : t->altura;
+}
+
+int procurar(char s[], AVL t){
+	if(t==NULL)
+		return 0;
+	if(strcmp(s,t->data)<0) /*string menor, procura na esq*/
+		return procurar(s,t->esq);
+	else if(strcmp(s,t->data)>0) /*string maior procura na dir*/
+		return procurar(s,t->dir);
+	else	/*encontrou, ou seja strcmp(s,t->data)==0*/
+		return 1; 
+}
+
+int max(int a,int b){
+	return a>b ? a:b;
+}
+
+AVL rodarEsqUma(AVL t){
+	AVL aux = NULL;
+
+	aux = t->esq;
+    t->esq = aux->dir;
+    aux->dir = t;
+ 
+    t->altura = max( altura( t->esq ), altura( t->dir ) ) + 1;
+    aux->altura = max( altura( aux->esq ), t->altura ) + 1;
+    return aux; /*nova raiz*/
+}
+
+AVL rodarDirUma(AVL t){
+	AVL aux;
+
+	aux = t->dir;
+    t->dir = aux->esq;
+    aux->esq = t;
+ 
+    t->altura = max( altura(t->esq),altura(t->dir) ) + 1;
+    aux->altura = max( altura(aux->dir),t->altura) + 1;
+    return aux; /*nova raiz*/
+}
+
+AVL rodarEsqDuplo(AVL t){
+	t->esq = rodarDirUma(t->esq);
+
+	return rodarEsqUma(t);
+}
+
+AVL rodarDirDuplo(AVL t){
+	t->dir = rodarEsqUma(t->dir);
+
+	return rodarDirUma(t);
+}
+
+AVL inserir(char s[], AVL t){
+
+	if( t == NULL ){
+        t = (AVL)malloc(sizeof(struct nodo));
+        if( t == NULL ){
+            /*Não conseguimos alocar memoria! ERRO*/
+            exit(1);
+        }else{
+            strcpy(t->data,s);
+            t->altura = 0;
+            t->esq = t->dir = NULL;
+        }
+    }
+	else if(strcmp(s,t->data)<0){ 				/*metemos na esq*/
+		t->esq = inserir(s,t->esq);
+		if(altura(t->esq)-altura(t->dir) == 2){ /*duplamente pesado, invocar dupla rotacao!*/
+			if(strcmp(s,t->esq->data)<0) 		/*metemos na esq*/
+				t=rodarEsqUma(t);
+			else 						
+				t=rodarEsqDuplo(t);
+		}
+	}
+	else if(strcmp(s,t->data)>0){ 				/*metemos na dir*/
+		t->dir = inserir(s,t->dir);
+		if(altura(t->dir)-altura(t->esq) == 2){ /*duplamente pesado, invocar dupla rotacao!*/
+			if(strcmp(s,t->dir->data)>0) 		/* metemos na dir*/
+				t=rodarDirUma(t);
+			else
+				t=rodarDirDuplo(t); 	
+		}
+	}
+	t->altura = max(altura(t->esq),altura(t->dir)) +1;
+	return t;
+}
