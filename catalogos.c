@@ -37,9 +37,9 @@ void imprimir(AVL t){
 	AVL temp = t;
 
 	if(temp){
-		imprimir(temp->esq);
-		printf("%s\n",temp->data);
-		imprimir(temp->dir);
+		imprimir(getEsq(temp));
+		printf("%s\n",getData(temp));
+		imprimir(getDir(temp));
 	}
 }
 
@@ -71,13 +71,14 @@ void imprimirLetra(AVL t, char s, int *i,int *q){
 		*i=0;
 	}
 	if(t){ 
-		imprimirLetra(t->esq,s,i,q);
-		if(t->data[0]==s && *q<20){
-			printf("%s ",t->data);
+		char *aux= getData(t);
+		imprimirLetra(getEsq(t),s,i,q);
+		if(aux[0]==s && *q<20){
+			printf("%s ",getData(t));
 			(*q)++;
 			(*i)++;
 		}
-	imprimirLetra(t->dir,s,i,q);
+	imprimirLetra(getDir(t),s,i,q);
 	}
 }
 

@@ -3,12 +3,7 @@
  * apontadores para os filhos 
  * do nó
  */
-typedef struct nodo{
-	char data[10];
-	struct nodo* esq;
-	struct nodo* dir;
-	int altura;
-}*AVL;
+typedef struct nodo* AVL;
 
 AVL inserir(char s[], AVL t);
 int tamanho_AVL(AVL t);
@@ -20,3 +15,8 @@ void imprimir(AVL t);
 void displayCodigos(AVL t);
 void imprimirLetra(AVL t, char s, int *i,int *q);
 void imprimirClientes(AVL clientes, char s, int *i);
+
+char *getData(AVL a);
+int getAltura(AVL a);
+AVL getEsq(AVL a);
+AVL getDir(AVL a);

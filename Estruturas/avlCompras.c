@@ -5,6 +5,55 @@
 #include "avl.h"
 #include "avlCompras.h"
 
+typedef struct nodoCompras{
+	char clientes[10];
+	char produtos[10];
+	char tipo_compra;
+	int mes;
+	float lucro;
+	int quantidade;
+	struct nodoCompras* esq;
+	struct nodoCompras* dir;
+	int altura;
+}nodoCompras;
+
+/* gets*/
+char *getClientes (AVLCompras a) {
+	return a -> clientes; 
+}
+
+char *getProd (AVLCompras a) {
+	return a -> produtos;
+}
+
+char getTipo (AVLCompras a) {
+	return a -> tipo_compra;
+}
+
+int getMes (AVLCompras a) {
+	return a -> mes;
+}
+
+float getLucro (AVLCompras a) {
+	return a -> lucro;
+}
+
+int getQuantidade (AVLCompras a) {
+	return a -> quantidade;
+}
+
+int getAlturaCompras(AVLCompras a) {
+	return a -> altura; 
+}
+
+AVLCompras getEsqCompras(AVLCompras a) {
+	return a -> esq;
+}
+
+AVLCompras getDirCompras(AVLCompras a) {
+	return a -> dir;
+}
+
 /* tamanho_AVLCompras
  * Esta função calcula o número de nodos
  * de uma AVL

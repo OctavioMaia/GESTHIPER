@@ -7,17 +7,8 @@
  * filhos do nó.
  */
 
-typedef struct nodoCompras{
-	char clientes[10];
-	char produtos[10];
-	char tipo_compra;
-	int mes;
-	float lucro;
-	int quantidade;
-	struct nodoCompras* esq;
-	struct nodoCompras* dir;
-	int altura;
-}*AVLCompras;
+typedef struct nodoCompras *AVLCompras;
+ 
  
 int tamanho_AVLCompras(AVLCompras t);
 AVLCompras inserirCompras(char s[], AVLCompras t);
@@ -31,3 +22,13 @@ float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax);
 int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax);
 char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, int *i);
 char** procurarComprasCliente(AVLCompras c[], char* produto);
+
+char *getClientes (AVLCompras a);
+char *getProd (AVLCompras a);
+char getTipo (AVLCompras a);
+int getMes (AVLCompras a);
+float getLucro (AVLCompras a);
+int getQuantidade (AVLCompras a);
+int getAlturaCompras(AVLCompras a);
+AVLCompras getEsqCompras(AVLCompras a);
+AVLCompras getDirCompras(AVLCompras a);

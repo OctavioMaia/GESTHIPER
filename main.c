@@ -48,8 +48,8 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 	/*printf("Inseridos %d codigos válidos\n",inseridos );*/
 }
 
-/*----------query 4--------*/
-void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);
+/*----------query 4--------
+void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);*/
 
 
 /*----------query 5--------*/
@@ -84,17 +84,17 @@ char** produtosCompradosAux(AVLCompras c, char* cliente, char** lista, int *i) {
 	char *mes = malloc(sizeof(char)*3); 	/*guarda o mes e o \0*/
 
 	if (c){
-		produtosCompradosAux(c->esq,cliente,lista,i);
-		if (strcmp(cliente,c->clientes)==0) {
-			aux = c->produtos;				/*recebo o codigo produtos*/
+		produtosCompradosAux(getEsqCompras(c),cliente,lista,i);
+		if (strcmp(cliente,getClientes(c))==0) {
+			aux = getProd(c);				/*recebo o codigo produtos*/
 			aux[6]=' ';						/*meto um espaço na ultima posicao*/
-			aux[7]=tostring(mes,c->mes);	/*na pos a seguir meto o mes em que o prod foi comprado*/
+			aux[7]=tostring(mes,getMes(c));	/*na pos a seguir meto o mes em que o prod foi comprado*/
 			aux[8]='\0';					/*termino a string com o \0*/
 
 			lista[(*i)]=aux;				/*copio a string final*/
 			(*i)++;							/*passo um indice a frente na string*/
 		}
-		produtosCompradosAux(c->dir,cliente,lista,i);
+		produtosCompradosAux(getDirCompras(c),cliente,lista,i);
 	}
 	return lista;
 }
@@ -115,9 +115,82 @@ char** produtosComprados(AVLCompras c[], char* cliente) {
 	return s;
 }
 
+
+/*query 9 - alterar output para compras inexistentes, ex mês>12*/
+/*supostamente isto cria uma lista dos codigos de produtos que o dado cliente comprou e a quantidade para depois pegarmos nesta lista, juntarmos as quantidades dos mesmos produtos e ordernar mos
+por ordem descendente (+ para -)*/
+
+char** prodCompradoporClienteAux (AVLCompras c, char* cliente, char** lista, int *i,int m) {
+	char *aux = malloc(sizeof(char)*11);
+    char *quantidade = malloc(sizeof(int)*4); /*isto é para o caso de a quantidade apenas ter 3 caracteres!! e o \0*/
+	if (c){
+		prodCompradoporClienteAux(getEsqCompras(c),cliente,lista,i,m);
+		if (strcmp(cliente,getClientes(c))==0 && getMes(c)==m) {   /*ATENÇÃO!! temos de somar as quantidades antes de fazer tostring da quantidade*/
+			aux = getProd(c);				/*recebo o codigo produtos*/
+			aux[6]=' ';						/*meto um espaço na ultima posicao*/
+			aux[7]=tostring(quantidade, getQuantidade(c));	/*na pos a seguir meto a quantidade que o cliente comprou desse produto*/
+			aux[8]='\0';					/*termino a string com o \0*/
+
+			lista[(*i)]=aux;				/*copio a string final*/
+			(*i)++;							/*passo um indice a frente na string*/
+		}
+		prodCompradoporClienteAux(getDirCompras(c),cliente,lista,i,m);
+	}
+	return lista;
+}
+
+
+
+char** codMaisComprouMes (AVLCompras avl[] ,char cod_clientes[], int m){
+	int i=0;
+	int indice;
+	char **tmp= malloc(sizeof(char*)*100000);
+	
+	for(indice=0;indice<26;indice++)
+		tmp= prodCompradoporClienteAux(avl[indice],cod_clientes,tmp,&i,m);
+	
+	return tmp;
+}
+
+/* Query 13 */
+
+char** codMaisComprouAnoAux(AVLCompras c, char* cliente, char** lista, int *i) {
+	char *aux = malloc(sizeof(char)*11);
+	char *quantidade = malloc(sizeof(int)*4);
+	if (c){
+		codMaisComprouAnoAux(getEsqCompras(c),cliente,lista,i);
+		if (strcmp(cliente, getClientes(c))==0) {  
+			aux = getProd(c);				/*recebo o codigo produtos*/
+			aux[6]=' ';
+			aux[7]=tostring(quantidade,getQuantidade(c));
+			aux[8]='\0';
+
+			lista[(*i)]=aux;				/*copio a string final*/
+			(*i)++;							/*passo um indice a frente na string*/
+		}
+		codMaisComprouAnoAux(getDirCompras(c),cliente,lista,i);
+	}
+	return lista;
+}
+
+char** codMaisComprouAno (AVLCompras avl[], char cod_clientes[]){
+	int i=0;
+	int indice;
+	char **tmp= malloc(sizeof(char*)*10000);
+	for(indice=0;indice<26; indice++)
+		tmp = codMaisComprouAnoAux(avl[indice], cod_clientes, tmp,&i);
+
+	return tmp;
+}
+
+/*maisComprado (char cod_clientes, int quantidade)*/
+
+
 /*------------------*/
 
 int main(){
+	int i;
+	char** s= NULL;
 	AVLCompras array[26];
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
@@ -130,26 +203,26 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	puts("Feito validacao e inserção");
 	
-	/*------------------QUERY 6 ----------------*/
-	/*int i=0*/
-	/*imprimirCompras(array[0]);*/
-	/*imprimirClientes(clientes,'b',&i); */
+	/*------------------QUERY 6 ----------------
+	int i=0;
+	imprimirCompras(array[0]);
+	imprimirClientes(clientes,'b',&i); }
 	
-	/*------------------QUERY 7 ----------------*/
-	/*printf("Lucro: %f\n",totalLucroIntervalo(array,1,12)); */
-	/*printf("Numero compras: %d\n",totalComprasIntervalo(array,1,12));*/
+	------------------QUERY 7 ----------------
+	printf("Lucro: %f\n",totalLucroIntervalo(array,1,12)); 
+	printf("Numero compras: %d\n",totalComprasIntervalo(array,1,12));}
 
 
-	/*-------------QUERY 8-----------*/
-	/*int i;
+	-------------QUERY 8-----------
+	int i;
 	char** s= NULL;
 
 	s=procurarComprasCliente(array,"PQ6219");
-	for(i=0;s[i]!=NULL;i++) printf("Cliente/tipo de compra: %s\n",s[i]);
-	*/
+	for(i=0;s[i]!=NULL;i++) printf("Cliente/tipo de compra: %s\n",s[i]);}
 
-	/*---------query 4----------*/
-	/*
+
+	---------query 4----------*/
+/*	
 	int i=0;
 	int tamanho=0;
 	char** s = malloc(sizeof(char*)*200000);
@@ -159,18 +232,31 @@ int main(){
 		printf(" %s\t",s[i]);
 		tamanho++;
 	}
-	printf("\nNumero de codigos que ninguem comprou: %d\n",tamanho);
-	*/
+	printf("\nNumero de codigos que ninguem comprou: %d\n",tamanho);}
 
-	/*---------query 5----------*/
+
+	---------query 5----------
 	int i;
 	char** s= NULL;
 
 	s=produtosComprados(array,"FO767");
 
 	for(i=0;s[i]!=NULL;i++) 
-		printf("produto/mes: %s\n",s[i]);
+		printf("produto/mes: %s\n",s[i]);}
 	
 
 	return 0;
-}
+	*/
+
+	/*foi la para cima (int i;)
+	char** s= NULL;*/
+
+	s=codMaisComprouAno(array,"CQ626");
+	/*qsort()*/
+	for(i=0;s[i]!=NULL;i++) 
+		printf("Produto/quantidade: %s\n",s[i]);
+
+
+	return 0;
+}	
+

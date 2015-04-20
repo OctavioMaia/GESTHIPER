@@ -27,10 +27,10 @@ float getTotal(AVLCompras avl[],char codigo[], int m){
 float getTotalP(AVLCompras avl,char codigo[], int m){
 	AVLCompras t = avl;
 	if(t){
-		if(t->tipo_compra=='P' && (t->mes)==m && (strcmp(codigo,t->produtos)==0)){
-			return t->lucro+getTotalP(t->esq,codigo,m)+getTotalP(t->dir,codigo,m);
+		if(getTipo(t)=='P' && (getMes(t))==m && (strcmp(codigo,getProd(t))==0)){
+			return getLucro(t)+getTotalP(getEsqCompras(t),codigo,m)+getTotalP(getDirCompras(t),codigo,m);
 		}
-		return getTotalP(t->esq,codigo,m)+getTotalP(t->dir,codigo,m);
+		return getTotalP(getEsqCompras(t),codigo,m)+getTotalP(getDirCompras(t),codigo,m);
 	}
 	return 0;
 }
@@ -43,10 +43,10 @@ float getTotalP(AVLCompras avl,char codigo[], int m){
 float getTotalN(AVLCompras avl,char codigo[], int m){
 	AVLCompras t = avl;
 	if(t){
-		if(t->tipo_compra=='N' && (t->mes)==m && (strcmp(codigo,t->produtos)==0)){
-			return t->lucro+getTotalN(t->esq,codigo,m)+getTotalN(t->dir,codigo,m);
+		if(getTipo(t)=='N' && (getMes(t))==m && (strcmp(codigo,getProd(t))==0)){
+			return getLucro(t)+getTotalN(getEsqCompras(t),codigo,m)+getTotalN(getDirCompras(t),codigo,m);
 		}
-		return getTotalN(t->esq,codigo,m)+getTotalN(t->dir,codigo,m);
+		return getTotalN(getEsqCompras(t),codigo,m)+getTotalN(getDirCompras(t),codigo,m);
 	}
 	return 0;
 }
@@ -61,19 +61,19 @@ float getTotalN(AVLCompras avl,char codigo[], int m){
  */
 void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
 	int indice;
-
+    char *aux;
 	if(produtos){
-		naoComprou(array,produtos->esq,i,destino);
-		
-		indice = produtos->data[0]-'A';
+		naoComprou(array,getEsq(produtos),i,destino);  /*e das compras ou getEsq normal?*/
+		aux= getData(produtos);
+		indice = aux[0]-'A';
 		if(array[indice])
-			if(procurarProdutos(produtos->data,array[indice])==0){
+			if(procurarProdutos(getData(produtos),array[indice])==0){
 				destino[(*i)] = malloc(sizeof(char)*6);
-				destino[(*i)] = produtos->data;
+				destino[(*i)] = getData(produtos);
 				(*i)++;
 			}
 
-		naoComprou(array,produtos->dir,i,destino);
+		naoComprou(array,getDir(produtos),i,destino);
 	}
 }
 
@@ -85,6 +85,7 @@ void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
  */
 void imprimirClientes(AVL clientes, char s, int *i){
 	AVL t = clientes;
+	char *aux;
 	if(islower(s))
 		s=toupper(s);
 
@@ -93,12 +94,13 @@ void imprimirClientes(AVL clientes, char s, int *i){
 		*i=0;
 	}
 	if(t){ 
-		imprimirClientes(t->esq,s,i);
-		if(t->data[0]==s){
-			printf("%s ",t->data);
+		imprimirClientes(getEsq(t),s,i);
+		aux=getData(t);
+		if(aux[0]==s){
+			printf("%s ",getData(t));
 			(*i)++;
 		}
-	imprimirClientes(t->dir,s,i);
+	imprimirClientes(getDir(t),s,i);
 	}
 }
 
@@ -110,10 +112,10 @@ void imprimirClientes(AVL clientes, char s, int *i){
 float getTot(AVLCompras avl, int m){
 	AVLCompras t = avl;
 	if(t){
-		if((t->mes)==m){
-			return t->lucro+getTot(t->esq,m)+getTot(t->dir,m);
+		if((getMes(t))==m){
+			return getLucro(t)+getTot(getEsqCompras(t),m)+getTot(getDirCompras(t),m);
 		}
-		return getTot(t->esq,m)+getTot(t->dir,m);
+		return getTot(getEsqCompras(t),m)+getTot(getDirCompras(t),m);
 	}
 	return 0;
 }
@@ -163,16 +165,16 @@ char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, i
 	char buf[3];
 
 	if (c){
-		procurarComprasClienteAux(c->esq,produto,clientes,i);
-		if (strcmp(produto,c->produtos)==0) {
+		procurarComprasClienteAux(getEsqCompras(c),produto,clientes,i);
+		if (strcmp(produto,getProd(c))==0) {
 			buf[0]=' ';
-			buf[1]=c->tipo_compra;
+			buf[1]=getTipo(c);
 			buf[2]='\0';
-			aux = strcat(c->clientes,buf);
+			aux = strcat(getClientes(c),buf);
 			clientes[(*i)]=aux;
 			(*i)++;
 		}
-		procurarComprasClienteAux(c->dir,produto,clientes,i);
+		procurarComprasClienteAux(getDirCompras(c),produto,clientes,i);
 	}
 	return clientes;
 }

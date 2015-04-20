@@ -3,6 +3,30 @@
 #include <string.h>
 #include "avl.h"
 
+typedef struct nodo{
+	char data[10];
+	struct nodo* esq;
+	struct nodo* dir;
+	int altura;
+}nodo; 
+
+/*gets */
+char *getData(AVL a) {
+	return a -> data;
+}
+
+int getAltura(AVL a) {
+	return a -> altura; 
+}
+
+AVL getEsq(AVL a) {
+	return a -> esq;
+}
+
+AVL getDir(AVL a) {
+	return a -> dir;
+}
+
 /* tamanho_AVL
  * Esta função calcula o número de nodos
  * de uma AVL
