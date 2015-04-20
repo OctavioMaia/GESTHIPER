@@ -249,13 +249,13 @@ int main(){
 	*/
 
 	/*foi la para cima (int i;)
-	char** s= NULL;*/
+	char** s= NULL;
 
 	s=codMaisComprouAno(array,"CQ626");
-	/*qsort()*/
+	/*qsort()
 	for(i=0;s[i]!=NULL;i++) 
 		printf("Produto/quantidade: %s\n",s[i]);
-
+*/
 
 	return 0;
 }	
