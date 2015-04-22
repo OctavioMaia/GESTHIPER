@@ -153,6 +153,8 @@ char** codMaisComprouMes (AVLCompras avl[] ,char cod_clientes[], int m){
 }
 
 /* Query 13 */
+/* quais os 3 produtos mais comprados (por um cliente) durante o ano, neste momento apenas temos a imprimir 
+*os produtos comprados por um cliente nesse ano (desculpa Octávio)*/
 
 char** codMaisComprouAnoAux(AVLCompras c, char* cliente, char** lista, int *i) {
 	char *aux = malloc(sizeof(char)*11);
@@ -184,13 +186,50 @@ char** codMaisComprouAno (AVLCompras avl[], char cod_clientes[]){
 }
 
 /*maisComprado (char cod_clientes, int quantidade)*/
+/*estava a pensar que se recebermos o produto e a quantidade numa lista, apenas tinhamos de 
+* ver se havia produtos repetidos (para juntar as quantidades) e depois armazenar as 3 maiores quantidades
+* enfim, pensamentos do alfredo*/
+
+/*------------Query 14-------------------*
+*- numero de clientes registados que não realizaram compras, não é complicado, é parecido com a 4 mas para
+* clientes, descobre o erro e faz em 5 min, yes you can
+*- numero de produtos que ninguem comprou (igual a query 4)*/
+void clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino){
+	int indice;
+    char *aux;
+	if(clientes){
+		clienteNaoComprou(array,getEsq(clientes),i,destino);  
+		aux= getData(clientes);
+		indice = aux[0]-'A';
+		if(array[indice])
+			if(procurarClientes(getData(clientes),array[indice])!=0){  /*procurar clientes*/
+				destino[(*i)] = malloc(sizeof(char)*6);
+				destino[(*i)] = getData(clientes);
+				(*i)++;
+			}
+
+		clienteNaoComprou(array,getDir(clientes),i,destino);
+	}
+}
+
+int procurarClientes(char s[], AVLCompras t){
+	if(t==NULL)
+		return 0;
+	if(strcmp(s,getClientes(t))<0) /*string menor, procura na esq*/
+		return procurarClientes(s,getEsqCompras(t));
+	else if(strcmp(s,getClientes(t))>0) /*string maior procura na dir*/
+		return procurarClientes(s,getDirCompras(t));
+	else	/*encontrou, ou seja strcmp(s,getClientes(t))==0*/
+		return 1; 
+}
+
 
 
 /*------------------*/
 
 int main(){
-	int i;
-	char** s= NULL;
+/*	int i;
+	char** s= NULL;*/
 	AVLCompras array[26];
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
@@ -218,11 +257,10 @@ int main(){
 	char** s= NULL;
 
 	s=procurarComprasCliente(array,"PQ6219");
-	for(i=0;s[i]!=NULL;i++) printf("Cliente/tipo de compra: %s\n",s[i]);}
+	for(i=0;s[i]!=NULL;i++) printf("Cliente/tipo de compra: %s\n",s[i]);}*/
 
 
-	---------query 4----------*/
-/*	
+	/*---------query 4----------
 	int i=0;
 	int tamanho=0;
 	char** s = malloc(sizeof(char*)*200000);
@@ -230,12 +268,12 @@ int main(){
 
 	for(i=0;s[i];i++){
 		printf(" %s\t",s[i]);
-		tamanho++;
+		tamanho++;    isto devia estar aqui?
 	}
 	printf("\nNumero de codigos que ninguem comprou: %d\n",tamanho);}
+*/
 
-
-	---------query 5----------
+	/*---------query 5----------
 	int i;
 	char** s= NULL;
 
@@ -249,14 +287,37 @@ int main(){
 	*/
 
 	/*foi la para cima (int i;)
-	char** s= NULL;*/
+<<<<<<< HEAD
+	char** s= NULL;
 
 	s=codMaisComprouAno(array,"CQ626");
-	/*qsort()*/
+	qsort()
 	for(i=0;s[i]!=NULL;i++) 
 		printf("Produto/quantidade: %s\n",s[i]);
 
+=======
+	char** s= NULL;
+
+	s=codMaisComprouAno(array,"CQ626");
+	qsort()
+	for(i=0;s[i]!=NULL;i++) 
+		printf("Produto/quantidade: %s\n",s[i]);
+
+>>>>>>> e81876e786584c7195ff693db92767f4de4fb1e4
 
 	return 0;
 }	
 
+*/
+
+/* query 14 */
+    int i=0;
+	int tamanho=0;
+	char** s = malloc(sizeof(char*)*200000);
+	clienteNaoComprou(array,clientes,&i,s);
+
+	for(i=0;s[i];i++){
+		printf(" %s\t",s[i]);
+		tamanho++;    /*isto devia estar aqui?*/
+	}
+	printf("\nNumero de clientes que não compraram: %d\n",tamanho);}

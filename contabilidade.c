@@ -63,7 +63,7 @@ void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
 	int indice;
     char *aux;
 	if(produtos){
-		naoComprou(array,getEsq(produtos),i,destino);  /*e das compras ou getEsq normal?*/
+		naoComprou(array,getEsq(produtos),i,destino);  
 		aux= getData(produtos);
 		indice = aux[0]-'A';
 		if(array[indice])
@@ -76,6 +76,7 @@ void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
 		naoComprou(array,getDir(produtos),i,destino);
 	}
 }
+
 
 /*-----------query6------------*/
 /* imprimirClientes
