@@ -95,7 +95,7 @@ char** imprimirClientes(AVL clientes, char s, int *i,char **destino){
 		aux=getData(t);
 		if(aux[0]==s){
 			destino[(*i)]=malloc(sizeof(char)*7);
-			destino[(*i)]=getData(t);
+			destino[(*i)]=aux;
 			(*i)++;
 		}
 	imprimirClientes(getDir(t),s,i,destino);

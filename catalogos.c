@@ -28,14 +28,12 @@ int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos){
 
 /* Query 2
  * Esta função vai imprimir os códigos de todos
- * os produtos iniciados por uma determinada letra
+ * os produtos iniciados por uma determinada letra MAISCULA
  * passada como parametro.
- * Estes códigos irão ser impressos numa tabela, 
- * com dimensões passadas como parametros da função.
- * 
+ * Estes códigos irão ser impressos numa tabela
  */
-char** imprimirProdutos(AVL clientes, char s, int *i,char **destino){
-	AVL t = clientes;
+char** imprimirProdutos(AVL produtos,char s,int *i,char **destino){
+	AVL t = produtos;
 	char *aux;
 
 	if(t){ 
@@ -43,7 +41,7 @@ char** imprimirProdutos(AVL clientes, char s, int *i,char **destino){
 		aux=getData(t);
 		if(aux[0]==s){
 			destino[(*i)]=malloc(sizeof(char)*7);
-			destino[(*i)]=getData(t);
+			destino[(*i)]=aux;
 			(*i)++;
 		}
 	imprimirProdutos(getDir(t),s,i,destino);

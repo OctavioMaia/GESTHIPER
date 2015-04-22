@@ -270,7 +270,7 @@ void query2(AVL produtos){
 	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
 	scanf(" %c",&decisao);
 	if(decisao=='y')
-		imprimirLista(s,5,4);
+		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
 }
 
 void query6(AVL clientes){
@@ -285,7 +285,7 @@ void query6(AVL clientes){
 	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
 	scanf(" %c",&decisao);
 	if(decisao=='y')
-		imprimirLista(s,5,4);
+		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
 }
 
 void query7(AVLCompras array[]){
@@ -351,9 +351,10 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	puts("Feito validacao e inserção");
 
+	query2(produtos);
 	/*query4(array,produtos)*/
 	/*query5(array);*/
-	query6(clientes);
+	/*query6(clientes);*/
 	/*query7(array);*/
 	/*query8(array);*/
 	/*query9(array);*/
