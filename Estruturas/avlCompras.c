@@ -74,8 +74,7 @@ int alturaCompras(AVLCompras t){
 }
 
 /* procurarCompras
- * Esta função procura se uma string
- * existe numa AVL
+ * Esta função procura se um produto existe numa AVL
  */
 int procurarProdutos(char s[], AVLCompras t){
 	if(t==NULL)
@@ -87,6 +86,23 @@ int procurarProdutos(char s[], AVLCompras t){
 	else	/*encontrou, ou seja strcmp(s,t->produtos)==0*/
 		return 1; 
 }
+
+/* procurarClientes
+ * Esta função verifica se um cliente existe numa AVL
+ */
+
+int procurarClientes(char s[], AVLCompras t){
+	if(t==NULL)
+		return 0;
+	if(strcmp(s,getClientes(t))<0) /*string menor, procura na esq*/
+		return procurarClientes(s,getEsqCompras(t));
+	else if(strcmp(s,getClientes(t))>0) /*string maior procura na dir*/
+		return procurarClientes(s,getDirCompras(t));
+	else	/*encontrou, ou seja strcmp(s,getClientes(t))==0*/
+		return 1; 
+}
+
+
 /* Max
  * Esta função calcula o máximo
  * entre dois numeros.
