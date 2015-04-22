@@ -9,7 +9,6 @@
 
 typedef struct nodoCompras *AVLCompras;
  
- 
 int tamanho_AVLCompras(AVLCompras t);
 AVLCompras inserirCompras(char s[], AVLCompras t);
 int procurarProdutos(char s[], AVLCompras t);
@@ -24,6 +23,9 @@ int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax);
 char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, int *i);
 char** procurarComprasCliente(AVLCompras c[], char* produto);
 
+/*char** naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);
+char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino);
+char** clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino);*/
 
 char *getClientes (AVLCompras a);
 char *getProd (AVLCompras a);

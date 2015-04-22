@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "avl.h"
-#include "avlCompras.h"
 
 typedef struct nodo{
 	char data[10];

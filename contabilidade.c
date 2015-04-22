@@ -59,7 +59,7 @@ float getTotalN(AVLCompras avl,char codigo[], int m){
  * verifica se existe o código de um produto na AVLCompras. Se não 
  * existir guarda o código do produto.
  */
-void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
+char** naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
 	int indice;
     char *aux;
 	if(produtos){
@@ -68,13 +68,14 @@ void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
 		indice = aux[0]-'A';
 		if(array[indice])
 			if(procurarProdutos(getData(produtos),array[indice])==0){
-				destino[(*i)] = malloc(sizeof(char)*6);
+				destino[(*i)] = malloc(sizeof(char)*7);
 				destino[(*i)] = getData(produtos);
 				(*i)++;
 			}
 
 		naoComprou(array,getDir(produtos),i,destino);
 	}
+	return destino;
 }
 
 
@@ -84,25 +85,22 @@ void naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
  * os clientes que se inicie por uma letra dada 
  * como parametro.
  */
-void imprimirClientes(AVL clientes, char s, int *i){
+char** imprimirClientes(AVL clientes, char s, int *i,char **destino){
 	AVL t = clientes;
 	char *aux;
-	if(islower(s))
-		s=toupper(s);
+	if(islower(s)) s=toupper(s);
 
-	if(*i==8){ /*8 elementos por coluna*/
-		printf("\n");;
-		*i=0;
-	}
 	if(t){ 
-		imprimirClientes(getEsq(t),s,i);
+		imprimirClientes(getEsq(t),s,i,destino);
 		aux=getData(t);
 		if(aux[0]==s){
-			printf("%s ",getData(t));
+			destino[(*i)]=malloc(sizeof(char)*7);
+			destino[(*i)]=getData(t);
 			(*i)++;
 		}
-	imprimirClientes(getDir(t),s,i);
+	imprimirClientes(getDir(t),s,i,destino);
 	}
+	return destino;
 }
 
 /*--------------query7-----------*/
@@ -193,4 +191,36 @@ char** procurarComprasCliente(AVLCompras c[], char* produto) {
 	char** s = malloc(sizeof(char*)*200000);
 	s=procurarComprasClienteAux(c[indice],produto,s,&k);
 	return s;
+}
+
+/*------------Query 14-------------------*
+*- numero de clientes registados que não realizaram compras, não é complicado, é parecido com a 4 mas para
+* clientes, descobre o erro e faz em 5 min, yes you can
+*- numero de produtos que ninguem comprou (igual a query 4)*/
+char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino){
+    char *aux;
+	if(clientes){
+		aux=getData(clientes);
+		clienteNaoComprouAux(t,getEsq(clientes),i,destino);  
+		if(t){
+			if(procurarProdutos(aux,t)){
+				destino[(*i)] = malloc(sizeof(char)*7);
+				destino[(*i)] = aux;
+				(*i)++;
+			}
+		}
+		clienteNaoComprouAux(t,getDir(clientes),i,destino);
+	}
+	return destino;
+}
+
+char** clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino){
+	int k=0;
+	int indice;
+	char **tmp= malloc(sizeof(char*)*1000000);
+
+	for(indice=0;indice<26; indice++){
+		tmp = clienteNaoComprouAux(array[indice],clientes,&k,destino);
+	}
+	return tmp;
 }

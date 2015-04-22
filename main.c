@@ -4,6 +4,10 @@
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
 
+char** naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);
+char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino);
+char** clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino);
+
 
 /* guardarCodigos
  * A função vai ler o ficheiro dos códigos dos 
@@ -46,6 +50,45 @@ void guardarCodigosCompras(FILE *fp,AVLCompras array[],AVL Clientes,AVL Produtos
 		}
 	}
 	/*printf("Inseridos %d codigos válidos\n",inseridos );*/
+}
+
+void imprimirAux(char **s, int c , int l,int t, int pa) {
+  	int j; /*j vai ate ao numero de colunas*/
+ 	int p; /*scanf da pagina a ler*/
+ 	int i=0;
+ 	int y=0;
+ 	char **aux = s;
+ 	char **atual;
+
+ 	printf("-------------------------Página %d--------------------------\n",pa+1);
+	for (i=0;i<l && aux[y+1];i++){   
+   		for (j=0;j<c && aux[y];j++,y++){
+    		printf("%s\t", aux[y]);
+   		}
+	putchar('\n');
+	}
+   	printf("------------------------------------------------------------\n");
+ 	printf("Existem %d páginas. Página a verificar? (-1 para sair) ",t);	
+    scanf(" %d",&p);
+ 	if (p==-1 || p > t || p==0)
+ 		printf("Exit!\n");
+ 	else{
+ 		atual=s+(p-1)*l*c-(pa*c*l);
+ 	    imprimirAux (atual,c,l,t,p-1);   
+ 	}
+}
+
+void imprimirLista(char **s,int c,int l) {
+  int i = 0;
+  int numpags;
+
+  while (s[i]!='\0'){ /*calcula o numero de elems em s*/
+    i++;
+  } 
+
+  numpags= i/(c*l);	 /*calcula o numero de paginas*/
+
+  imprimirAux(s,c,l,numpags,0);
 }
 
 
@@ -187,46 +230,13 @@ char** codMaisComprouAno (AVLCompras avl[], char cod_clientes[]){
 * ver se havia produtos repetidos (para juntar as quantidades) e depois armazenar as 3 maiores quantidades
 * enfim, pensamentos do alfredo*/
 
-
-/*------------Query 14-------------------*
-*- numero de clientes registados que não realizaram compras, não é complicado, é parecido com a 4 mas para
-* clientes, descobre o erro e faz em 5 min, yes you can
-*- numero de produtos que ninguem comprou (igual a query 4)*/
-char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino){
-    char *aux;
-	if(clientes){
-		aux=getData(clientes);
-		clienteNaoComprouAux(t,getEsq(clientes),i,destino);  
-		if(t){
-			if(procurarProdutos(aux,t)){
-				destino[(*i)] = malloc(sizeof(char)*7);
-				destino[(*i)] = aux;
-				(*i)++;
-			}
-		}
-		clienteNaoComprouAux(t,getDir(clientes),i,destino);
-	}
-	return destino;
-}
-
-char** clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino){
-	int k=0;
-	int indice;
-	char **tmp= malloc(sizeof(char*)*1000000);
-
-	for(indice=0;indice<26; indice++){
-		tmp = clienteNaoComprouAux(array[indice],clientes,&k,destino);
-	}
-	return tmp;
-}
-
 /*------------------*/
 
 int query4(AVLCompras array[],AVL produtos){
 	int i=0;
 	int tamanho=0;
 	char** s = malloc(sizeof(char*)*200000);
-	naoComprou(array,produtos,&i,s);
+	s=naoComprou(array,produtos,&i,s);
 
 	for(i=0;s[i];i++){
 		/*printf(" %s\t",s[i]);*/
@@ -248,13 +258,34 @@ void query5(AVLCompras array[]){
 		printf("produto/mes: %s\n",s[i]);
 }
 
-void query6(AVLCompras array[],AVL clientes){
+void query2(AVL produtos){
 	int i=0;
 	char ch;
+	char decisao;
+	char** s = malloc(sizeof(char*)*200000);
 	printf("Introduza o caracter que pretende pesquisar: ");
 	scanf(" %c",&ch);
-	imprimirClientes(clientes,ch,&i);
-	printf("\n");
+	s=imprimirProdutos(produtos,ch,&i,s);
+
+	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
+	scanf(" %c",&decisao);
+	if(decisao=='y')
+		imprimirLista(s,5,4);
+}
+
+void query6(AVL clientes){
+	int i=0;
+	char ch;
+	char decisao;
+	char** s = malloc(sizeof(char*)*200000);
+	printf("Introduza o caracter que pretende pesquisar: ");
+	scanf(" %c",&ch);
+	s=imprimirClientes(clientes,ch,&i,s);
+
+	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
+	scanf(" %c",&decisao);
+	if(decisao=='y')
+		imprimirLista(s,5,4);
 }
 
 void query7(AVLCompras array[]){
@@ -307,7 +338,6 @@ void query14(AVLCompras array[],AVL produtos,AVL clientes){
 	printf("Numero de produtos que ninguem comprou: %d\n",query4(array,produtos));
 }
 
-
 int main(){
 	AVLCompras array[26];
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
@@ -323,11 +353,11 @@ int main(){
 
 	/*query4(array,produtos)*/
 	/*query5(array);*/
-	/*query6(array,clientes);*/
+	query6(clientes);
 	/*query7(array);*/
 	/*query8(array);*/
 	/*query9(array);*/
-	
+
 	/*query14(array,produtos,clientes);*/
 
 	return 0;
