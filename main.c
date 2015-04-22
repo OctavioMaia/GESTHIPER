@@ -179,8 +179,6 @@ char** prodCompradoporClienteAux (AVLCompras c, char* cliente, char** lista, int
 	return lista;
 }
 
-
-
 char** codMaisComprouMes (AVLCompras avl[] ,char cod_clientes[], int m){
 	int i=0;
 	int indice;
@@ -225,23 +223,39 @@ char** codMaisComprouAno (AVLCompras avl[], char cod_clientes[]){
 	return tmp;
 }
 
-/*maisComprado (char cod_clientes, int quantidade)*/
-/*estava a pensar que se recebermos o produto e a quantidade numa lista, apenas tinhamos de 
-* ver se havia produtos repetidos (para juntar as quantidades) e depois armazenar as 3 maiores quantidades
-* enfim, pensamentos do alfredo*/
-
 /*------------------*/
+
+void query2(AVL produtos){
+	int i=0;
+	char ch;
+	char decisao;
+	char** s = malloc(sizeof(char*)*200000);
+	printf("Introduza o caracter que pretende pesquisar: ");
+	scanf(" %c",&ch);
+	s=imprimirProdutos(produtos,ch,&i,s);
+
+	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
+	scanf(" %c",&decisao);
+	if(decisao=='y')
+		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
+}
 
 int query4(AVLCompras array[],AVL produtos){
 	int i=0;
 	int tamanho=0;
+	char decisao;
 	char** s = malloc(sizeof(char*)*200000);
 	s=naoComprou(array,produtos,&i,s);
 
-	for(i=0;s[i];i++){
-		/*printf(" %s\t",s[i]);*/
+	for(i=0;s[i];i++)
 		tamanho++;   
-	}
+	
+	printf("Sucesso! Exitem %d codigos que ninguem comprou.\n",tamanho);
+	printf("Deseja imprimir os resultados? (y/n) ");
+	scanf(" %c",&decisao);
+	if(decisao=='y')
+		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
+	
 	return tamanho;
 }
 
@@ -258,20 +272,6 @@ void query5(AVLCompras array[]){
 		printf("produto/mes: %s\n",s[i]);
 }
 
-void query2(AVL produtos){
-	int i=0;
-	char ch;
-	char decisao;
-	char** s = malloc(sizeof(char*)*200000);
-	printf("Introduza o caracter que pretende pesquisar: ");
-	scanf(" %c",&ch);
-	s=imprimirProdutos(produtos,ch,&i,s);
-
-	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
-	scanf(" %c",&decisao);
-	if(decisao=='y')
-		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
-}
 
 void query6(AVL clientes){
 	int i=0;
@@ -314,7 +314,18 @@ void query8(AVLCompras array[]){
 }
 
 void query9(AVLCompras array[]){
-	char** s= NULL;
+	char** s= malloc(sizeof(char*)*200000);
+	char codigo[10];
+	int mes;
+	printf("Introduza o codigo de cliente: ");
+	scanf("%s",codigo);
+	printf("Introduza o mês a pesquisar: ");
+	scanf("%d",&mes);
+	s=codMaisComprouMes(array,codigo,mes);
+}
+
+void query13(AVLCompras array[]){
+	char** s= malloc(sizeof(char*)*200000);
 	int i;
 	char codigo[10];
 	printf("Introduza o codigo de cliente: ");
@@ -338,7 +349,18 @@ void query14(AVLCompras array[],AVL produtos,AVL clientes){
 	printf("Numero de produtos que ninguem comprou: %d\n",query4(array,produtos));
 }
 
+void printIntro(){
+	puts("\t #####  #######  #####  ####### #     # ### ######  ####### ###### ");
+    puts("\t#     # #       #     #    #    #     #  #  #     # #       #     # ");
+	puts("\t#       #       #          #    #     #  #  #     # #       #     # ");
+	puts("\t#  #### #####    #####     #    #######  #  ######  #####   ######  ");
+	puts("\t#     # #             #    #    #     #  #  #       #       #   # ");
+	puts("\t#     # #       #     #    #    #     #  #  #       #       #    #   ");
+	puts("\t #####  #######  #####     #    #     # ### #       ####### #     #\n" );
+}
+
 int main(){
+	printIntro();
 	AVLCompras array[26];
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
@@ -351,13 +373,13 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	puts("Feito validacao e inserção");
 
-	query2(produtos);
-	/*query4(array,produtos)*/
+	/*query2(produtos);*/
+	/*query4(array,produtos);*/
 	/*query5(array);*/
 	/*query6(clientes);*/
 	/*query7(array);*/
 	/*query8(array);*/
-	/*query9(array);*/
+	query13(array);
 
 	/*query14(array,produtos,clientes);*/
 
