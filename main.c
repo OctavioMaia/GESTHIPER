@@ -91,7 +91,6 @@ void imprimirLista(char **s,int c,int l) {
   imprimirAux(s,c,l,numpags,0);
 }
 
-
 /*----------query 5--------*/
 /* tostring
  * Esta função converte um inteiro numa string
@@ -156,23 +155,27 @@ char** produtosComprados(AVLCompras c[], char* cliente) {
 }
 
 
-/*query 9 - alterar output para compras inexistentes, ex mês>12*/
-/*supostamente isto cria uma lista dos codigos de produtos que o dado cliente comprou e a quantidade para depois pegarmos nesta lista, juntarmos as quantidades dos mesmos produtos e ordernar mos
-por ordem descendente (+ para -)*/
+/*query 9 */
+int comparar(const void *a, const void *b) { 
+    const char **ia = (const char **)a;
+    const char **ib = (const char **)b;
+
+    return strcmp(*ia, *ib);
+}
 
 char** prodCompradoporClienteAux (AVLCompras c, char* cliente, char** lista, int *i,int m) {
 	char *aux = malloc(sizeof(char)*11);
-    char *quantidade = malloc(sizeof(int)*4); /*isto é para o caso de a quantidade apenas ter 3 caracteres!! e o \0*/
+    int quantidade; 
 	if (c){
 		prodCompradoporClienteAux(getEsqCompras(c),cliente,lista,i,m);
 		if (strcmp(cliente,getClientes(c))==0 && getMes(c)==m) {   /*ATENÇÃO!! temos de somar as quantidades antes de fazer tostring da quantidade*/
 			aux = getProd(c);				/*recebo o codigo produtos*/
-			aux[6]=' ';						/*meto um espaço na ultima posicao*/
-			aux[7]=tostring(quantidade, getQuantidade(c));	/*na pos a seguir meto a quantidade que o cliente comprou desse produto*/
-			aux[8]='\0';					/*termino a string com o \0*/
-
-			lista[(*i)]=aux;				/*copio a string final*/
-			(*i)++;							/*passo um indice a frente na string*/
+			quantidade=getQuantidade(c);
+			while(quantidade>0){
+				lista[(*i)]=aux;				/*copio a string final*/
+				(*i)++;							/*passo um indice a frente na string*/
+				quantidade--;
+			}
 		}
 		prodCompradoporClienteAux(getDirCompras(c),cliente,lista,i,m);
 	}
@@ -181,13 +184,50 @@ char** prodCompradoporClienteAux (AVLCompras c, char* cliente, char** lista, int
 
 char** codMaisComprouMes (AVLCompras avl[] ,char cod_clientes[], int m){
 	int i=0;
+	int j=0;
 	int indice;
+	int len;
+	int quantidade=1;
+	int quantidades[1000];
 	char **tmp= malloc(sizeof(char*)*100000);
+	char **final=malloc(sizeof(char*)*100000);
+	int temp=0;
+	char *chtemp=malloc(sizeof(char)*10);
 	
 	for(indice=0;indice<26;indice++)
 		tmp= prodCompradoporClienteAux(avl[indice],cod_clientes,tmp,&i,m);
 	
-	return tmp;
+	len = sizeof(tmp) / sizeof(char *);
+	qsort(tmp,len,sizeof(char*),comparar);
+
+	for(i=0;tmp[i]!=NULL;i++){
+		if(tmp[i]==tmp[i+1]){
+			quantidade++;
+		}
+		if(tmp[i]!=tmp[i+1]){
+			quantidades[j]=quantidade;
+			final[j]=tmp[i];
+			j++;
+		}
+	}
+
+	for(i=0;i<len;i++){
+        if(quantidades[i] < quantidades[i+1]){
+            temp=quantidades[i];
+          	chtemp=final[i];
+
+            quantidades[i]=quantidades[i+1];
+            final[i]=final[i+1];
+
+            quantidades[i+1]=temp;
+            final[i+1]=chtemp;
+        }
+    }
+
+    printf("%d\n",quantidades[0]);
+    printf("%d\n",quantidades[1]);
+
+	return final;
 }
 
 /* Query 13 */
@@ -224,7 +264,6 @@ char** codMaisComprouAno (AVLCompras avl[], char cod_clientes[]){
 }
 
 /*------------------*/
-
 void query2(AVL produtos){
 	int i=0;
 	char ch;
@@ -238,6 +277,27 @@ void query2(AVL produtos){
 	scanf(" %c",&decisao);
 	if(decisao=='y')
 		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
+}
+
+/*query 3*/
+void query3(AVLCompras array[]){
+	char codigo[10];
+	int mes;
+	int indice;
+	float totalN=0;
+	float totalP=0;
+	printf("Introduza o codigo de produto: ");
+	scanf("%s",codigo);
+	printf("Introduza o mês a pretendido: ");
+	scanf("%d",&mes);
+
+	indice=codigo[0]-'A';
+	totalN=getTotalN(array[indice],codigo,mes);
+	totalP=getTotalP(array[indice],codigo,mes);
+	
+	printf("Total faturado em modo N: %f\n",totalN);
+	printf("Total faturado em modo P: %f\n",totalP);
+	printf("Total faturado: %f\n",totalN+totalP);
 }
 
 int query4(AVLCompras array[],AVL produtos){
@@ -322,6 +382,10 @@ void query9(AVLCompras array[]){
 	printf("Introduza o mês a pesquisar: ");
 	scanf("%d",&mes);
 	s=codMaisComprouMes(array,codigo,mes);
+
+	int i;
+	for(i=0;s[i];i++)
+		printf("%s\n",s[i]);	
 }
 
 void query13(AVLCompras array[]){
@@ -356,7 +420,7 @@ void printIntro(){
 	puts("\t#  #### #####    #####     #    #######  #  ######  #####   ######  ");
 	puts("\t#     # #             #    #    #     #  #  #       #       #   # ");
 	puts("\t#     # #       #     #    #    #     #  #  #       #       #    #   ");
-	puts("\t #####  #######  #####     #    #     # ### #       ####### #     #\n" );
+	puts("\t #####  #######  #####     #    #     # ### #       ####### #     #" );
 }
 
 int main(){
@@ -374,12 +438,16 @@ int main(){
 	puts("Feito validacao e inserção");
 
 	/*query2(produtos);*/
+	/*query3(array);*/
 	/*query4(array,produtos);*/
 	/*query5(array);*/
 	/*query6(clientes);*/
 	/*query7(array);*/
 	/*query8(array);*/
-	query13(array);
+
+	query9(array);
+
+	/*query13(array); nao acabado*/
 
 	/*query14(array,produtos,clientes);*/
 
