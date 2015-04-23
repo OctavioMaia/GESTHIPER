@@ -24,6 +24,11 @@ int totalComprasIntervalo(Compras array[],int mesMin, int mesMax);
 char** procurarComprasClienteAux(Compras c, char* produto, char** clientes, int *i);
 char** procurarComprasCliente(Compras c[], char* produto);
 
+void ordena(char** s, int *q,int n);
+void ordenaAno(char** s, int *q,int n);
+char** prodCompradoporClienteAux (Compras c, char* cliente, char** lista, int *i,int m);
+int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp);
+
 char** naoComprou(Compras array[],CatalogoAux produtos,int *i,char** destino);
 char** clienteNaoComprouAux(Compras t,CatalogoAux clientes,int *i,char** destino);
 char** clienteNaoComprou(Compras array[],CatalogoAux clientes,int *i,char** destino);

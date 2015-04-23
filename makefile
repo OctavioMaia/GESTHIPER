@@ -1,5 +1,5 @@
 FICHEIRO = main.c Estruturas/avl.c Estruturas/avlCompras.c Estruturas/avl.h Estruturas/avlCompras.h catalogos.c contabilidade.c
-OUTPUT = avl
+OUTPUT = gesthiper
 
 build: $(FICHEIRO)
 	gcc -Wall -ansi -pedantic -o2 -o $(OUTPUT) $(FICHEIRO)

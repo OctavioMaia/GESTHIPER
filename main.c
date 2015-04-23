@@ -150,62 +150,6 @@ char** produtosComprados(Compras c[], char* cliente) {
 	return s;
 }
 
-
-/*query 9 */
-int comparar(const void *a, const void *b) { 
-    const char **ia = (const char **)a;
-    const char **ib = (const char **)b;
-
-    return strcmp(*ia, *ib);
-}
-
-char** prodCompradoporClienteAux (Compras c, char* cliente, char** lista, int *i,int m) {
-	int quantidade; 
-	if (c){
-		prodCompradoporClienteAux(getEsqCompras(c),cliente,lista,i,m);
-		if (strcmp(cliente,getClientes(c))==0 && getMes(c)==m) {   /*ATENÇÃO!! temos de somar as quantidades antes de fazer tostring da quantidade*/
-			quantidade=getQuantidade(c);
-			while(quantidade>0){
-				lista[(*i)]=getProd(c);				/*copio a string final*/
-				(*i)++;							/*passo um indice a frente na string*/
-				quantidade--;
-			}
-		}
-		prodCompradoporClienteAux(getDirCompras(c),cliente,lista,i,m);
-	}
-	return lista;
-}
-
-int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp){
-	int i=0;
-	int j=0;
-	int indice;
-	int len;
-	int quantidade=1;
-	int *quantidades=malloc(sizeof(int*)*10000);
-	char **final=malloc(sizeof(char*)*100000);
-
-	for(indice=0;indice<26;indice++)
-		tmp= prodCompradoporClienteAux(avl[indice],cod_clientes,tmp,&i,m);
-	
-	len = sizeof(tmp) / sizeof(char *);
-	qsort(tmp,len,sizeof(char*),comparar);
-
-	for(i=0;tmp[i]!=NULL;i++){
-		if(tmp[i]==tmp[i+1]){
-			quantidade++;
-		}
-		if(tmp[i]!=tmp[i+1]){
-			quantidades[j]=quantidade;
-			final[j]=tmp[i];
-			j++;
-			quantidade=1;
-		}
-	}
-
-	return quantidades;
-}
-
 /* Query 13 */
 /* quais os 3 produtos mais comprados (por um cliente) durante o ano, neste momento apenas temos a imprimir 
 *os produtos comprados por um cliente nesse ano (desculpa Octávio)*/
@@ -334,28 +278,6 @@ void query8(Compras array[]){
 		printf("Cliente/tipo de compra: %s\n",s[i]);
 }
 
-int calculaMax(int *q,int n){
-	int i;
-	int max=0;
-
-	for(i=1;i<n;i++){
-		if(q[i]>q[max]){
-			max=i;
-		}
-	}
-	return max; /*devolve indice*/
-}
-
-void ordena(char** s, int *q,int n){
-	int imax;
-
-	while(imax=calculaMax(q,n),q[imax]!=-1){
-		printf("Código: %s Quantidade: %d\n",s[imax],q[imax]);
-		q[imax]=-1;
-	}
-
-}
-
 void query9(Compras array[]){
 	char** s= malloc(sizeof(char*)*200000);
 	char** tmp = malloc(sizeof(char*)*200000);
@@ -382,21 +304,6 @@ void query9(Compras array[]){
 
 	ordena(tmp,q,j);
 
-}
-
-void ordenaAno(char** s, int *q,int n){
-	int imax;
-	int conta=0;
-
-	while(imax=calculaMax(q,n),q[imax]!=-1){
-		if(conta<3){
-			printf("Código: %s Quantidade: %d\n",s[imax],q[imax]);
-			q[imax]=-1;
-			conta++;
-		}
-		else
-			break;
-	}
 }
 
 void query13(Compras array[]){
@@ -475,18 +382,18 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	puts("Tudo guardado e validado!");
 
-	/*query2(produtos);
+	/*
+	query2(produtos);
 	query3(array);
 	query4(array,produtos);
-	query5(array);
+	query5(array); INCOMPLETA
 	query6(clientes);
 	query7(array);
 	query8(array);
-
 	query9(array);
 	query13(array);
-
-	query14(array,produtos,clientes);*/
+	query14(array,produtos,clientes);
+	*/
 
 	return 0;
 }
