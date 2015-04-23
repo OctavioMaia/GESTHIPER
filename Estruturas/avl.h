@@ -3,21 +3,21 @@
  * apontadores para os filhos 
  * do nó
  */
-typedef struct nodo* AVL;
+typedef struct nodo* Catalogo;
 
-AVL inserir(char s[], AVL t);
-int tamanho_AVL(AVL t);
-int altura(AVL t);
-int procurar(char *s,AVL t);
+Catalogo inserir(char s[], Catalogo t);
+int tamanho_AVL(Catalogo t);
+int altura(Catalogo t);
+int procurar(char *s,Catalogo t);
 int max(int a,int b);
-int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos);
-void imprimir(AVL t);
-void displayCodigos(AVL t);
-void imprimirLetra(AVL t, char s, int *i,int *q);
-char** imprimirClientes(AVL clientes, char s, int *i,char **destino);
-char** imprimirProdutos(AVL clientes, char s, int *i,char **destino);
+int validarLinha(char *linha,Catalogo AVLClientes,Catalogo AVLProdutos);
+void imprimir(Catalogo t);
+void displayCodigos(Catalogo t);
+void imprimirLetra(Catalogo t, char s, int *i,int *q);
+char** imprimirClientes(Catalogo clientes, char s, int *i,char **destino);
+char** imprimirProdutos(Catalogo clientes, char s, int *i,char **destino);
 
-char *getData(AVL a);
-int getAltura(AVL a);
-AVL getEsq(AVL a);
-AVL getDir(AVL a);
+char *getData(Catalogo a);
+int getAltura(Catalogo a);
+Catalogo getEsq(Catalogo a);
+Catalogo getDir(Catalogo a);

@@ -18,39 +18,39 @@ typedef struct nodoCompras{
 }nodoCompras;
 
 /* gets*/
-char *getClientes (AVLCompras a) {
+char *getClientes (Compras a) {
 	return a -> clientes; 
 }
 
-char *getProd (AVLCompras a) {
+char *getProd (Compras a) {
 	return a -> produtos;
 }
 
-char getTipo (AVLCompras a) {
+char getTipo (Compras a) {
 	return a -> tipo_compra;
 }
 
-int getMes (AVLCompras a) {
+int getMes (Compras a) {
 	return a -> mes;
 }
 
-float getLucro (AVLCompras a) {
+float getLucro (Compras a) {
 	return a -> lucro;
 }
 
-int getQuantidade (AVLCompras a) {
+int getQuantidade (Compras a) {
 	return a -> quantidade;
 }
 
-int getAlturaCompras(AVLCompras a) {
+int getAlturaCompras(Compras a) {
 	return a -> altura; 
 }
 
-AVLCompras getEsqCompras(AVLCompras a) {
+Compras getEsqCompras(Compras a) {
 	return a -> esq;
 }
 
-AVLCompras getDirCompras(AVLCompras a) {
+Compras getDirCompras(Compras a) {
 	return a -> dir;
 }
 
@@ -58,7 +58,7 @@ AVLCompras getDirCompras(AVLCompras a) {
  * Esta função calcula o número de nodos
  * de uma AVL
  */
-int tamanho_AVLCompras(AVLCompras t){
+int tamanho_AVLCompras(Compras t){
     if(t)
     	return 1 + (tamanho_AVLCompras(t->esq)+tamanho_AVLCompras(t->dir)); 
     else
@@ -69,14 +69,14 @@ int tamanho_AVLCompras(AVLCompras t){
  * Esta função calcula a altura
  * de uma AVL
  */
-int alturaCompras(AVLCompras t){
+int alturaCompras(Compras t){
 	return (t==NULL) ? 0 : t->altura;
 }
 
 /* procurarCompras
  * Esta função procura se um produto existe numa AVL
  */
-int procurarProdutos(char s[], AVLCompras t){
+int procurarProdutos(char s[], Compras t){
 	if(t==NULL)
 		return 0;
 	if(strcmp(s,t->produtos)<0) /*string menor, procura na esq*/
@@ -91,7 +91,7 @@ int procurarProdutos(char s[], AVLCompras t){
  * Esta função verifica se um cliente existe numa AVL
  */
 
-int procurarClientes(char s[], AVLCompras t){
+int procurarClientes(char s[], Compras t){
 	if(t==NULL)
 		return 0;
 	if(strcmp(s,getClientes(t))<0) /*string menor, procura na esq*/
@@ -117,8 +117,8 @@ int Max(int a,int b){
  * manter a arvore balenceada durante a inserção 
  * de um nodo.
  */ 
-AVLCompras rodarEsqUmaCompras(AVLCompras t){
-	AVLCompras aux = NULL;
+Compras rodarEsqUmaCompras(Compras t){
+	Compras aux = NULL;
 
 	aux = t->esq;
     t->esq = aux->dir;
@@ -133,8 +133,8 @@ AVLCompras rodarEsqUmaCompras(AVLCompras t){
  * Rotação direita de um nó. Utilizada para
  * manter a arvore balenceada durante a inserção de um nodo.
  */
-AVLCompras rodarDirUmaCompras(AVLCompras t){
-	AVLCompras aux;
+Compras rodarDirUmaCompras(Compras t){
+	Compras aux;
 
 	aux = t->dir;
     t->dir = aux->esq;
@@ -150,7 +150,7 @@ AVLCompras rodarDirUmaCompras(AVLCompras t){
  * para direita no filho da direita seguida de uma 
  * rotação para a esquerda no nodo passado como parametro
  */
-AVLCompras rodarEsqDuploCompras(AVLCompras t){
+Compras rodarEsqDuploCompras(Compras t){
 	t->esq = rodarDirUmaCompras(t->esq);
 
 	return rodarEsqUmaCompras(t);
@@ -161,7 +161,7 @@ AVLCompras rodarEsqDuploCompras(AVLCompras t){
  * para a esquerda no filho da esquerda seguida de 
  * uma rotação para a direita no nodo passado como parametro
  */
-AVLCompras rodarDirDuploCompras(AVLCompras t){
+Compras rodarDirDuploCompras(Compras t){
 	t->dir = rodarEsqUmaCompras(t->dir);
 
 	return rodarDirUmaCompras(t);
@@ -171,7 +171,7 @@ AVLCompras rodarDirDuploCompras(AVLCompras t){
  * Função que insere um nodo numa arvore AVL 
  * garantido o balenceamento da arvore
 */
-AVLCompras inserirCompras(char s[], AVLCompras t){
+Compras inserirCompras(char s[], Compras t){
 	char produto[10];
 	float preco;
 	int unidades_compradas;
@@ -180,7 +180,7 @@ AVLCompras inserirCompras(char s[], AVLCompras t){
 	int Mes;
 
 	if( t == NULL ){
-        t = (AVLCompras)malloc(sizeof(struct nodoCompras));
+        t = (Compras)malloc(sizeof(struct nodoCompras));
         if( t == NULL ){
             /*Não conseguimos alocar memoria! ERRO*/
             exit(1);
@@ -218,8 +218,8 @@ AVLCompras inserirCompras(char s[], AVLCompras t){
 	return t;
 }
 
-void imprimirCompras(AVLCompras t){
-	AVLCompras temp = t;
+void imprimirCompras(Compras t){
+	Compras temp = t;
 
 	if(temp){
 		imprimirCompras(temp->esq);

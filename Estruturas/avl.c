@@ -11,27 +11,27 @@ typedef struct nodo{
 }nodo; 
 
 /*gets */
-char *getData(AVL a) {
+char *getData(Catalogo a) {
 	return a -> data;
 }
 
-int getAltura(AVL a) {
+int getAltura(Catalogo a) {
 	return a -> altura; 
 }
 
-AVL getEsq(AVL a) {
+Catalogo getEsq(Catalogo a) {
 	return a -> esq;
 }
 
-AVL getDir(AVL a) {
+Catalogo getDir(Catalogo a) {
 	return a -> dir;
 }
 
 /* tamanho_AVL
  * Esta função calcula o número de nodos
- * de uma AVL
+ * de uma Catalogo
  */
-int tamanho_AVL(AVL t){
+int tamanho_AVL(Catalogo t){
     if(t)
     	return 1 + (tamanho_AVL(t->esq)+tamanho_AVL(t->dir)); 
     else
@@ -40,17 +40,17 @@ int tamanho_AVL(AVL t){
 
 /* altura
  * Esta função calcula a altura
- * de uma AVL
+ * de uma Catalogo
  */
-int altura(AVL t){
+int altura(Catalogo t){
 	return (t==NULL) ? 0 : t->altura;
 }
 
 /* procurar
  * Esta função procura se uma string
- * existe numa AVL
+ * existe numa Catalogo
  */
-int procurar(char s[], AVL t){
+int procurar(char s[], Catalogo t){
 	if(t==NULL)
 		return 0;
 	if(strcmp(s,t->data)<0) /*string menor, procura na esq*/
@@ -75,8 +75,8 @@ int max(int a,int b){
  * manter a arvore balenceada durante a inserção 
  * de um nodo.
  */ 
-AVL rodarEsqUma(AVL t){
-	AVL aux = NULL;
+Catalogo rodarEsqUma(Catalogo t){
+	Catalogo aux = NULL;
 
 	aux = t->esq;
     t->esq = aux->dir;
@@ -91,8 +91,8 @@ AVL rodarEsqUma(AVL t){
  * Rotação direita de um nó. Utilizada para
  * manter a arvore balenceada durante a inserção de um nodo.
  */
-AVL rodarDirUma(AVL t){
-	AVL aux;
+Catalogo rodarDirUma(Catalogo t){
+	Catalogo aux;
 
 	aux = t->dir;
     t->dir = aux->esq;
@@ -108,7 +108,7 @@ AVL rodarDirUma(AVL t){
  * para direita no filho da direita seguida de uma 
  * rotação para a esquerda no nodo passado como parametro
  */
-AVL rodarEsqDuplo(AVL t){
+Catalogo rodarEsqDuplo(Catalogo t){
 	t->esq = rodarDirUma(t->esq);
 
 	return rodarEsqUma(t);
@@ -119,20 +119,20 @@ AVL rodarEsqDuplo(AVL t){
  * para a esquerda no filho da esquerda seguida de 
  * uma rotação para a direita no nodo passado como parametro
  */
-AVL rodarDirDuplo(AVL t){
+Catalogo rodarDirDuplo(Catalogo t){
 	t->dir = rodarEsqUma(t->dir);
 
 	return rodarDirUma(t);
 }
 
 /* inserir
- * Função que insere um nodo numa arvore AVL 
+ * Função que insere um nodo numa arvore Catalogo 
  * garantido o balenceamento da arvore
  */
-AVL inserir(char s[], AVL t){
+Catalogo inserir(char s[], Catalogo t){
 
 	if( t == NULL ){
-        t = (AVL)malloc(sizeof(struct nodo));
+        t = (Catalogo)malloc(sizeof(struct nodo));
         if( t == NULL ){
             /*Não conseguimos alocar memoria! ERRO*/
             exit(1);

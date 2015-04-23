@@ -7,32 +7,33 @@
  * filhos do nó.
  */
 
-typedef struct nodoCompras *AVLCompras;
+typedef struct nodoCompras *Compras;
+typedef struct nodo *CatalogoAux;
  
-int tamanho_AVLCompras(AVLCompras t);
-AVLCompras inserirCompras(char s[], AVLCompras t);
-int procurarProdutos(char s[], AVLCompras t);
-int procurarClientes(char s[], AVLCompras t);
-void imprimirCompras(AVLCompras t);
-float getTotal(AVLCompras avl[],char codigo[], int m);
-float getTotalN(AVLCompras avl,char codigo[], int m);
-float getTotalP(AVLCompras avl,char codigo[], int m);
-float getTot(AVLCompras avl, int m);
-float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax);
-int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax);
-char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, int *i);
-char** procurarComprasCliente(AVLCompras c[], char* produto);
+int tamanho_AVLCompras(Compras t);
+Compras inserirCompras(char s[], Compras t);
+int procurarProdutos(char s[], Compras t);
+int procurarClientes(char s[], Compras t);
+void imprimirCompras(Compras t);
+float getTotal(Compras avl[],char codigo[], int m);
+float getTotalN(Compras avl,char codigo[], int m);
+float getTotalP(Compras avl,char codigo[], int m);
+float getTot(Compras avl, int m);
+float totalLucroIntervalo(Compras array[],int mesMin, int mesMax);
+int totalComprasIntervalo(Compras array[],int mesMin, int mesMax);
+char** procurarComprasClienteAux(Compras c, char* produto, char** clientes, int *i);
+char** procurarComprasCliente(Compras c[], char* produto);
 
-/*char** naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino);
-char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino);
-char** clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino);*/
+char** naoComprou(Compras array[],CatalogoAux produtos,int *i,char** destino);
+char** clienteNaoComprouAux(Compras t,CatalogoAux clientes,int *i,char** destino);
+char** clienteNaoComprou(Compras array[],CatalogoAux clientes,int *i,char** destino);
 
-char *getClientes (AVLCompras a);
-char *getProd (AVLCompras a);
-char getTipo (AVLCompras a);
-int getMes (AVLCompras a);
-float getLucro (AVLCompras a);
-int getQuantidade (AVLCompras a);
-int getAlturaCompras(AVLCompras a);
-AVLCompras getEsqCompras(AVLCompras a);
-AVLCompras getDirCompras(AVLCompras a);
+char *getClientes (Compras a);
+char *getProd (Compras a);
+char getTipo (Compras a);
+int getMes (Compras a);
+float getLucro (Compras a);
+int getQuantidade (Compras a);
+int getAlturaCompras(Compras a);
+Compras getEsqCompras(Compras a);
+Compras getDirCompras(Compras a);

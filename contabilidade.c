@@ -14,7 +14,7 @@
  * produto desejado.
  */ 
 
-float getTotal(AVLCompras avl[],char codigo[], int m){
+float getTotal(Compras avl[],char codigo[], int m){
 	int indice = codigo[0] - 'A';
 	return (getTotalP(avl[indice],codigo,m)+getTotalN(avl[indice],codigo,m));
 }
@@ -24,8 +24,8 @@ float getTotal(AVLCompras avl[],char codigo[], int m){
  * o total faturado com esse produto em compras em promoção 
  * ou seja do tipo 'P' nesse mês.
  */ 
-float getTotalP(AVLCompras avl,char codigo[], int m){
-	AVLCompras t = avl;
+float getTotalP(Compras avl,char codigo[], int m){
+	Compras t = avl;
 	if(t){
 		if(getTipo(t)=='P' && (getMes(t))==m && (strcmp(codigo,getProd(t))==0)){
 			return getLucro(t)+getTotalP(getEsqCompras(t),codigo,m)+getTotalP(getDirCompras(t),codigo,m);
@@ -40,8 +40,8 @@ float getTotalP(AVLCompras avl,char codigo[], int m){
  * o total faturado com esse produto em compras em promoção 
  * ou seja do tipo 'N' nesse mês.
  */ 
-float getTotalN(AVLCompras avl,char codigo[], int m){
-	AVLCompras t = avl;
+float getTotalN(Compras avl,char codigo[], int m){
+	Compras t = avl;
 	if(t){
 		if(getTipo(t)=='N' && (getMes(t))==m && (strcmp(codigo,getProd(t))==0)){
 			return getLucro(t)+getTotalN(getEsqCompras(t),codigo,m)+getTotalN(getDirCompras(t),codigo,m);
@@ -56,10 +56,10 @@ float getTotalN(AVLCompras avl,char codigo[], int m){
  * Esta função determina a lista de códigos de produtos
  * que ninguem comprou.
  * A função procura se o código de um produto foi vendido, ou seja, 
- * verifica se existe o código de um produto na AVLCompras. Se não 
+ * verifica se existe o código de um produto na Compras. Se não 
  * existir guarda o código do produto.
  */
-char** naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
+char** naoComprou(Compras array[],Catalogo produtos,int *i,char** destino){
 	int indice;
     char *aux;
 	if(produtos){
@@ -85,8 +85,8 @@ char** naoComprou(AVLCompras array[],AVL produtos,int *i,char** destino){
  * os clientes que se inicie por uma letra dada 
  * como parametro.
  */
-char** imprimirClientes(AVL clientes, char s, int *i,char **destino){
-	AVL t = clientes;
+char** imprimirClientes(Catalogo clientes, char s, int *i,char **destino){
+	Catalogo t = clientes;
 	char *aux;
 	if(islower(s)) s=toupper(s);
 
@@ -108,8 +108,8 @@ char** imprimirClientes(AVL clientes, char s, int *i,char **destino){
  * Esta função determina o lucro total das compras de
  * um determinado mês passado como parametro.
  */
-float getTot(AVLCompras avl, int m){
-	AVLCompras t = avl;
+float getTot(Compras avl, int m){
+	Compras t = avl;
 	if(t){
 		if((getMes(t))==m){
 			return getLucro(t)+getTot(getEsqCompras(t),m)+getTot(getDirCompras(t),m);
@@ -126,7 +126,7 @@ float getTot(AVLCompras avl, int m){
  * mes do intervalo até ao ultimo, obtendo-se assim
  * o lucro total no intervalo.
  */
-float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax){
+float totalLucroIntervalo(Compras array[],int mesMin, int mesMax){
 	int i,m;
 	float totalLucro=0;
 
@@ -138,16 +138,31 @@ float totalLucroIntervalo(AVLCompras array[],int mesMin, int mesMax){
 	return totalLucro;
 }
 
+/*get compras*/
+float getTotCompras(Compras avl, int m){
+	Compras t = avl;
+	if(t){
+		if((getMes(t))==m){
+			return 1+getTotCompras(getEsqCompras(t),m)+getTotCompras(getDirCompras(t),m);
+		}
+		return getTotCompras(getEsqCompras(t),m)+getTotCompras(getDirCompras(t),m);
+	}
+	return 0;
+}
+
 /* totalComprasIntervalo
  * Função que determina o total das compras
  * dado um intervalo fechado de meses.
  */
-int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax){
+int totalComprasIntervalo(Compras array[],int mesMin, int mesMax){
 	int i;
+	int m;
 	int totalCompras=0;
 
-	for(i=mesMin;i<=mesMax;i++){
-		totalCompras+=tamanho_AVLCompras(array[i]);
+	for(i=0;i<26;i++){
+		for(m=mesMin;m<=mesMax;m++){
+			totalCompras+=getTotCompras(array[i],m);
+		}
 	}
 	return totalCompras;
 }
@@ -159,7 +174,7 @@ int totalComprasIntervalo(AVLCompras array[],int mesMin, int mesMax){
  * produto, diferenciado se a compra foi normal ('N') 
  * ou em promoção ('P').
  */
-char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, int *i) {
+char** procurarComprasClienteAux(Compras c, char* produto, char** clientes, int *i) {
 	char *aux = malloc(sizeof(char)*10);
 	char buf[3];
 
@@ -184,7 +199,7 @@ char** procurarComprasClienteAux(AVLCompras c, char* produto, char** clientes, i
  * produto, diferenciado se a compra foi normal ('N') 
  * ou em promoção ('P').
  */
-char** procurarComprasCliente(AVLCompras c[], char* produto) {
+char** procurarComprasCliente(Compras c[], char* produto) {
 	int k=0;
 	int indice = produto[0] - 'A';
 
@@ -197,7 +212,7 @@ char** procurarComprasCliente(AVLCompras c[], char* produto) {
 *- numero de clientes registados que não realizaram compras, não é complicado, é parecido com a 4 mas para
 * clientes, descobre o erro e faz em 5 min, yes you can
 *- numero de produtos que ninguem comprou (igual a query 4)*/
-char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino){
+char** clienteNaoComprouAux(Compras t,CatalogoAux clientes,int *i,char** destino){
     char *aux;
 	if(clientes){
 		aux=getData(clientes);
@@ -214,7 +229,7 @@ char** clienteNaoComprouAux(AVLCompras t,AVL clientes,int *i,char** destino){
 	return destino;
 }
 
-char** clienteNaoComprou(AVLCompras array[],AVL clientes,int *i,char** destino){
+char** clienteNaoComprou(Compras array[],CatalogoAux clientes,int *i,char** destino){
 	int k=0;
 	int indice;
 	char **tmp= malloc(sizeof(char*)*1000000);

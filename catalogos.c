@@ -11,7 +11,7 @@
  * é válido.
  */
 
-int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos){
+int validarLinha(char *linha,Catalogo AVLClientes,Catalogo AVLProdutos){
 	char produto[10];
 	float preco;
 	int unidades_compradas;
@@ -32,8 +32,8 @@ int validarLinha(char *linha,AVL AVLClientes,AVL AVLProdutos){
  * passada como parametro.
  * Estes códigos irão ser impressos numa tabela
  */
-char** imprimirProdutos(AVL produtos,char s,int *i,char **destino){
-	AVL t = produtos;
+char** imprimirProdutos(Catalogo produtos,char s,int *i,char **destino){
+	Catalogo t = produtos;
 	char *aux;
 
 	if(t){ 
