@@ -1,16 +1,8 @@
-/* Esta estrutura é para as compras.
- * Cada nó possui o código do cliente,
- * o código do produto, o tipo de compra,
- * o mes da compra, o lucro resultante da 
- * compra (quantidade*lucro), a quantidade
- * da compra, e dois apontadores para os
- * filhos do nó.
- */
-
 typedef struct nodoCompras *Compras;
-typedef struct nodo *CatalogoAux;
+typedef struct nodo *CatalogoAux; /*declaro isto pois nao posso usar o nome Catalogo, pois ja foi declarado!!*/
  
 int tamanho_AVLCompras(Compras t);
+int comparar(const void *a, const void *b);
 Compras inserirCompras(char s[], Compras t);
 int procurarProdutos(char s[], Compras t);
 int procurarClientes(char s[], Compras t);
@@ -32,6 +24,10 @@ int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp);
 char** naoComprou(Compras array[],CatalogoAux produtos,int *i,char** destino);
 char** clienteNaoComprouAux(Compras t,CatalogoAux clientes,int *i,char** destino);
 char** clienteNaoComprou(Compras array[],CatalogoAux clientes,int *i,char** destino);
+
+char** getTotClientes(Compras c, int mes,char **dest,int *i);
+int totalClientesIntervalo(Compras array[],int mesMin, int mesMax);
+int procurarLista(char cliente[], char** lista);
 
 char *getClientes (Compras a);
 char *getProd (Compras a);

@@ -150,6 +150,145 @@ char** produtosComprados(Compras c[], char* cliente) {
 	return s;
 }
 
+/*query 10 - MUITO LENTO!!*/
+int comprouTodosMeses(int *lista){
+	int i;
+	int m1=0,m2=0,m3=0,m4=0,m5=0,m6=0,m7=0,m8=0,m9=0,m10=0,m11=0,m12=0;
+
+	for(i=0;lista[i];i++){
+		if(lista[i]==1) m1=1;
+		if(lista[i]==2) m2=1;
+		if(lista[i]==3) m3=1;
+		if(lista[i]==4) m4=1;
+		if(lista[i]==5) m5=1;
+		if(lista[i]==6) m6=1;
+		if(lista[i]==7) m7=1;
+		if(lista[i]==8) m8=1;
+		if(lista[i]==9) m9=1;
+		if(lista[i]==10) m10=1;
+		if(lista[i]==11) m11=1;
+		if(lista[i]==12) m12=1;
+	}
+	return (m1 && m2 && m3 && m4 && m5 && m6 && m7 && m8 && m9 && m10 && m11 && m12);
+}
+
+int procurarLista(char cliente[], char** lista){
+	int i;
+	int valor=0;
+
+	if(!lista || !cliente) return 0;
+
+	for(i=0;lista[i];i++)
+		if(strcmp(cliente,lista[i])==0){
+			valor=1;
+			break;
+		}
+
+	return valor;
+}
+
+int* mesesComprouAux(Compras c, char* cliente, int* lista, int *i) {
+	if (c){
+		mesesComprouAux(getEsqCompras(c),cliente,lista,i);
+		if (strcmp(cliente,getClientes(c))==0) {  
+			lista[(*i)]=getMes(c);				
+			(*i)++;							
+		}
+		mesesComprouAux(getDirCompras(c),cliente,lista,i);
+	}
+	return lista;
+}
+
+char** mesComprou(Compras array[],char *cliente,char **lista,int *i){
+	int indice;
+	int k=0;
+	int *temp=malloc(sizeof(int)*10000);
+
+	if(cliente){
+		for(indice=0;indice<26;indice++){
+			if(!procurarLista(cliente,lista) && comprouTodosMeses(mesesComprouAux(array[indice],cliente,temp,&k))){
+				lista[(*i)]=cliente;
+				(*i)++;
+			}
+		}
+	}	
+	return lista;
+}
+
+char** exec(Compras array[],Catalogo t, char **lista,int *i){
+	if(t){ 
+		exec(array,getEsq(t),lista,i);
+		mesComprou(array,getData(t),lista,i);
+		exec(array,getDir(t),lista,i);
+	}
+	return lista;
+}
+
+/*QUERY 12 MT LENTO :(((( */
+float getTotalQuantidadeAux(Compras avl,char *codigo){
+	Compras t = avl;
+	if(t){
+		if(strcmp(getProd(avl),codigo)==0 && !strcmp(getProd(avl),codigo)>0){
+			return getQuantidade(avl)+getTotalQuantidadeAux(getEsqCompras(t),codigo)+getTotalQuantidadeAux(getDirCompras(t),codigo);
+		}
+		return getTotalQuantidadeAux(getEsqCompras(t),codigo)+getTotalQuantidadeAux(getDirCompras(t),codigo);
+	}
+	return 0;
+}
+
+int getTotalQuantidade(Compras array[],char *codigo){
+	int i;
+	int totalCompras=0;
+	i=codigo[0]-'A';
+
+	totalCompras+=getTotalQuantidadeAux(array[i],codigo);
+	
+	return totalCompras;
+}
+
+/*int getTotalClientes(Compras c, char *produto,int *total){
+	if(c){
+		getTotalClientes(getEsqCompras(c),produto,total);
+		if(c){
+			if(strcmp(getProd(c),produto)==0){
+				(*total)++;
+			}
+		}
+		getTotalClientes(getDirCompras(c),produto,total);
+	}
+	return *total;
+}*/
+
+
+char** toStringProdutos(Catalogo produtos, char **dest, int*i){
+	if(produtos){
+		toStringProdutos(getEsq(produtos),dest,i);
+		if(produtos){
+			dest[(*i)]=getData(produtos);
+			(*i)++;
+		}
+		toStringProdutos(getDir(produtos),dest,i);
+	}
+	return dest;
+}
+
+char** nMaisVendidos(Compras array[],Catalogo produtos){
+	int i=0;
+	int k;
+	char **s=malloc(sizeof(char*)*200000);
+	int *val=malloc(sizeof(int)*200000);
+
+	toStringProdutos(produtos,s,&i);
+
+	for(k=0;s[k];k++){
+		val[k]=getTotalQuantidade(array,s[k]);
+	}
+
+	printf("Sucesso\n");
+
+	return s;
+}
+
 /* Query 13 */
 /* quais os 3 produtos mais comprados (por um cliente) durante o ano, neste momento apenas temos a imprimir 
 *os produtos comprados por um cliente nesse ano (desculpa Octávio)*/
@@ -164,7 +303,6 @@ char** codMaisComprouAno (Compras avl[], char codigo[]){
 			tmp = prodCompradoporClienteAux(avl[i],codigo,tmp,&k,mes);
 		}
 	}
-
 	return tmp;
 }
 
@@ -306,6 +444,27 @@ void query9(Compras array[]){
 
 }
 
+void query10(Compras array[],Catalogo clientes){
+	int i=0;
+	char** tmp = malloc(sizeof(char*)*200000);
+
+	exec(array,clientes,tmp,&i);
+	imprimirLista(tmp,1,10);
+}
+
+void query11(Compras array[],Catalogo clientes){
+	int i;
+
+	for(i=1;i<=12;i++)
+		printf("Mês %d Numero de compras %d Numero de clientes %d\n",i,totalComprasIntervalo(array,i,i),totalClientesIntervalo(array,i,i));
+}
+
+void query12(Compras array[],Catalogo produtos){
+	char **s=nMaisVendidos(array,produtos);
+
+
+}
+
 void query13(Compras array[]){
 	char** tmp = malloc(sizeof(char*)*200000);
 	char** s= malloc(sizeof(char*)*200000);
@@ -394,6 +553,11 @@ int main(){
 	query13(array);
 	query14(array,produtos,clientes);
 	*/
+
+	/*query10(array,clientes); MERDA DE FUNCAO*/
+
+	/*query11(array,clientes); +- bem*/
+	query12(array,produtos);
 
 	return 0;
 }

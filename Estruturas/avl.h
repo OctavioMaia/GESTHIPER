@@ -1,8 +1,3 @@
-/* Esta estrutura contem a 
- * informação do nó e dois 
- * apontadores para os filhos 
- * do nó
- */
 typedef struct nodo* Catalogo;
 
 Catalogo inserir(char s[], Catalogo t);

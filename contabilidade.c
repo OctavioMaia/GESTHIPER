@@ -269,6 +269,46 @@ int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp){
 	return quantidades;
 }
 
+/*query 11*/
+char** getTotClientes(Compras c, int mes,char **dest,int *i) {
+	if (c){
+		getTotClientes(getEsqCompras(c),mes,dest,i);
+		if (getMes(c)==mes){
+			dest[(*i)]=getClientes(c);
+			(*i)++;
+		}	
+		getTotClientes(getDirCompras(c),mes,dest,i);
+	}
+	return dest;
+}
+
+int totalClientesIntervalo(Compras array[],int mesMin, int mesMax){
+	int i;
+	int m;
+	int k=0;
+	int j=0;
+	int len=0;
+	char **s=malloc(sizeof(char*)*200000);
+	char **tmp=malloc(sizeof(char*)*200000);
+
+	for(i=0;i<26;i++){
+		for(m=mesMin;m<=mesMax;m++){
+			getTotClientes(array[i],m,s,&k);
+		}
+	}
+
+	for(i=0;s[i];i++,len++);
+	qsort(s,len,sizeof(char*),comparar);
+
+	for(i=0;s[i];i++){
+		if(procurarLista(s[i],tmp)==0){
+			tmp[j]=s[i];
+			j++;
+		}
+	}
+	return j;
+}
+
 /*Query 13*/
 void ordenaAno(char** s, int *q,int n){
 	int imax;
