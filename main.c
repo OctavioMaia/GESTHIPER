@@ -48,6 +48,13 @@ void guardarCodigosCompras(FILE *fp,Compras array[],Catalogo Clientes,Catalogo P
 	/*printf("Inseridos %d codigos válidos\n",inseridos );*/
 }
 
+/* imprimirAux
+ * Esta função auxilia a a função imprimirLista e permite 
+ * imprimir no ecrã os resultados, em que pagina o 
+ * utilizador se encontra, o numero de paginas total  
+ * que existem e qual a decisão que quer tomar de seguida:
+ * se pretende sair ou se pretende ir para outra pagina.
+ */
 void imprimirAux(char **s, int c , int l,int t, int pa) {
   	int j; /*j vai ate ao numero de colunas*/
  	int p; /*scanf da pagina a ler*/
@@ -74,6 +81,12 @@ void imprimirAux(char **s, int c , int l,int t, int pa) {
  	}
 }
 
+/* imprimirLista
+ * Esta função vai calcular o numero de paginas 
+ * que existem, e invoca a função auxiliar  
+ * imprimirAux de maneira a permitir ao utilizador 
+ * um modo de navegação pelos resultados.
+ */
 void imprimirLista(char **s,int c,int l) {
   int i = 0;
   int numpags;
@@ -527,6 +540,8 @@ void printIntro(){
 }
 
 int main(){
+	int i;
+
 	Compras array[26];
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
@@ -541,23 +556,25 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	puts("Tudo guardado e validado!");
 
-	/*
-	query2(produtos);
-	query3(array);
-	query4(array,produtos);
-	query5(array); INCOMPLETA
-	query6(clientes);
-	query7(array);
-	query8(array);
-	query9(array);
-	query13(array);
-	query14(array,produtos,clientes);
-	*/
-
-	/*query10(array,clientes); MERDA DE FUNCAO*/
-
-	/*query11(array,clientes); +- bem*/
-	query12(array,produtos);
+	
+	printf("Selecione a query que pretende testar:");
+    scanf("%d", &i);
+    switch (i){
+     case 2  : query2(produtos);                 break;   	
+     case 3  : query3(array);                    break;
+     case 4  : query4(array, produtos);          break;
+     case 5  : query5(array);                    break; /*imcompleta*/
+     case 6  : query6(clientes);                 break;
+     case 7  : query7(array);                    break;
+     case 8  : query8(array);                    break;
+     case 9  : query9(array);                    break;
+     case 10 : query10(array, clientes);         break; /*shit function*/
+     case 11 : query11(array,clientes);          break; /*+-shit*/
+     case 12 : query12(array, clientes);         break; /*shit function*/
+     case 13 : query13(array);                   break;
+     case 14 : query14(array,produtos,clientes); break;
+     default: printf("Query invalida\n");
+   }
 
 	return 0;
 }
