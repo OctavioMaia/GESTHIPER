@@ -414,10 +414,20 @@ void query10(Compras array[],Catalogo clientes){
 }
 
 void query11(Compras array[]){
+	FILE *f = fopen("query11.csv","w");
 	int i;
+	char decisao;
 
-	for(i=1;i<=12;i++)
-		printf("Mês %d Numero de compras %d Numero de clientes %d\n",i,totalComprasIntervalo(array,i,i),totalClientesIntervalo(array,i,i));
+	printf("\nSucesso! Deseja guardar para um ficheiro txt? (y/n) ");
+	scanf(" %c",&decisao);
+
+	if(decisao=='y'){
+		printf("Aguarde por favor...\n");
+		fprintf(f,"Mês,#Compras,#Clientes\n");
+		for(i=1;i<=12;i++)
+			fprintf(f,"%d,%d,%d\n",i,totalComprasIntervalo(array,i,i),totalClientesIntervalo(array,i,i));
+	}
+	fclose(f);
 }
 
 void query12(Compras array[],Catalogo produtos){
