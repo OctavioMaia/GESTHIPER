@@ -78,6 +78,58 @@ char** naoComprou(Compras array[],Catalogo produtos,int *i,char** destino){
 	return destino;
 }
 
+/*----------query 5--------*/
+/* produtosCompradosAux
+ * Esta função calcula a lista dos produtos comprados
+ * por um cliente passado como parametro. 
+ * Cada elemento da lista contem o código do produto e 
+ * o mes em que foi comprado.
+ */
+int* produtosCompradosAux(Compras c, char* cliente, char** lista, int* quantidades,int *mes, int *i) {
+	if (c){
+		produtosCompradosAux(getEsqCompras(c),cliente,lista,quantidades,mes,i);
+		if (strcmp(cliente,getClientes(c))==0 ) {
+			lista[(*i)]=getProd(c);
+			quantidades[(*i)]=getQuantidade(c);
+			mes[(*i)]=getMes(c);
+			(*i)++;	
+		}
+		produtosCompradosAux(getDirCompras(c),cliente,lista,quantidades,mes,i);
+	}
+	return quantidades;
+}
+
+/* produtosComprados
+ * Esta função calcula a lista de todos os produtos
+ * comprados mes a mes por um determinado cliente, 
+ * passado como parametro.
+ */
+
+int calculaTotal(int *q,int *mes,int m){
+	int i;
+	int total=0;
+
+	for(i=0;q[i]>0;i++){
+		if(mes[i]==m){
+			total+=q[i];
+		}
+	}
+	return total;
+}
+
+int produtosComprados(Compras c[], char* cliente,int m) {
+	int k=0;
+	int i;
+	int *q=malloc(sizeof(int)*10000);
+	int *mes=malloc(sizeof(int)*10000);
+	char** s = malloc(sizeof(char*)*200000);
+
+	for(i=0;i<26;i++)
+		produtosCompradosAux(c[i],cliente,s,q,mes,&k);
+ 	
+	return calculaTotal(q,mes,m);
+}
+
 
 /*-----------query6------------*/
 /* imprimirClientes

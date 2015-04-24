@@ -100,69 +100,6 @@ void imprimirLista(char **s,int c,int l) {
   imprimirAux(s,c,l,numpags,0);
 }
 
-/*----------query 5--------*/
-/* tostring
- * Esta função converte um inteiro numa string
- */
-char tostring(char str[], int num){
-    int i, resto, tamanho = 0, n=num; /*n=num, copia para usar no calculo do tamanho*/
-
-    while (n != 0){		/*devolve o tamanho do numero, dividindo sempre por 10*/
-        tamanho++;
-        n /= 10;
-    }
-
-    for (i=0;i<tamanho;i++){
-        resto = num % 10;
-        num = num / 10; /*buscar o caracter a inserir, ex: 20, insere o 2*/
-        str[tamanho - (i + 1)] = resto + '0'; /*converte de um int para char*/
-    }
-    str[tamanho] = '\0'; /*terminar a string*/
-    return *str;
-}
-
-/* produtosCompradosAux
- * Esta função calcula a lista dos produtos comprados
- * por um cliente passado como parametro. 
- * Cada elemento da lista contem o código do produto e 
- * o mes em que foi comprado.
- */
-char** produtosCompradosAux(Compras c, char* cliente, char** lista, int *i) {
-	char *aux = malloc(sizeof(char)*10);
-	char *mes = malloc(sizeof(char)*3); 	/*guarda o mes e o \0*/
-
-	if (c){
-		produtosCompradosAux(getEsqCompras(c),cliente,lista,i);
-		if (strcmp(cliente,getClientes(c))==0) {
-			aux = getProd(c);				/*recebo o codigo produtos*/
-			aux[6]=' ';						/*meto um espaço na ultima posicao*/
-			aux[7]=tostring(mes,getMes(c));	/*na pos a seguir meto o mes em que o prod foi comprado*/
-			aux[8]='\0';					/*termino a string com o \0*/
-
-			lista[(*i)]=aux;				/*copio a string final*/
-			(*i)++;							/*passo um indice a frente na string*/
-		}
-		produtosCompradosAux(getDirCompras(c),cliente,lista,i);
-	}
-	return lista;
-}
-
-/* produtosComprados
- * Esta função calcula a lista de todos os produtos
- * comprados mes a mes por um determinado cliente, 
- * passado como parametro.
- */
-char** produtosComprados(Compras c[], char* cliente) {
-	int k=0;
-	int i;
-
-	char** s = malloc(sizeof(char*)*200000);
-	for(i=0;i<26;i++)
-		s=produtosCompradosAux(c[i],cliente,s,&k);
-
-	return s;
-}
-
 /*query 10 - MUITO LENTO!!*/
 int comprouTodosMeses(int *lista){
 	int i;
@@ -376,16 +313,29 @@ int query4(Compras array[],Catalogo produtos){
 }
 
 void query5(Compras array[]){
+	FILE *f = fopen("query5.txt", "wr");
 	int i;
+	char decisao;
 	char codigo[10];
-	char** s = NULL;
+	int q[12];
 
 	printf("Introduza o codigo de cliente: ");
 	scanf("%s",codigo);
-	s=produtosComprados(array,codigo);
 
-	for(i=0;s[i]!=NULL;i++) 
-		printf("produto/mes: %s\n",s[i]);
+	for(i=0;i<12;i++)
+		q[i]=produtosComprados(array,codigo,i+1);
+
+	for(i=0;i<12;i++)
+		printf("Mes %d Quantidade %d\n",i+1,q[i]);
+
+	printf("\nSucesso! Deseja guardar para um ficheiro txt? (y/n) \n");
+	scanf(" %c",&decisao);
+
+	if(decisao=='y')
+		for(i=0;i<12;i++)
+			fprintf(f, "Mês: %d Quantidade: %d\n",i+1,q[i]);
+	fclose(f);
+	
 }
 
 
@@ -452,9 +402,7 @@ void query9(Compras array[]){
 			j++;
 		}
 	}
-
 	ordena(tmp,q,j);
-
 }
 
 void query10(Compras array[],Catalogo clientes){
@@ -465,7 +413,7 @@ void query10(Compras array[],Catalogo clientes){
 	imprimirLista(tmp,1,10);
 }
 
-void query11(Compras array[],Catalogo clientes){
+void query11(Compras array[]){
 	int i;
 
 	for(i=1;i<=12;i++)
@@ -473,7 +421,7 @@ void query11(Compras array[],Catalogo clientes){
 }
 
 void query12(Compras array[],Catalogo produtos){
-	char **s=nMaisVendidos(array,produtos);
+	/*char **s=nMaisVendidos(array,produtos);*/
 
 
 }
@@ -539,9 +487,30 @@ void printIntro(){
 	puts("\t #####  #######  #####     #    #     # ### #       ####### #     #" );
 }
 
-int main(){
+void execQueries(Compras array[],Catalogo produtos,Catalogo clientes){
 	int i;
+	printf("\nSelecione a query que pretende testar: (2-14) ");
+    scanf(" %d", &i);
+    switch (i){
+     case 2  : query2(produtos);                 break;   	
+     case 3  : query3(array);                    break;
+     case 4  : query4(array, produtos);          break;
+     case 5  : query5(array);                    break; 
+     case 6  : query6(clientes);                 break;
+     case 7  : query7(array);                    break;
+     case 8  : query8(array);                    break;
+     case 9  : query9(array);                    break;
+     case 10 : query10(array, clientes);         break; /*shit function*/
+     case 11 : query11(array);		             break; 
+     case 12 : query12(array, clientes);         break; /*shit function*/
+     case 13 : query13(array);                   break;
+     case 14 : query14(array,produtos,clientes); break;
+     default : printf("Query invalida\n");
+  	}
+  	execQueries(array,produtos,clientes);
+}
 
+int main(){
 	Compras array[26];
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
@@ -556,25 +525,10 @@ int main(){
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
 	puts("Tudo guardado e validado!");
 
-	
-	printf("Selecione a query que pretende testar:");
-    scanf("%d", &i);
-    switch (i){
-     case 2  : query2(produtos);                 break;   	
-     case 3  : query3(array);                    break;
-     case 4  : query4(array, produtos);          break;
-     case 5  : query5(array);                    break; /*imcompleta*/
-     case 6  : query6(clientes);                 break;
-     case 7  : query7(array);                    break;
-     case 8  : query8(array);                    break;
-     case 9  : query9(array);                    break;
-     case 10 : query10(array, clientes);         break; /*shit function*/
-     case 11 : query11(array,clientes);          break; /*+-shit*/
-     case 12 : query12(array, clientes);         break; /*shit function*/
-     case 13 : query13(array);                   break;
-     case 14 : query14(array,produtos,clientes); break;
-     default: printf("Query invalida\n");
-   }
+	/*for(i=0;i<26;i++)
+		imprimirCompras(array[i]);*/
+
+	execQueries(array,produtos,clientes);
 
 	return 0;
 }
