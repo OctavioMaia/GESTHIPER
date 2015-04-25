@@ -179,6 +179,7 @@ float getTotalQuantidadeAux(Compras avl,char *codigo){
 	Compras t = avl;
 	if(t){
 		if(strcmp(getProd(avl),codigo)==0 && !strcmp(getProd(avl),codigo)>0){
+			printf("%d\n", getQuantidade(avl));
 			return getQuantidade(avl)+getTotalQuantidadeAux(getEsqCompras(t),codigo)+getTotalQuantidadeAux(getDirCompras(t),codigo);
 		}
 		return getTotalQuantidadeAux(getEsqCompras(t),codigo)+getTotalQuantidadeAux(getDirCompras(t),codigo);
@@ -232,6 +233,7 @@ char** nMaisVendidos(Compras array[],Catalogo produtos){
 
 	for(k=0;s[k];k++){
 		val[k]=getTotalQuantidade(array,s[k]);
+		printf("%s %d\n",s[k],val[k]);
 	}
 
 	printf("Sucesso\n");
@@ -431,9 +433,8 @@ void query11(Compras array[]){
 }
 
 void query12(Compras array[],Catalogo produtos){
-	/*char **s=nMaisVendidos(array,produtos);*/
-
-
+	int i;
+	char **s=nMaisVendidos(array,produtos);
 }
 
 void query13(Compras array[]){
