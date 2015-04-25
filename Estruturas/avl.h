@@ -1,8 +1,31 @@
+/* Catalogo
+ * Esta estrutura contém o codigo, a altura
+ * da estrutura.
+ */
 typedef struct nodo* Catalogo;
 
+/* getData
+ * Recebe uma estrutura do tipo Catalogo e
+ * devolve o código.
+ */
 char *getData(Catalogo a);
+
+/* getAltura
+ * Recebe uma estrutura do tipo Catalogo e
+ * devolve a altura da mesma.
+ */
 int getAltura(Catalogo a);
+
+/* getEsq
+ * Recebe uma estrutura do tipo Catalogo e
+ * devolve o nodo a esquerda.
+ */
 Catalogo getEsq(Catalogo a);
+
+/* getData
+ * Recebe uma estrutura do tipo Catalogo e
+ * devolve o nodo à direita.
+ */
 Catalogo getDir(Catalogo a);
 
 /* inserir

@@ -27,10 +27,7 @@ Catalogo getDir(Catalogo a) {
 	return a -> dir;
 }
 
-/* tamanho_AVL
- * Esta função calcula o número de nodos
- * de uma Catalogo
- */
+
 int tamanho_AVL(Catalogo t){
     if(t)
     	return 1 + (tamanho_AVL(t->esq)+tamanho_AVL(t->dir)); 
@@ -38,18 +35,12 @@ int tamanho_AVL(Catalogo t){
         return 0;
 }
 
-/* altura
- * Esta função calcula a altura
- * de uma Catalogo
- */
+
 int altura(Catalogo t){
 	return (t==NULL) ? 0 : t->altura;
 }
 
-/* procurar
- * Esta função procura se uma string
- * existe numa Catalogo
- */
+
 int procurar(char s[], Catalogo t){
 	if(t==NULL)
 		return 0;
@@ -61,20 +52,13 @@ int procurar(char s[], Catalogo t){
 		return 1; 
 }
 
-/* max
- * Esta função calcula o máximo
- * entre dois numeros.
- */
+
 int max(int a,int b){
 	return a>b ? a:b;
 }
 
 
-/* rodarESqUma
- * Rotação esquerda em um nó. Utilizada para
- * manter a arvore balenceada durante a inserção 
- * de um nodo.
- */ 
+
 Catalogo rodarEsqUma(Catalogo t){
 	Catalogo aux = NULL;
 
@@ -87,10 +71,7 @@ Catalogo rodarEsqUma(Catalogo t){
     return aux; /*nova raiz*/
 }
 
-/* rodarDirUma
- * Rotação direita de um nó. Utilizada para
- * manter a arvore balenceada durante a inserção de um nodo.
- */
+
 Catalogo rodarDirUma(Catalogo t){
 	Catalogo aux;
 
@@ -103,32 +84,20 @@ Catalogo rodarDirUma(Catalogo t){
     return aux; /*nova raiz*/
 }
 
-/* rodarEsqDuplo 
- * Uma rotação dupla para a esquerda é uma rotação
- * para direita no filho da direita seguida de uma 
- * rotação para a esquerda no nodo passado como parametro
- */
+
 Catalogo rodarEsqDuplo(Catalogo t){
 	t->esq = rodarDirUma(t->esq);
 
 	return rodarEsqUma(t);
 }
 
-/* rodarDirDuplo
- * Uma rotação dupla para a direita é uma rotação 
- * para a esquerda no filho da esquerda seguida de 
- * uma rotação para a direita no nodo passado como parametro
- */
 Catalogo rodarDirDuplo(Catalogo t){
 	t->dir = rodarEsqUma(t->dir);
 
 	return rodarDirUma(t);
 }
 
-/* inserir
- * Função que insere um nodo numa arvore Catalogo 
- * garantido o balenceamento da arvore
- */
+
 Catalogo inserir(char s[], Catalogo t){
 
 	if( t == NULL ){

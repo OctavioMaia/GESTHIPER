@@ -1,3 +1,6 @@
+/* compras
+ * Esta estrutura contém o 
+ */
 typedef struct nodoCompras *compras;
 
 /* getTotal

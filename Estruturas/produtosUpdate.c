@@ -31,18 +31,11 @@ ProdutosUpdate getDireita(ProdutosUpdate a){
 	return a->dir;
 }
 
-/* Altura
- * Esta função calcula a Altura
- * de uma ProdutosUpdate
- */
 int Altura(ProdutosUpdate t){
 	return (t==NULL) ? 0 : t->Altura;
 }
 
-/* Procurar
- * Esta função procura se uma string
- * existe numa ProdutosUpdate
- */
+
 int Procurar(char s[], ProdutosUpdate t){
 	if(t==NULL)
 		return 0;
@@ -54,20 +47,13 @@ int Procurar(char s[], ProdutosUpdate t){
 		return 1; 
 }
 
-/* MAX
- * Esta função calcula o máximo
- * entre dois numeros.
- */
+
 int MAX(int a,int b){
 	return a>b ? a:b;
 }
 
 
-/* rodarESqUma
- * Rotação esquerda em um nó. Utilizada para
- * manter a arvore balenceada durante a inserção 
- * de um nodo.
- */ 
+
 ProdutosUpdate rodarEsqUmaProdutos(ProdutosUpdate t){
 	ProdutosUpdate aux = NULL;
 
@@ -80,10 +66,7 @@ ProdutosUpdate rodarEsqUmaProdutos(ProdutosUpdate t){
     return aux; /*nova raiz*/
 }
 
-/* rodarDirUma
- * Rotação direita de um nó. Utilizada para
- * manter a arvore balenceada durante a inserção de um nodo.
- */
+
 ProdutosUpdate rodarDirUmaProdutos(ProdutosUpdate t){
 	ProdutosUpdate aux;
 
@@ -96,22 +79,14 @@ ProdutosUpdate rodarDirUmaProdutos(ProdutosUpdate t){
     return aux; /*nova raiz*/
 }
 
-/* rodarEsqDuplo 
- * Uma rotação dupla para a esquerda é uma rotação
- * para direita no filho da direita seguida de uma 
- * rotação para a esquerda no nodo passado como parametro
- */
+
 ProdutosUpdate rodarEsqDuploProdutos(ProdutosUpdate t){
 	t->esq = rodarDirUmaProdutos(t->esq);
 
 	return rodarEsqUmaProdutos(t);
 }
 
-/* rodarDirDuplo
- * Uma rotação dupla para a direita é uma rotação 
- * para a esquerda no filho da esquerda seguida de 
- * uma rotação para a direita no nodo passado como parametro
- */
+
 ProdutosUpdate rodarDirDuploProdutos(ProdutosUpdate t){
 	t->dir = rodarEsqUmaProdutos(t->dir);
 
@@ -129,10 +104,7 @@ int update(ProdutosUpdate t, char *s,int q){
 		return t->qtotal=(t->qtotal+q);
 }
 
-/* inserirProdutos
- * Função que insere um nodo numa arvore ProdutosUpdate 
- * garantido o balenceamento da arvore
- */
+
 
 ProdutosUpdate inserirProdutos(char s[], ProdutosUpdate t){
 	char produto[10];

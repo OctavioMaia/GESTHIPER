@@ -1,4 +1,11 @@
+/* catalogo
+ * Esta estrutura contém 
+ */
 typedef struct nodo* catalogo;
+
+/* Produto
+ * Esta estrutura contém o
+ */
 typedef struct nodoCompras *comprasAux;
 
 /* validarlinha

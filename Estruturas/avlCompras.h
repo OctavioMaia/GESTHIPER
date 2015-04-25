@@ -1,15 +1,76 @@
+/* Compras
+ * Esta estrutura contém 
+ */
 typedef struct nodoCompras *Compras;
+
+/* CatalogoAux
+ * Esta estrutura contém
+ */
 typedef struct nodo *CatalogoAux; /*declaro isto pois nao posso usar o nome Catalogo, pois ja foi declarado!!*/
+
+/* --------- */
 Compras array[26];
 
+/* getClientes
+ * Recebe uma estrutura do tipo Compras e
+ * devolve os codigos dos clientes.
+ */
 char *getClientes (Compras a);
+
+
+/* getProd
+ * Recebe uma estrutura do tipo Compras e
+ * devolve os codigos dos produtos.
+ */
 char *getProd (Compras a);
+
+
+/* getTipo
+ * Recebe uma estrutura do tipo Compras e
+ * devolve o tipo da compra (N ou P).
+ */
 char getTipo (Compras a);
+
+
+/* getClientes
+ * Recebe uma estrutura do tipo Compras e
+ * devolve o mês.
+ */
 int getMes (Compras a);
+
+
+/* getLucro
+ * Recebe uma estrutura do tipo Compras e
+ * devolve o Lucro.
+ */
 float getLucro (Compras a);
+
+
+/* getQuantidade
+ * Recebe uma estrutura do tipo Compras e
+ * devolve a quantidade comprada.
+ */
 int getQuantidade (Compras a);
+
+
+/* getAlturaCompras
+ * Recebe uma estrutura do tipo Compras e
+ * devolve a altura da AVL das Compras.
+ */
 int getAlturaCompras(Compras a);
+
+
+/* getEsqCompras
+ * Recebe uma estrutura do tipo Compras e
+ * devolve o nodo esquerdo.
+ */
 Compras getEsqCompras(Compras a);
+
+
+/* getDirCompras
+ * Recebe uma estrutura do tipo Compras e
+ * devolve o nodo a direita.
+ */
 Compras getDirCompras(Compras a);
 
 /* tamanho_AVLCompras
