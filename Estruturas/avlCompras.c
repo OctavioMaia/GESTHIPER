@@ -54,10 +54,7 @@ Compras getDirCompras(Compras a) {
 	return a -> dir;
 }
 
-/* tamanho_AVLCompras
- * Esta função calcula o número de nodos
- * de uma AVL
- */
+
 int tamanho_AVLCompras(Compras t){
     if(t)
     	return 1 + (tamanho_AVLCompras(t->esq)+tamanho_AVLCompras(t->dir)); 
@@ -65,17 +62,12 @@ int tamanho_AVLCompras(Compras t){
         return 0;
 }
 
-/* alturaCompras
- * Esta função calcula a altura
- * de uma AVL
- */
+
 int alturaCompras(Compras t){
 	return (t==NULL) ? 0 : t->altura;
 }
 
-/* procurarCompras
- * Esta função procura se um produto existe numa AVL
- */
+
 int procurarProdutos(char s[], Compras t){
 	if(t==NULL)
 		return 0;
@@ -87,9 +79,6 @@ int procurarProdutos(char s[], Compras t){
 		return 1; 
 }
 
-/* procurarClientes
- * Esta função verifica se um cliente existe numa AVL
- */
 
 int procurarClientes(char s[], Compras t){
 	if(t==NULL)
@@ -103,20 +92,12 @@ int procurarClientes(char s[], Compras t){
 }
 
 
-/* Max
- * Esta função calcula o máximo
- * entre dois numeros.
- */
+
 int Max(int a,int b){
 	return a>b ? a:b;
 }
 
 
-/* rodarESqUmaCompras
- * Rotação esquerda em um nó. Utilizada para
- * manter a arvore balenceada durante a inserção 
- * de um nodo.
- */ 
 Compras rodarEsqUmaCompras(Compras t){
 	Compras aux = NULL;
 

@@ -55,14 +55,19 @@ char** prodCompradoporClienteAux (comprasAux c, char* cliente, char** lista, int
  * produto, diferenciado se a compra foi normal ('N') 
  * ou em promoção ('P').
  */
-char** procurarComprasCliente(comprasAux c[], char* produto) ;
+char** procurarComprasCliente(comprasAux c[], char* produto);
 
 /* getTotClientes
  * Esta função copia para uma string o código de um 
  * cliente se este tiver realizado alguma compra num
  * mes dado como parametro.
  */
-char** getTotClientes(comprasAux c, int mes,char **dest,int *i) ;
+char** getTotClientes(comprasAux c, int mes,char **dest,int *i);
+
+/* clienteNaoComprouAux
+ * Esta função auxilia a função clienteNaoComprou, copiando para 
+ * uma string os codigos de clientes que não realizaram qualquer 
+ * compra. */ 
 char** clienteNaoComprouAux(comprasAux t,catalogo clientes,int *i,char** destino);
 
 /* clienteNaoComprou
@@ -79,6 +84,8 @@ char** clienteNaoComprou(comprasAux array[],catalogo clientes,int *i,char** dest
  * um modo de navegação pelos resultados.
  */
 void imprimirLista(char **s,int c,int l);
+
+/*onde esta isto?*/
 void imprimirAux(char **s, int c , int l,int t, int pa);
 
 /* procurarLista
@@ -90,6 +97,9 @@ int procurarLista(char cliente[], char** lista);
  * Verifica se um cliente fez compras todos os meses,ou seja, percorre o array da lista dos meses em que um cliente fez compras e verifica se contêm todos os meses. 
  */
 int comprouTodosMeses(int *lista);
+
+/* procurarLista
+ * Esta função compara */
 int procurarLista(char cliente[], char** lista);
 
 /* mesesComprouAux
