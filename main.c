@@ -34,7 +34,6 @@ void guardarCodigosCompras(FILE *fp,Compras array[],Catalogo Clientes,Catalogo P
 	for(i=0;i<26;i++){
 		array[i]=NULL;
 	}
-
 	while(fgets(buf,40,fp)){
 		buf2=strtok(buf,"\r\n");
 		if(validarLinha(buf2,Clientes,Produtos)){
@@ -43,7 +42,6 @@ void guardarCodigosCompras(FILE *fp,Compras array[],Catalogo Clientes,Catalogo P
 			/*inseridos++;*/
 		}
 	}
-	/*printf("Inseridos %d codigos válidos\n",inseridos );*/
 }
 
 /* imprimirAux
@@ -57,7 +55,6 @@ void imprimirAux(char **s, int c , int l,int t, int pa) {
  	int y=0;
  	char **aux = s;
  	char **atual;
-
  	printf("-------------------------Página %d--------------------------\n",pa+1);
 	for (i=0;i<l && aux[y+1];i++){   
    		for (j=0;j<c && aux[y];j++,y++){
@@ -115,7 +112,6 @@ int procurarLista(char cliente[], char** lista){
 			valor=1;
 			break;
 		}
-
 	return valor;
 }
 
@@ -164,83 +160,6 @@ char** exec(Compras array[],Catalogo t, char **lista,int *i){
 		exec(array,getDir(t),lista,i);
 	}
 	return lista;
-}
-
-/*QUERY 12 MT LENTO :(((( */
-/* getTotal
- * Esta função calcula a quantidade vendida de um produto por ano. 
- */
-float getTotalQuantidadeAux(Compras avl,char *codigo){
-	Compras t = avl;
-	if(t){
-		if(strcmp(getProd(avl),codigo)==0 && !strcmp(getProd(avl),codigo)>0){
-			printf("%d\n", getQuantidade(avl));
-			return getQuantidade(avl)+getTotalQuantidadeAux(getEsqCompras(t),codigo)+getTotalQuantidadeAux(getDirCompras(t),codigo);
-		}
-		return getTotalQuantidadeAux(getEsqCompras(t),codigo)+getTotalQuantidadeAux(getDirCompras(t),codigo);
-	}
-	return 0;
-}
-
-int getTotalQuantidade(Compras array[],char *codigo){
-	int i;
-	int totalCompras=0;
-	i=codigo[0]-'A';
-
-	totalCompras+=getTotalQuantidadeAux(array[i],codigo);
-	
-	return totalCompras;
-}
-
-/*int getTotalClientes(Compras c, char *produto,int *total){
-	if(c){
-		getTotalClientes(getEsqCompras(c),produto,total);
-		if(c){
-			if(strcmp(getProd(c),produto)==0){
-				(*total)++;
-			}
-		}
-		getTotalClientes(getDirCompras(c),produto,total);
-	}
-	return *total;
-}*/
-
-/* toStringProdutos
- * Esta função guarda num array o código dos produtos.
- */
-char** toStringProdutos(Catalogo produtos, char **dest, int*i){
-	if(produtos){
-		toStringProdutos(getEsq(produtos),dest,i);
-		if(produtos){
-			dest[(*i)]=getData(produtos);
-			(*i)++;
-		}
-		toStringProdutos(getDir(produtos),dest,i);
-	}
-	return dest;
-}
-
-/* nMaisVendidos
- * Esta função guarda num array, val, a quantidade vendida de um produto
- * em que em cada indice deste a quantidade corresponde a quantidade
- * do produto presente no array s.
- */
-char** nMaisVendidos(Compras array[],Catalogo produtos){
-	int i=0;
-	int k;
-	char **s=malloc(sizeof(char*)*200000);
-	int *val=malloc(sizeof(int)*200000);
-
-	toStringProdutos(produtos,s,&i);
-
-	for(k=0;s[k];k++){
-		val[k]=getTotalQuantidade(array,s[k]);
-		printf("%s %d\n",s[k],val[k]);
-	}
-
-	printf("Sucesso\n");
-
-	return s;
 }
 
 /* codMaisComprouAno
@@ -648,19 +567,6 @@ void query14(Compras array[],Catalogo produtos,Catalogo clientes){
 	printf("Sucesso, demoramos %fs!\n",time_spent);
 }
 
-/* printIntro
- * Esta função imprime no terminal o logótipo do trabalho.
- */
-void printIntro(){
-	puts("\t #####  #######  #####  ####### #     # ### ######  ####### ###### ");
-    puts("\t#     # #       #     #    #    #     #  #  #     # #       #     # ");
-	puts("\t#       #       #          #    #     #  #  #     # #       #     # ");
-	puts("\t#  #### #####    #####     #    #######  #  ######  #####   ######  ");
-	puts("\t#     # #             #    #    #     #  #  #       #       #   # ");
-	puts("\t#     # #       #     #    #    #     #  #  #       #       #    #   ");
-	puts("\t #####  #######  #####     #    #     # ### #       ####### #     #" );
-}
-
 /* execQueries
  * Esta função permite escolher qual das queries o utilizador quer testar
  */
@@ -703,8 +609,6 @@ int main(){
 
 	fcompras  = fopen(nome,"r");
 
-	printIntro(); /*print logotipo gesthiper*/
-
 	begin = clock(); /*init contador*/
 	produtos = guardarCodigos(fprodutos,produtos);
 	clientes = guardarCodigos(fclientes,clientes);
@@ -728,7 +632,6 @@ int main(){
     printf("\033[1m Query 13\033[0m - Três produtos que um cliente mais comprou durante o ano.\n");
     printf("\033[1m Query 14\033[0m - Número de clientes registados que nâo realizaram compras e o nº de produtos que ninguem comprou.\n");
 	execQueries(array,produtos,clientes); 
-	execQueries(array,produtos,clientes);
 
 	return 0;
 }
