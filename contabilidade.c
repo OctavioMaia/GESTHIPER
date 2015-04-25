@@ -167,6 +167,10 @@ int totalComprasIntervalo(Compras array[],int mesMin, int mesMax){
 }
 
 /*QUERY 9*/
+/* calculaMx
+ * Esta função calcula o máximo de uma função, devolvendo o indice
+ * em que o máximo se encontra.
+ */
 int calculaMax(int *q,int n){
 	int i;
 	int max=0;
@@ -179,6 +183,10 @@ int calculaMax(int *q,int n){
 	return max; /*devolve indice*/
 }
 
+/* ordena 
+ * Esta função vai determinar qual o maior elemento no array e coloca esse 
+ * valor a -1.
+ */
 void ordena(char** s, int *q,int n){
 	int imax;
 
@@ -188,6 +196,9 @@ void ordena(char** s, int *q,int n){
 	}
 }
 
+/* comparar
+ * compara duas strings
+ */
 int comparar(const void *a, const void *b) { 
     const char **ia = (const char **)a;
     const char **ib = (const char **)b;
@@ -195,6 +206,9 @@ int comparar(const void *a, const void *b) {
     return strcmp(*ia, *ib);
 }
 
+/* codMaisComprouMes
+ * Determina a lista dos produtos que um cliente mais comprou.
+ */
 int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp){
 	int i=0;
 	int j=0;
@@ -226,6 +240,9 @@ int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp){
 }
 
 /*query 11*/
+/* totalClientesIntervalo
+  * Calcula o numero de clientes que realizaram compras num intervalo de meses
+  */
 int totalClientesIntervalo(Compras array[],int mesMin, int mesMax){
 	int i;
 	int m;
