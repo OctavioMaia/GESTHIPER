@@ -131,15 +131,20 @@ char** procurarComprasClienteAux(Compras c, char* produto, char** clientes, int 
 
 
 /*QUERY 9*/
+/* prodCompradoporClienteAux
+ * Esta função copia para uma string o código de 
+ * um produto, quantas vezes esse produto tiver 
+ * sido comprado.
+ */
 char** prodCompradoporClienteAux (Compras c, char* cliente, char** lista, int *i,int m) {
 	int quantidade; 
 	if (c){
 		prodCompradoporClienteAux(getEsqCompras(c),cliente,lista,i,m);
-		if (strcmp(cliente,getClientes(c))==0 && getMes(c)==m) {   /*ATENÇÃO!! temos de somar as quantidades antes de fazer tostring da quantidade*/
+		if (strcmp(cliente,getClientes(c))==0 && getMes(c)==m) {   
 			quantidade=getQuantidade(c);
 			while(quantidade>0){
-				lista[(*i)]=getProd(c);			/*copio a string final*/
-				(*i)++;							/*passo um indice a frente na string*/
+				lista[(*i)]=getProd(c);			
+				(*i)++;							
 				quantidade--;
 			}
 		}
@@ -164,6 +169,11 @@ char** procurarComprasCliente(Compras c[], char* produto) {
 }
 
 /*query 11*/
+/* getTotClientes
+ * Esta função copia para uma string o código de um 
+ * cliente se este tiver realizado alguma compra num
+ * mes dado como parametro.
+ */
 char** getTotClientes(Compras c, int mes,char **dest,int *i) {
 	if (c){
 		getTotClientes(getEsqCompras(c),mes,dest,i);
@@ -176,10 +186,13 @@ char** getTotClientes(Compras c, int mes,char **dest,int *i) {
 	return dest;
 }
 
-/*------------Query 14-------------------*
-*- numero de clientes registados que não realizaram compras, não é complicado, é parecido com a 4 mas para
-* clientes, descobre o erro e faz em 5 min, yes you can
-*- numero de produtos que ninguem comprou (igual a query 4)*/
+/*------------Query 14-------------------*/
+/* clienteNaoComprou
+ * Esta função verifica se um cliente realizou compras,
+ * se não tiver realizado copia o código do cliente para
+ * um array.
+ */
+
 char** clienteNaoComprouAux(Compras t,CatalogoAux clientes,int *i,char** destino){
     char *aux;
 	if(clientes){
