@@ -1,6 +1,7 @@
 typedef struct nodoCompras *Compras;
 typedef struct nodo *CatalogoAux; /*declaro isto pois nao posso usar o nome Catalogo, pois ja foi declarado!!*/
- 
+Compras array[26];
+
 int tamanho_AVLCompras(Compras t);
 int comparar(const void *a, const void *b);
 Compras inserirCompras(char s[], Compras t);
@@ -16,6 +17,8 @@ int totalComprasIntervalo(Compras array[],int mesMin, int mesMax);
 
 int produtosComprados(Compras c[], char* cliente,int m);
 
+void imprimirLista(char **s,int c,int l);
+void imprimirAux(char **s, int c , int l,int t, int pa);
 
 char** procurarComprasClienteAux(Compras c, char* produto, char** clientes, int *i);
 char** procurarComprasCliente(Compras c[], char* produto);

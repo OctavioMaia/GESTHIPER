@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
 
@@ -79,25 +80,6 @@ void imprimirAux(char **s, int c , int l,int t, int pa) {
  		atual=s+(p-1)*l*c-(pa*c*l);
  	    imprimirAux (atual,c,l,t,p-1);   
  	}
-}
-
-/* imprimirLista
- * Esta função vai calcular o numero de paginas 
- * que existem, e invoca a função auxiliar  
- * imprimirAux de maneira a permitir ao utilizador 
- * um modo de navegação pelos resultados.
- */
-void imprimirLista(char **s,int c,int l) {
-  int i = 0;
-  int numpags;
-
-  while (s[i]!='\0'){ /*calcula o numero de elems em s*/
-    i++;
-  } 
-
-  numpags= i/(c*l);	 /*calcula o numero de paginas*/
-
-  imprimirAux(s,c,l,numpags,0);
 }
 
 /*query 10 - MUITO LENTO!!*/
@@ -260,15 +242,23 @@ char** codMaisComprouAno (Compras avl[], char codigo[]){
 
 /*------------------*/
 void query2(Catalogo produtos){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 2*/
+	double time_spent;
+
 	int i=0;
 	char ch;
 	char decisao;
 	char** s = malloc(sizeof(char*)*200000);
+
 	printf("Introduza o caracter que pretende pesquisar: ");
 	scanf(" %c",&ch);
-	s=imprimirProdutos(produtos,ch,&i,s);
 
-	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
+	begin = clock(); /*init contador*/
+	s=imprimirProdutos(produtos,ch,&i,s);
+	end = clock(); /*end contador*/
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 2*/
+
+	printf("Sucesso, demoramos %fs! Deseja imprimir os resultados? (y/n) ",time_spent);
 	scanf(" %c",&decisao);
 	if(decisao=='y')
 		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
@@ -276,6 +266,9 @@ void query2(Catalogo produtos){
 
 /*query 3*/
 void query3(Compras array[]){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 3*/
+	double time_spent;
+
 	char codigo[10];
 	int mes;
 	int indice;
@@ -287,25 +280,39 @@ void query3(Compras array[]){
 	scanf("%d",&mes);
 
 	indice=codigo[0]-'A';
+
+	begin = clock(); /*init contador*/
 	totalN=getTotalN(array[indice],codigo,mes);
 	totalP=getTotalP(array[indice],codigo,mes);
-	
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 3*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
 	printf("Total faturado em modo N: %.2f\n",totalN);
 	printf("Total faturado em modo P: %.2f\n",totalP);
 	printf("Total faturado: %.2f\n",totalN+totalP);
 }
 
 int query4(Compras array[],Catalogo produtos){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 4*/
+	double time_spent;
+
 	int i=0;
 	int tamanho=0;
 	char decisao;
 	char** s = malloc(sizeof(char*)*200000);
+	
+	begin=clock();
+	
 	s=naoComprou(array,produtos,&i,s);
+	
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 4*/
 
 	for(i=0;s[i];i++)
 		tamanho++;   
-	
-	printf("Sucesso! Exitem %d codigos que ninguem comprou.\n",tamanho);
+
+	printf("Sucesso, demoramos %fs! Exitem %d codigos que ninguem comprou.\n",time_spent,tamanho);
 	printf("Deseja imprimir os resultados? (y/n) ");
 	scanf(" %c",&decisao);
 	if(decisao=='y')
@@ -315,7 +322,10 @@ int query4(Compras array[],Catalogo produtos){
 }
 
 void query5(Compras array[]){
-	FILE *f = fopen("query5.txt", "wr");
+	clock_t begin, end; /*Contadores de tempo de execucao para query 5*/
+	double time_spent;
+
+	FILE *f;
 	int i;
 	char decisao;
 	char codigo[10];
@@ -324,39 +334,56 @@ void query5(Compras array[]){
 	printf("Introduza o codigo de cliente: ");
 	scanf("%s",codigo);
 
+	begin=clock();
 	for(i=0;i<12;i++)
 		q[i]=produtosComprados(array,codigo,i+1);
+
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 5*/
 
 	for(i=0;i<12;i++)
 		printf("Mes %d Quantidade %d\n",i+1,q[i]);
 
-	printf("\nSucesso! Deseja guardar para um ficheiro txt? (y/n) \n");
+	printf("\nSucesso, demoramos %fs! Deseja guardar para um ficheiro txt? (y/n) ",time_spent);
 	scanf(" %c",&decisao);
 
-	if(decisao=='y')
+	if(decisao=='y'){
+		f = fopen("query5.txt", "w");
 		for(i=0;i<12;i++)
 			fprintf(f, "Mês: %d Quantidade: %d\n",i+1,q[i]);
+	}
+	printf("Sucesso!\n");
 	fclose(f);
-	
 }
 
 
 void query6(Catalogo clientes){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 6*/
+	double time_spent;
+
 	int i=0;
 	char ch;
 	char decisao;
 	char** s = malloc(sizeof(char*)*200000);
 	printf("Introduza o caracter que pretende pesquisar: ");
 	scanf(" %c",&ch);
-	s=imprimirClientes(clientes,ch,&i,s);
 
-	printf("Sucesso! Deseja imprimir os resultados? (y/n) ");
+	begin=clock();
+	s=imprimirClientes(clientes,ch,&i,s);
+	
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 6*/
+
+	printf("Sucesso, demoramos %fs! Deseja imprimir os resultados? (y/n) ",time_spent);
 	scanf(" %c",&decisao);
 	if(decisao=='y')
 		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
 }
 
 void query7(Compras array[]){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 7*/
+	double time_spent;
+
 	int min;
 	int max;
 	printf("Introduza o mês inicial da pesquisa: ");
@@ -364,24 +391,42 @@ void query7(Compras array[]){
 	printf("Introduza o mês final da pesquisa: ");
 	scanf(" %d",&max);
 
-	printf("Lucro: %f\n",totalLucroIntervalo(array,min,max)); 
+	begin=clock();
+	printf("Lucro: %.2f\n",totalLucroIntervalo(array,min,max)); 
 	printf("Numero compras: %d\n",totalComprasIntervalo(array,min,max));
+
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 7*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
 }
 
 void query8(Compras array[]){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 8*/
+	double time_spent;
+
 	int i;
 	char codigo[10];
 	char** s= NULL;
 
 	printf("Introduza o codigo de produto: ");
 	scanf("%s",codigo);
+
+	begin=clock();
 	s=procurarComprasCliente(array,codigo);
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 8*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
 
 	for(i=0;s[i]!=NULL;i++) 
 		printf("Cliente/tipo de compra: %s\n",s[i]);
 }
 
 void query9(Compras array[]){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 9*/
+	double time_spent;
+
 	char** s= malloc(sizeof(char*)*200000);
 	char** tmp = malloc(sizeof(char*)*200000);
 	int* q=malloc(sizeof(int)*10000);
@@ -395,6 +440,7 @@ void query9(Compras array[]){
 	printf("Introduza o mês a pesquisar: ");
 	scanf("%d",&mes);
 
+	begin=clock();
 	q=codMaisComprouMes(array,codigo,mes,s);
 
 	/*ELIMINA OS REPETIDOS*/
@@ -405,39 +451,73 @@ void query9(Compras array[]){
 		}
 	}
 	ordena(tmp,q,j);
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 9*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
+
 }
 
 void query10(Compras array[],Catalogo clientes){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 10*/
+	double time_spent;
+
 	int i=0;
 	char** tmp = malloc(sizeof(char*)*200000);
+	begin=clock();
 
 	exec(array,clientes,tmp,&i);
-	imprimirLista(tmp,1,10);
+
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 10*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
+
+	imprimirLista(tmp,5,4);
 }
 
 void query11(Compras array[]){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 11*/
+	double time_spent;
+
 	FILE *f = fopen("query11.csv","w");
 	int i;
-	char decisao;
 
-	printf("\nSucesso! Deseja guardar para um ficheiro txt? (y/n) ");
-	scanf(" %c",&decisao);
+	printf("Aguarde por favor...\n");
 
-	if(decisao=='y'){
-		printf("Aguarde por favor...\n");
-		fprintf(f,"Mês,#Compras,#Clientes\n");
-		for(i=1;i<=12;i++)
+	begin=clock();
+	fprintf(f,"Mês,#Compras,#Clientes\n");
+	for(i=1;i<=12;i++)
 			fprintf(f,"%d,%d,%d\n",i,totalComprasIntervalo(array,i,i),totalClientesIntervalo(array,i,i));
-	}
+
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 11*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
+	
 	fclose(f);
 }
 
 void query12(Compras array[],Catalogo produtos){
+	/*clock_t begin, end; Contadores de tempo de execucao para query 12
+	double time_spent;
+
 	int i;
+
+	begin=clock();
 	char **s=nMaisVendidos(array,produtos);
+
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; tempo de exec query 12
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
+*/
 }
 
 void query13(Compras array[]){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 13*/
+	double time_spent;
+
 	char** tmp = malloc(sizeof(char*)*200000);
 	char** s= malloc(sizeof(char*)*200000);
 	int *quantidades=malloc(sizeof(int*)*10000);
@@ -448,6 +528,8 @@ void query13(Compras array[]){
 
 	printf("Introduza o codigo de cliente: ");
 	scanf("%s",codigo);
+
+	begin=clock();
 
 	s=codMaisComprouAno(array,codigo);
 
@@ -472,20 +554,42 @@ void query13(Compras array[]){
 		}
 	}
 
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 13*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
+
 	ordenaAno(tmp,quantidades,j);
 }
 
 void query14(Compras array[],Catalogo produtos,Catalogo clientes){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 14*/
+	double time_spent;
+
 	int i=0;
+	int k=0;
 	int tamanho=0;
+	int ninguemComprou=0;
 	char** s = malloc(sizeof(char*)*200000);
+	char** q4= malloc(sizeof(char*)*200000);
+
+	begin=clock(); 
 	s=clienteNaoComprou(array,clientes,&i,s);
+	q4=naoComprou(array,produtos,&k,q4);
 
 	for(i=0;s[i];i++)
-		tamanho++;    
+		tamanho++;  
+
+	for(i=0;q4[i];i++)
+		ninguemComprou++;
 	
 	printf("Numero de clientes que não compraram: %d\n",tamanho);
-	printf("Numero de produtos que ninguem comprou: %d\n",query4(array,produtos));
+	printf("Numero de produtos que ninguem comprou: %d\n",ninguemComprou);
+
+	end=clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 14*/
+
+	printf("Sucesso, demoramos %fs!\n",time_spent);
 }
 
 void printIntro(){
@@ -522,7 +626,9 @@ void execQueries(Compras array[],Catalogo produtos,Catalogo clientes){
 }
 
 int main(){
-	Compras array[26];
+	clock_t begin, end; /*Contadores de tempo de execucao para query 1*/
+	double time_spent;
+
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
 	FILE *fcompras  = fopen("Ficheiros/Compras.txt","r");
@@ -531,13 +637,14 @@ int main(){
 
 	printIntro();
 
+	begin = clock(); /*init contador*/
 	produtos = guardarCodigos(fprodutos,produtos);
 	clientes = guardarCodigos(fclientes,clientes);
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
-	puts("Tudo guardado e validado!");
+	end = clock(); /*end contador*/
 
-	/*for(i=0;i<26;i++)
-		imprimirCompras(array[i]);*/
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 1*/
+	printf("Tudo guardado e validado em %fs!",time_spent);
 
 	execQueries(array,produtos,clientes);
 
