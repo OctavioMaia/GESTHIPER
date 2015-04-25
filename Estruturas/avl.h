@@ -9,8 +9,6 @@ int validarLinha(char *linha,Catalogo AVLClientes,Catalogo AVLProdutos);
 void imprimir(Catalogo t);
 void displayCodigos(Catalogo t);
 void imprimirLetra(Catalogo t, char s, int *i,int *q);
-char** imprimirClientes(Catalogo clientes, char s, int *i,char **destino);
-char** imprimirProdutos(Catalogo clientes, char s, int *i,char **destino);
 
 char *getData(Catalogo a);
 int getAltura(Catalogo a);

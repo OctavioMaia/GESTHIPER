@@ -4,7 +4,8 @@
 #include <time.h>
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
-
+#include "contabilidade.h"
+#include "catalogos.h"
 
 /* guardarCodigos
  * A função vai ler o ficheiro dos códigos dos 

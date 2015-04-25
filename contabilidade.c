@@ -3,6 +3,8 @@
 #include <string.h>
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
+#include "catalogos.h"
+#include "contabilidade.h"
 
 /*--- query 3----*/ 
 /* getTotal

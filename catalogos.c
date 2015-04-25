@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
+#include "contabilidade.h"
+#include "catalogos.h"
 
 /* validarlinha
  * Esta função verifica se uma linha de compras é valida.
