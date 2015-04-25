@@ -42,6 +42,10 @@ int* produtosCompradosAux(compras c, char* cliente, char** lista, int* quantidad
  */
 int produtosComprados(compras c[], char* cliente,int m) ;
 
+/* calculaTotal
+ * Esta função merge as quantidades compradas
+ * por um certo produto num dado mes
+ */
 int calculaTotal(int *q,int *mes,int m);
 
 /* getTot
@@ -58,6 +62,11 @@ float getTot(compras avl, int m);
  * o lucro total no intervalo.
  */
 float totalLucroIntervalo(compras array[],int mesMin, int mesMax);
+
+/* getTotcompras
+ * Função que determina o numero
+ * de compras num dado mes
+ */
 float getTotcompras(compras avl, int m);
 
 /* totalComprasIntervalo

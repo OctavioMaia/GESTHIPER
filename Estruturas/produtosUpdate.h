@@ -48,7 +48,18 @@ int Procurar(char s[], ProdutosUpdate t);
  * entre dois numeros.
  */
 int MAX(int a,int b);
+
+/* update
+ * Esta função atualiza a quantidade
+ * de um determinado codigo.
+ */
 int update(ProdutosUpdate t, char *s,int q);
+
+/* setQuantidadeTotal
+ * Esta função modifica o quantidade
+ * de um certo produto para que possamos
+ * calcular os n maiores elementos
+ */
 void setQuantidadeTotal(ProdutosUpdate a,int n);
 
 /* rodarESqUma
