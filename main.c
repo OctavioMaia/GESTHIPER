@@ -712,7 +712,7 @@ int main(){
 	end = clock(); /*end contador*/
 
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 1*/
-	printf("Tudo guardado e validado em %fs!",time_spent);
+	printf("Tudo guardado e validado em %fs!\n",time_spent);
 
     printf("\033[1m Query 2\033[0m  -  Lista e total de produtos cujo código se inicia por uma dada letra.\n");
 	printf("\033[1m Query 3\033[0m  -  Número total de vendas e total faturado de um produto num mês.\n");
