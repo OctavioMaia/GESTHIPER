@@ -2,7 +2,7 @@
  * Esta estrutura contém o nome do produto,
  * a quantidade total vendida.
  */
-typedef struct nodo* ProdutosUpdate;
+typedef struct nodoUpdate* ProdutosUpdate;
 
 
 /* getProduto

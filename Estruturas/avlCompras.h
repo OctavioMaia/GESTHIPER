@@ -1,14 +1,20 @@
 /* Compras
- * Esta estrutura contém 
+ * Esta estrutura contem toda a informação 
+ * necessária para processar as compras
  */
 typedef struct nodoCompras *Compras;
 
 /* CatalogoAux
- * Esta estrutura contém
+ * Esta estrutura contém toda a informação
+ * necessária para guardar os codigos de 
+ * produtos e clientes
  */
-typedef struct nodo *CatalogoAux; /*declaro isto pois nao posso usar o nome Catalogo, pois ja foi declarado!!*/
+typedef struct nodo *CatalogoAux;
 
-/* --------- */
+/* array
+ * Trata-se de um array de AVL's para minimizar
+ * os tempos de pesquisa
+ */
 Compras array[26];
 
 /* getClientes
@@ -133,8 +139,3 @@ Compras rodarDirDuploCompras(Compras t);
  * garantido o balenceamento da arvore
 */
 Compras inserirCompras(char s[], Compras t);
-
-/*
-*
-*/
-void imprimirCompras(Compras a);

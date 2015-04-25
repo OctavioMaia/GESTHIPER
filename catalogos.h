@@ -1,12 +1,17 @@
 /* catalogo
- * Esta estrutura contém 
+ * Este apontador permite-nos aceder aos elementos da estrutura tipo nodo
  */
 typedef struct nodo* catalogo;
 
-/* Produto
- * Esta estrutura contém o
+/* comprasAux
+ * Este apontador permite-nos aceder aos elementos da estrutura tipo nodoCompras
  */
 typedef struct nodoCompras *comprasAux;
+
+/* nodoUpdate
+ * Este apontador permite-nos aceder aos elementos da estrutura tipo nodoUpdate
+ */
+typedef struct nodoUpdate* produtosUpdate;
 
 /* validarlinha
  * Esta função verifica se uma linha de compras é valida.
@@ -19,7 +24,7 @@ int validarLinha(char *linha,catalogo AVLClientes,catalogo AVLProdutos);
 
 /* imprimirProdutos
  * Esta função vai imprimir os códigos de todos
- * os produtos iniciados por uma determinada letra MAISCULA
+ * os produtos iniciados por uma determinada letra MAIÚSCULA
  * passada como parametro.
  * Estes códigos irão ser impressos numa tabela
  */
@@ -92,7 +97,10 @@ char** clienteNaoComprou(comprasAux array[],catalogo clientes,int *i,char** dest
  */
 void imprimirLista(char **s,int c,int l);
 
-/*onde esta isto?*/
+/* imprimirAux
+ * Esta função auxilia a a função imprimirLista e permite imprimir no ecrã os resultados, em que pagina o utilizador se encontra, 
+ * o número de páginas total que existem e qual a decisão que quer tomar de seguida: se pretende sair ou se pretende ir para outra pagina.
+ */
 void imprimirAux(char **s, int c , int l,int t, int pa);
 
 /* procurarLista
@@ -106,7 +114,7 @@ int procurarLista(char cliente[], char** lista);
 int comprouTodosMeses(int *lista);
 
 /* procurarLista
- * Esta função compara */
+ * Esta função ve se um dado cliente existe numa lista*/
 int procurarLista(char cliente[], char** lista);
 
 /* mesesComprouAux
@@ -124,3 +132,17 @@ char** mesComprou(comprasAux array[],char *cliente,char **lista,int *i);
  */
 char** exec(comprasAux array[],catalogo t, char **lista,int *i);
 
+/* calculaIndice
+ * Calcula o indice do elemento maximo do array.
+ */
+int calculaIndice(int *q);
+
+/* toStringProdutos
+ * Converte uma lista do tipo produtosUpdate para um array.
+ */
+int* toStringProdutos(produtosUpdate lista, char **dest,int *q,int *aux, int*i);
+
+/* codMaisComprouAno
+ * Esta função copia para um array, tmp, o código dos produtos comprados por um cliente durante um ano.
+ */
+char** codMaisComprouAno (comprasAux avl[], char codigo[]);

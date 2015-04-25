@@ -1,5 +1,6 @@
 /* compras
- * Esta estrutura contém o 
+ * Esta estrutura contem toda a informação 
+ * necessária para processar as compras
  */
 typedef struct nodoCompras *compras;
 
@@ -91,4 +92,9 @@ int* codMaisComprouMes(compras avl[] ,char cod_clientes[], int m,char** tmp);
   * Calcula o numero de clientes que realizaram compras num intervalo de meses
   */
 int totalClientesIntervalo(compras array[],int mesMin, int mesMax);
+
+/* ordenaAno
+ * Esta função vai determinar 3 produtos que um dado
+ * cliente mais comprou num ano.
+ */
 void ordenaAno(char** s, int *q,int n);

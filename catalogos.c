@@ -4,8 +4,10 @@
 #include <ctype.h>
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
+#include "Estruturas/produtosUpdate.h"
 #include "contabilidade.h"
 #include "catalogos.h"
+
 
 int validarLinha(char *linha,Catalogo AVLClientes,Catalogo AVLProdutos){
 	char produto[10];
@@ -208,6 +210,50 @@ char** getTotClientes(Compras c, int mes,char **dest,int *i) {
 		getTotClientes(getDirCompras(c),mes,dest,i);
 	}
 	return dest;
+}
+
+/*query 12*/
+int calculaIndice(int *q){
+	int indice=0,i,temp;
+	
+	for(i=0;q[i];i++){
+		if(q[i]>=temp){
+			temp=q[i];
+			indice=i;
+		}
+	}
+	q[indice]=-1;
+
+	return indice;
+}
+
+int* toStringProdutos(ProdutosUpdate lista, char **dest,int *q,int *aux, int*i){
+	if(lista){
+		toStringProdutos(getEsquerda(lista),dest,q,aux,i);
+		if(lista){
+			dest[(*i)]=getProduto(lista);
+			q[(*i)]=getQuantidadeTotal(lista);
+			aux[*i]=q[*i];
+			(*i)++;
+		}
+		toStringProdutos(getDireita(lista),dest,q,aux,i);
+	}
+	return q;
+}
+
+/*query 13*/
+
+char** codMaisComprouAno (Compras avl[], char codigo[]){
+	int k=0;
+	int i=0;
+	int mes;
+	char **tmp= malloc(sizeof(char*)*100000);
+	for(i=0;i<26;i++){
+		for(mes=1;mes<=12;mes++){
+			tmp = prodCompradoporClienteAux(avl[i],codigo,tmp,&k,mes);
+		}
+	}
+	return tmp;
 }
 
 /*------------Query 14-------------------*/

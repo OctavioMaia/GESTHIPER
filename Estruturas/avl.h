@@ -1,5 +1,5 @@
 /* Catalogo
- * Esta estrutura contém o codigo, a altura
+ * Esta estrutura contém o codigo e a altura
  * da estrutura.
  */
 typedef struct nodo* Catalogo;
@@ -30,7 +30,7 @@ Catalogo getDir(Catalogo a);
 
 /* inserir
  * Função que insere um nodo numa arvore Catalogo 
- * garantido o balenceamento da arvore
+ * garantido o balanceamento da arvore
  */
 Catalogo inserir(char s[], Catalogo t);
 
@@ -85,8 +85,3 @@ Catalogo rodarEsqDuplo(Catalogo t);
  * uma rotação para a direita no nodo passado como parametro
  */
 Catalogo rodarDirDuplo(Catalogo t);
-
-char *getData(Catalogo a);
-int getAltura(Catalogo a);
-Catalogo getEsq(Catalogo a);
-Catalogo getDir(Catalogo a);

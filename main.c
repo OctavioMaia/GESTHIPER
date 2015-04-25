@@ -4,6 +4,7 @@
 #include <time.h>
 #include "Estruturas/avl.h"
 #include "Estruturas/avlCompras.h"
+#include "Estruturas/produtosUpdate.h"
 #include "contabilidade.h"
 #include "catalogos.h"
 
@@ -38,10 +39,31 @@ void guardarCodigosCompras(FILE *fp,Compras array[],Catalogo Clientes,Catalogo P
 	}
 }
 
-/* imprimirAux
- * Esta função auxilia a a função imprimirLista e permite imprimir no ecrã os resultados, em que pagina o utilizador se encontra, 
- * o número de páginas total que existem e qual a decisão que quer tomar de seguida: se pretende sair ou se pretende ir para outra pagina.
- */
+/* guardarCodigosProdutos*/
+ProdutosUpdate guardarCodigosProdutos(FILE *fp,ProdutosUpdate t,Catalogo Clientes, Catalogo Produtos){
+	char buf[40];
+	char *buf2;
+	char produto[10];
+	float preco;
+	int unidades_compradas;
+	char tipo;
+	char cliente[10];
+	int Mes;
+
+
+	while(fgets(buf,40,fp)){
+		buf2=strtok(buf,"\r\n");
+		if(validarLinha(buf2,Clientes,Produtos)){
+			sscanf(buf2,"%s %f %d %c %s %d",produto,&preco,&unidades_compradas,&tipo,cliente,&Mes);
+			if(Procurar(produto,t)==1)
+				update(t,produto,unidades_compradas);
+			if(Procurar(produto,t)==0)
+				t = inserirProdutos(buf2,t);
+		}
+	}
+	return t;
+}
+
 void imprimirAux(char **s, int c , int l,int t, int pa) {
   	int j /*j vai ate ao numero de colunas*/, p; /*scanf da pagina a ler*/
  	int i=0;
@@ -66,25 +88,6 @@ void imprimirAux(char **s, int c , int l,int t, int pa) {
  	}
 }
 
-/* codMaisComprouAno
- * Esta função copia para um array, tmp, o código dos produtos comprados por um cliente durante um ano.
- */
-char** codMaisComprouAno (Compras avl[], char codigo[]){
-	int k=0;
-	int i=0;
-	int mes;
-	char **tmp= malloc(sizeof(char*)*100000);
-	for(i=0;i<26;i++){
-		for(mes=1;mes<=12;mes++){
-			tmp = prodCompradoporClienteAux(avl[i],codigo,tmp,&k,mes);
-		}
-	}
-	return tmp;
-}
-
-/* query2
- * Determinar a lista e o total de produtos cujo código se inicia por uma letra dada pelo utilizador.
- */
 void query2(Catalogo produtos){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 2*/
 	double time_spent;
@@ -103,9 +106,6 @@ void query2(Catalogo produtos){
 		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
 }
 
-/* query 3
- * Dado um mês como parametro e um código de um produto, determina e apresenta o número total de vendas em modo N e em modo P. 
- */
 void query3(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 3*/
 	double time_spent;
@@ -129,9 +129,6 @@ void query3(Compras array[]){
 	printf("Total faturado: %.2f\n",totalN+totalP);
 }
 
-/* query4
- * Esta query determina a lista de código de produtos que ninguem comprou.
- */
 int query4(Compras array[],Catalogo produtos){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 4*/
 	double time_spent;
@@ -153,9 +150,6 @@ int query4(Compras array[],Catalogo produtos){
 	return tamanho;
 }
 
-/* query5
- * Esta query dada um código de cliente, cria uma tabela com o número total de vendas em modo N e P, e o total facturado com esse produto mês a mês.
- */
 void query5(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 5*/
 	double time_spent;
@@ -184,9 +178,6 @@ void query5(Compras array[]){
 	fclose(f);
 }
 
-/* query6
- * Esta query determina a lista de todos os produtos começados por uma letra dada como parametro.
- */
 void query6(Catalogo clientes){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 6*/
 	double time_spent;
@@ -205,9 +196,6 @@ void query6(Catalogo clientes){
 		imprimirLista(s,5,4); /*5 colunas x 4 linhas*/
 }
 
-/* query7
- * Esta query determina o total de compras registadas e o total faturado num intervalo de meses fechado, dado como parametro.
- */
 void query7(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 7*/
 	double time_spent;
@@ -224,9 +212,6 @@ void query7(Compras array[]){
 	printf("Sucesso, demoramos %fs!\n",time_spent);
 }
 
-/* query8
- * Esta query determina os códigos dos clientes e o número total de clientes que compraram um dado produto. Faz também a distinção do tipo de compra (Normal ou Promoção).
- */
 void query8(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 8*/
 	double time_spent;
@@ -244,9 +229,6 @@ void query8(Compras array[]){
 		printf("Cliente/tipo de compra: %s\n",s[i]);
 }
 
-/* query9
- * Esta query determina a lista de códigos que um cliente passado por parametro mais comprou, por ordem descendente. 
- */
 void query9(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 9*/
 	double time_spent;
@@ -274,9 +256,6 @@ void query9(Compras array[]){
 	printf("Sucesso, demoramos %fs!\n",time_spent);
 }
 
-/* query10
- * Esta query determina a lista de códigos de clientes que realizaram compras em todos os meses dos meses.
- */
 void query10(Compras array[],Catalogo clientes){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 10*/
 	double time_spent;
@@ -290,9 +269,6 @@ void query10(Compras array[],Catalogo clientes){
 	imprimirLista(tmp,5,4);
 }
 
-/* query11
- * Cria um ficheiro CSV contendo para cada mês, o número de compras realizadas e o número de clientes que realizaram essas compras.
- */
 void query11(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 11*/
 	double time_spent;
@@ -309,23 +285,35 @@ void query11(Compras array[]){
 	fclose(f);
 }
 
-/* query12
- * Cria a lista dos N produtos mas vendidos num ano, indicando o número total de clientes e o número de unidades vendidas.
- */
-void query12(Compras array[],Catalogo produtos){
-	/*clock_t begin, end; Contadores de tempo de execucao para query 12
+void query12(ProdutosUpdate lista){
+	clock_t begin, end; /*Contadores de tempo de execucao para query 12*/
 	double time_spent;
+	int valor=0;
 	int i;
+	int k;
+	int n;
+	int *q=malloc(sizeof(int)*2000000);
+	int *aux=malloc(sizeof(int)*2000000);
+	char **s=malloc(sizeof(char*)*2000000);
+	
+	printf("Introduza o numero de codigos que pretende verificar: ");
+	scanf(" %d",&n);
+
 	begin=clock();
+	q=toStringProdutos(lista,s,q,aux,&valor);
+	
+	for(i=0;i<n;i++){
+		k=calculaIndice(q);
+		printf("%s",s[k]);
+		printf(" %d",aux[k] );
+		printf("\n");
+	}
+
 	end=clock();
-	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; tempo de exec query 12
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; 
 	printf("Sucesso, demoramos %fs!\n",time_spent);
-*/
 }
 
-/* query13
- * Esta query dado um código de cloiente determinar quais os 3 produtos que mais comprou durante o ano.
- */
 void query13(Compras array[]){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 13*/
 	double time_spent;
@@ -365,9 +353,6 @@ void query13(Compras array[]){
 	ordenaAno(tmp,quantidades,j);
 }
 
-/* query14
- * Esta query determina o número de clientes registados que não realizaram compras bem como o número de produtos que ninguem comprou.
- */
 void query14(Compras array[],Catalogo produtos,Catalogo clientes){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 14*/
 	double time_spent;
@@ -394,7 +379,7 @@ void query14(Compras array[],Catalogo produtos,Catalogo clientes){
 /* execQueries
  * Esta função permite escolher qual das queries o utilizador quer testar
  */
-void execQueries(Compras array[],Catalogo produtos,Catalogo clientes){
+void execQueries(Compras array[],Catalogo produtos,Catalogo clientes,ProdutosUpdate lista){
 	int i;
 	printf("\n\033[1m Selecione a query que pretende testar(2-14): \033[0m  ");
     scanf(" %d", &i);
@@ -409,12 +394,12 @@ void execQueries(Compras array[],Catalogo produtos,Catalogo clientes){
      case 9  : query9(array);                    break;
      case 10 : query10(array, clientes);         break; /*shit function MAS FUNCIONA!*/
      case 11 : query11(array);		             break; 
-     case 12 : query12(array, clientes);         break; /*shit function INCOMPLETA*/
+     case 12 : query12(lista);     			     break; /*shit function INCOMPLETA*/
      case 13 : query13(array);                   break;
      case 14 : query14(array,produtos,clientes); break;
      default : printf("Query invalida\n");
   	}
-  	execQueries(array,produtos,clientes);
+  	execQueries(array,produtos,clientes,lista);
 }
 
 int main(){
@@ -425,22 +410,28 @@ int main(){
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
 	FILE *fcompras;
+	FILE *flista;
 	Catalogo produtos = NULL;
 	Catalogo clientes = NULL;
+	ProdutosUpdate lista = NULL;
 
 	printf("Por favor introduza o path do ficheiro compras e o seu respetivo nome.\nPor exemplo: Ficheiros/Compras3.txt : ");
 	scanf("%s",nome);
 
 	fcompras  = fopen(nome,"r");
+	flista = fopen(nome,"r");
 
 	begin = clock(); /*init contador*/
 	produtos = guardarCodigos(fprodutos,produtos);
 	clientes = guardarCodigos(fclientes,clientes);
 	guardarCodigosCompras(fcompras,array,clientes,produtos);
+	
 	end = clock(); /*end contador*/
-
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC; /*tempo de exec query 1*/
 	printf("Tudo guardado e validado em %fs!\n",time_spent);
+
+	lista=guardarCodigosProdutos(flista,lista,clientes,produtos); /*esta lista contem apenas os codigos de produtos e a quantidade totais dos mesmos*/
+	/*imprimirlista(lista);*/
 
     printf("\033[1m Query 2\033[0m  -  Lista e total de produtos cujo código se inicia por uma dada letra.\n");
 	printf("\033[1m Query 3\033[0m  -  Número total de vendas e total faturado de um produto num mês.\n");
@@ -455,6 +446,6 @@ int main(){
     printf("\033[1m Query 12\033[0m - Lista dos N produtos mais vendidos em todo ano.\n");
     printf("\033[1m Query 13\033[0m - Três produtos que um cliente mais comprou durante o ano.\n");
     printf("\033[1m Query 14\033[0m - Número de clientes registados que nâo realizaram compras e o nº de produtos que ninguem comprou.\n");
-	execQueries(array,produtos,clientes); 
+	execQueries(array,produtos,clientes,lista); 
 	return 0;
 }

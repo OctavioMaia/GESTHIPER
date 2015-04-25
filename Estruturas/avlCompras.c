@@ -137,10 +137,6 @@ Compras rodarDirDuploCompras(Compras t){
 	return rodarDirUmaCompras(t);
 }
 
-
-
-
-
 Compras inserirCompras(char s[], Compras t){
 	char produto[10];
 	float preco;
@@ -186,20 +182,4 @@ Compras inserirCompras(char s[], Compras t){
 	}
 	t->altura = Max(alturaCompras(t->esq),alturaCompras(t->dir)) +1;
 	return t;
-}
-
-void imprimirCompras(Compras t){
-	Compras temp = t;
-
-	if(temp){
-		imprimirCompras(temp->esq);
-		printf("Produto: %s\n",temp->produtos);
-		printf("Cliente: %s\n",temp->clientes);
-		printf("Tipo compra: %c\n",temp->tipo_compra);
-		printf("Mês: %d\n",temp->mes);
-		printf("Lucro: %f\n",temp->lucro);
-		printf("Quantidade: %d\n",temp->quantidade);
-		printf("-----------------\n");
-		imprimirCompras(temp->dir);
-	}
 }

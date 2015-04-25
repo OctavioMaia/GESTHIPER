@@ -3,13 +3,13 @@
 #include <string.h>
 #include "produtosUpdate.h"
 
-typedef struct nodo{
+typedef struct nodoUpdate{
 	char data[10];
 	int qtotal;
 	int Altura;
-	struct nodo *esq;
-	struct nodo *dir;
-}nodo;
+	struct nodoUpdate *esq;
+	struct nodoUpdate *dir;
+}nodoUpdate;
 
 char *getProduto(ProdutosUpdate a) {
 	return a -> data;
@@ -115,7 +115,7 @@ ProdutosUpdate inserirProdutos(char s[], ProdutosUpdate t){
 	int Mes;
 
 	if( t == NULL ){
-        t = (ProdutosUpdate)malloc(sizeof(struct nodo));
+        t = (ProdutosUpdate)malloc(sizeof(struct nodoUpdate));
         if( t == NULL ){
             /*Não conseguimos alocar memoria! ERRO*/
             exit(1);
