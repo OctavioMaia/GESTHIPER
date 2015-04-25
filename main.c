@@ -615,9 +615,9 @@ void execQueries(Compras array[],Catalogo produtos,Catalogo clientes){
      case 7  : query7(array);                    break;
      case 8  : query8(array);                    break;
      case 9  : query9(array);                    break;
-     case 10 : query10(array, clientes);         break; /*shit function*/
+     case 10 : query10(array, clientes);         break; /*shit function MAS FUNCIONA!*/
      case 11 : query11(array);		             break; 
-     case 12 : query12(array, clientes);         break; /*shit function*/
+     case 12 : query12(array, clientes);         break; /*shit function INCOMPLETA*/
      case 13 : query13(array);                   break;
      case 14 : query14(array,produtos,clientes); break;
      default : printf("Query invalida\n");
@@ -628,14 +628,20 @@ void execQueries(Compras array[],Catalogo produtos,Catalogo clientes){
 int main(){
 	clock_t begin, end; /*Contadores de tempo de execucao para query 1*/
 	double time_spent;
+	char nome[10];
 
 	FILE *fprodutos = fopen("Ficheiros/FichProdutos.txt","r");
 	FILE *fclientes = fopen("Ficheiros/FichClientes.txt","r");
-	FILE *fcompras  = fopen("Ficheiros/Compras.txt","r");
+	FILE *fcompras;
 	Catalogo produtos = NULL;
 	Catalogo clientes = NULL;
 
-	printIntro();
+	printf("Por favor introduza o path do ficheiro compras e o seu respetivo nome.\nPor exemplo: Ficheiros/Compras3.txt) : ");
+	scanf("%s",nome);
+
+	fcompras  = fopen(nome,"r");
+
+	printIntro(); /*print logotipo gesthiper*/
 
 	begin = clock(); /*init contador*/
 	produtos = guardarCodigos(fprodutos,produtos);
