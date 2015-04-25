@@ -14,3 +14,9 @@ char** clienteNaoComprou(comprasAux array[],catalogo clientes,int *i,char** dest
 void imprimirLista(char **s,int c,int l);
 void imprimirAux(char **s, int c , int l,int t, int pa);
 int procurarLista(char cliente[], char** lista);
+int comprouTodosMeses(int *lista);
+int procurarLista(char cliente[], char** lista);
+int* mesesComprouAux(comprasAux c, char* cliente, int* lista, int *i);
+char** mesComprou(comprasAux array[],char *cliente,char **lista,int *i);
+char** exec(comprasAux array[],catalogo t, char **lista,int *i);
+

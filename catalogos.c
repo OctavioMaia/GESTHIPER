@@ -167,6 +167,92 @@ char** procurarComprasCliente(Compras c[], char* produto) {
 	s=procurarComprasClienteAux(c[indice],produto,s,&k);
 	return s;
 }
+/*Query 10*/
+
+/*query 10 */
+/* comprouTodosMeses
+ * Verifica se um cliente fez compras todos os meses,ou seja, percorre o array da lista dos meses em que um cliente fez compras e verifica se contêm todos os meses. 
+ */
+int comprouTodosMeses(int *lista){
+	int i;
+	int m1=0,m2=0,m3=0,m4=0,m5=0,m6=0,m7=0,m8=0,m9=0,m10=0,m11=0,m12=0;
+	for(i=0;lista[i];i++){
+		if(lista[i]==1) m1=1;
+		if(lista[i]==2) m2=1;
+		if(lista[i]==3) m3=1;
+		if(lista[i]==4) m4=1;
+		if(lista[i]==5) m5=1;
+		if(lista[i]==6) m6=1;
+		if(lista[i]==7) m7=1;
+		if(lista[i]==8) m8=1;
+		if(lista[i]==9) m9=1;
+		if(lista[i]==10) m10=1;
+		if(lista[i]==11) m11=1;
+		if(lista[i]==12) m12=1;
+	}
+	return (m1 && m2 && m3 && m4 && m5 && m6 && m7 && m8 && m9 && m10 && m11 && m12);
+}
+
+/* procurarLista
+ * Verifica se um cliente existe num array de clientes, retornando 1 se existir, 0 caso contrário.
+ */
+int procurarLista(char cliente[], char** lista){
+	int i;
+	int valor=0;
+	if(!lista || !cliente) return 0;
+	for(i=0;lista[i];i++)
+		if(strcmp(cliente,lista[i])==0){
+			valor=1;
+			break;
+		}
+	return valor;
+}
+
+
+/* mesesComprouAux
+ * Esta função guarda num array os meses em que um cliente dado como parametro fez compras(verifica para uma AVLCompras).
+ */
+int* mesesComprouAux(Compras c, char* cliente, int* lista, int *i) {
+	if (c){
+		mesesComprouAux(getEsqCompras(c),cliente,lista,i);
+		if (strcmp(cliente,getClientes(c))==0) {  
+			lista[(*i)]=getMes(c);				
+			(*i)++;							
+		}
+		mesesComprouAux(getDirCompras(c),cliente,lista,i);
+	}
+	return lista;
+}
+
+/* mesComprou
+ * Esta função guarda num array os meses em que um cliente dado como parametro fez compras (verifica para todas as AVLCompras).
+ */
+char** mesComprou(Compras array[],char *cliente,char **lista,int *i){
+	int indice;
+	int k=0;
+	int *temp=malloc(sizeof(int)*10000);
+	if(cliente){
+		for(indice=0;indice<26;indice++){
+			if(!procurarLista(cliente,lista) && comprouTodosMeses(mesesComprouAux(array[indice],cliente,temp,&k))){
+				lista[(*i)]=cliente;
+				(*i)++;
+			}
+		}
+	}	
+	return lista;
+}
+
+/* exec
+ * Cria para todos os clientes um array com os meses em que fez compras.
+ */
+char** exec(Compras array[],Catalogo t, char **lista,int *i){
+	if(t){ 
+		exec(array,getEsq(t),lista,i);
+		mesComprou(array,getData(t),lista,i);
+		exec(array,getDir(t),lista,i);
+	}
+	return lista;
+}
 
 /*query 11*/
 /* getTotClientes
