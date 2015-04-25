@@ -7,24 +7,11 @@
 #include "contabilidade.h"
 
 /*--- query 3----*/ 
-/* getTotal
- * Esta função dado um mês e um código de produto determina 
- * o total faturado com esse produto nesse mês.
- * Além do código do produto e dos mês, a função recebe 
- * a AVL com todos os códigos iniciados pela letra do 
- * produto desejado.
- */ 
-
 float getTotal(Compras avl[],char codigo[], int m){
 	int indice = codigo[0] - 'A';
 	return (getTotalP(avl[indice],codigo,m)+getTotalN(avl[indice],codigo,m));
 }
 
-/* getTotalP
- * Esta função dado um mês e um código de produto determina 
- * o total faturado com esse produto em compras em promoção 
- * ou seja do tipo 'P' nesse mês.
- */ 
 float getTotalP(Compras avl,char codigo[], int m){
 	Compras t = avl;
 	if(t){
@@ -36,11 +23,6 @@ float getTotalP(Compras avl,char codigo[], int m){
 	return 0;
 }
 
-/* getTotalN
- * Esta função dado um mês e um código de produto determina 
- * o total faturado com esse produto em compras em promoção 
- * ou seja do tipo 'N' nesse mês.
- */ 
 float getTotalN(Compras avl,char codigo[], int m){
 	Compras t = avl;
 	if(t){
@@ -53,12 +35,6 @@ float getTotalN(Compras avl,char codigo[], int m){
 }
 
 /*----------query 5--------*/
-/* produtosCompradosAux
- * Esta função calcula a lista dos produtos comprados
- * por um cliente passado como parametro. 
- * Cada elemento da lista contem o código do produto e 
- * o mes em que foi comprado.
- */
 int* produtosCompradosAux(Compras c, char* cliente, char** lista, int* quantidades,int *mes, int *i) {
 	if (c){
 		produtosCompradosAux(getEsqCompras(c),cliente,lista,quantidades,mes,i);
@@ -72,12 +48,6 @@ int* produtosCompradosAux(Compras c, char* cliente, char** lista, int* quantidad
 	}
 	return quantidades;
 }
-
-/* produtosComprados
- * Esta função calcula a lista de todos os produtos
- * comprados mes a mes por um determinado cliente, 
- * passado como parametro.
- */
 
 int calculaTotal(int *q,int *mes,int m){
 	int i;
@@ -105,10 +75,6 @@ int produtosComprados(Compras c[], char* cliente,int m) {
 }
 
 /*--------------query7-----------*/
-/* getTot
- * Esta função determina o lucro total das compras de
- * um determinado mês passado como parametro.
- */
 float getTot(Compras avl, int m){
 	Compras t = avl;
 	if(t){
@@ -120,13 +86,6 @@ float getTot(Compras avl, int m){
 	return 0;
 }
 
-/* totalLucroIntervalo
- * Função que determina o lucro total das compras
- * dado um intervalo fechado de meses.
- * A função vai somando o lucro desde o primeiro 
- * mes do intervalo até ao ultimo, obtendo-se assim
- * o lucro total no intervalo.
- */
 float totalLucroIntervalo(Compras array[],int mesMin, int mesMax){
 	int i,m;
 	float totalLucro=0;
@@ -139,7 +98,6 @@ float totalLucroIntervalo(Compras array[],int mesMin, int mesMax){
 	return totalLucro;
 }
 
-/*get compras*/
 float getTotCompras(Compras avl, int m){
 	Compras t = avl;
 	if(t){
@@ -151,10 +109,6 @@ float getTotCompras(Compras avl, int m){
 	return 0;
 }
 
-/* totalComprasIntervalo
- * Função que determina o total das compras
- * dado um intervalo fechado de meses.
- */
 int totalComprasIntervalo(Compras array[],int mesMin, int mesMax){
 	int i;
 	int m;
@@ -169,10 +123,6 @@ int totalComprasIntervalo(Compras array[],int mesMin, int mesMax){
 }
 
 /*QUERY 9*/
-/* calculaMx
- * Esta função calcula o máximo de uma função, devolvendo o indice
- * em que o máximo se encontra.
- */
 int calculaMax(int *q,int n){
 	int i;
 	int max=0;
@@ -185,10 +135,6 @@ int calculaMax(int *q,int n){
 	return max; /*devolve indice*/
 }
 
-/* ordena 
- * Esta função vai determinar qual o maior elemento no array e coloca esse 
- * valor a -1.
- */
 void ordena(char** s, int *q,int n){
 	int imax;
 
@@ -198,9 +144,6 @@ void ordena(char** s, int *q,int n){
 	}
 }
 
-/* comparar
- * compara duas strings
- */
 int comparar(const void *a, const void *b) { 
     const char **ia = (const char **)a;
     const char **ib = (const char **)b;
@@ -208,9 +151,6 @@ int comparar(const void *a, const void *b) {
     return strcmp(*ia, *ib);
 }
 
-/* codMaisComprouMes
- * Determina a lista dos produtos que um cliente mais comprou.
- */
 int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp){
 	int i=0;
 	int j=0;
@@ -242,9 +182,6 @@ int* codMaisComprouMes(Compras avl[] ,char cod_clientes[], int m,char** tmp){
 }
 
 /*query 11*/
-/* totalClientesIntervalo
-  * Calcula o numero de clientes que realizaram compras num intervalo de meses
-  */
 int totalClientesIntervalo(Compras array[],int mesMin, int mesMax){
 	int i;
 	int m;
