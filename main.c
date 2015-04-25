@@ -407,7 +407,7 @@ void query8(Compras array[]){
 
 	int i;
 	char codigo[10];
-	char** s= NULL;
+	char** s= malloc(sizeof(char*)*10000);
 
 	printf("Introduza o codigo de produto: ");
 	scanf("%s",codigo);
@@ -636,7 +636,7 @@ int main(){
 	Catalogo produtos = NULL;
 	Catalogo clientes = NULL;
 
-	printf("Por favor introduza o path do ficheiro compras e o seu respetivo nome.\nPor exemplo: Ficheiros/Compras3.txt) : ");
+	printf("Por favor introduza o path do ficheiro compras e o seu respetivo nome.\nPor exemplo: Ficheiros/Compras3.txt : ");
 	scanf("%s",nome);
 
 	fcompras  = fopen(nome,"r");

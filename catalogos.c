@@ -136,7 +136,7 @@ char** prodCompradoporClienteAux (Compras c, char* cliente, char** lista, int *i
 		if (strcmp(cliente,getClientes(c))==0 && getMes(c)==m) {   /*ATENÇÃO!! temos de somar as quantidades antes de fazer tostring da quantidade*/
 			quantidade=getQuantidade(c);
 			while(quantidade>0){
-				lista[(*i)]=getProd(c);				/*copio a string final*/
+				lista[(*i)]=getProd(c);			/*copio a string final*/
 				(*i)++;							/*passo um indice a frente na string*/
 				quantidade--;
 			}
